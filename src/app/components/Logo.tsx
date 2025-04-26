@@ -11,7 +11,7 @@ const Logo: React.FC = () => {
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 1 }}
     >
-      <Image src="/logo.png" width={100} height={100} alt="logo" />
+      <Image src="/logo.png" width={100} height={100} alt="logo" quality={100}/>
     </motion.picture>
   );
 };

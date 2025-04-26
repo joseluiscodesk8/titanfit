@@ -1,20 +1,31 @@
-'use client';
+'use client'
+
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
+const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
 
 const Home: NextPage = () => {
-  const [showLogo, setShowLogo] = useState(true);
+  const [showLogo, setShowLogo] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLogo(false);
-    }, 3000);
+    const lastShown = localStorage.getItem('lastLogoShown');
+    const now = Date.now();
 
-    return () => clearTimeout(timer);
+    if (!lastShown || now - parseInt(lastShown) > 24 * 60 * 60 * 1000) {
+      // No se ha mostrado o pasaron más de 24 horas
+      setShowLogo(true);
+
+      const timer = setTimeout(() => {
+        setShowLogo(false);
+        localStorage.setItem('lastLogoShown', Date.now().toString());
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
@@ -23,9 +34,7 @@ const Home: NextPage = () => {
         {showLogo ? (
           <DynamicLogo key="logo" />
         ) : (
-          <main key="main">
-            <h1>TITAN FIT</h1>
-          </main>
+          <DynamicMenu key="menu" />
         )}
       </AnimatePresence>
     </>
@@ -33,4 +42,5 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
 
