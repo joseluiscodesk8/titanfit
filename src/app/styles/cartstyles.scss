@@ -7,11 +7,8 @@
 
 body {
   min-height: 100vh;
-  background: linear-gradient(-160deg, #999999, #000);
+  background: url('/sportwearwoman.png');
   background-repeat: no-repeat;
-}
-
-h1 {
-  text-align: center;
-  transition: filter 0.3s ease;
+  background-size: 100%;
+  background-position: 100% 60%;
 }

@@ -1,0 +1,108 @@
+[
+  {
+    "id": 1,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Leggings Shinzada",
+    "precio": 25.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 2,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Short Deportivo",
+    "precio": 19.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 3,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Pantalón Push-Up",
+    "precio": 29.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 4,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Top Deportivo",
+    "precio": 22.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 5,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Bermuda Shinzada",
+    "precio": 21.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 6,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Camiseta de Compresión",
+    "precio": 18.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 7,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Mallas Deportivas",
+    "precio": 24.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 8,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Top Fitness",
+    "precio": 20.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 9,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Pantalón de Yoga",
+    "precio": 27.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 10,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Leggings Pushing",
+    "precio": 26.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 11,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Camiseta Slim Fit",
+    "precio": 23.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 12,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Leggings de Compresión",
+    "precio": 28.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 13,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Chaqueta Deportiva",
+    "precio": 34.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 14,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Faja Moldeadora",
+    "precio": 32.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  },
+  {
+    "id": 15,
+    "imagen": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp",
+    "nombre": "Panties de Compresión",
+    "precio": 15.99,
+    "descripcion": "Calidad de tela Shinzada, detalles a los lados, tela de compresión, diseño exclusivo, no genera transparencia. Disimula la celulitis, no marca la ropa interior, talla única con elongación hasta la talla L."
+  }
+]
+

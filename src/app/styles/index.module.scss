@@ -1,5 +1,5 @@
 @use "./components/Menu";
-
+@use "./components/Productos";
 .logo {
     display: grid;
     place-content: center;
@@ -20,3 +20,27 @@
   filter: blur(20px);
   transition: filter 0.3s ease;
 }
+
+.floatingCart {
+  display: grid;
+  place-content: center;
+  z-index: 1000;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  box-shadow: 0 0 5px rgba(0,0,0,);
+  cursor: grab;
+  transition: background-color 0.3s;
+  right: 20px; // Pegado a la derecha
+  top: 100px;  // Más abajo desde arriba
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  svg {
+    color: #000000;
+  }
+}
+
+

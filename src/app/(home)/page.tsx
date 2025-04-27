@@ -9,6 +9,8 @@ import styles from '../styles/index.module.scss'; // importa el sass
 
 const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
 const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
+const DynamicProductos = dynamic(() => import('../components/ProductosPage'));
+const DynamicButton = dynamic(() => import('../components/FloatingCartButton'));
 
 const Home: NextPage = () => {
   const [showLogo, setShowLogo] = useState(false);
@@ -38,11 +40,13 @@ const Home: NextPage = () => {
         ) : (
           <>
             <DynamicMenu key="menu" />
+            <DynamicButton />
             <h1 className={value === 'open' ? styles.blurText : ''}>
               Más que verte bien te sentirás bien 
               <br/>
               <strong>TitanFit</strong>
             </h1>
+            <DynamicProductos />
           </>
         )}
       </AnimatePresence>
@@ -51,5 +55,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-

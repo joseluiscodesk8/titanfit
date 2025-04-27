@@ -1,0 +1,33 @@
+.productos_lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  color: #fff;
+}
+
+.producto_card {
+  width: 90%;
+  margin: auto;
+  padding: 15px;
+  text-align: center;
+  background-color: transparent;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #000;
+
+  & img {
+    box-shadow: 0 5px 5px #000;
+    border-radius: 15px;
+    width: 100%;
+  }
+}
+
+.producto_card h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.producto_card p {
+  font-size: 1rem;
+
+}
+
