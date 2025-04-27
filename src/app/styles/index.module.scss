@@ -1,3 +1,5 @@
+@use "./components/Menu";
+
 .logo {
     display: grid;
     place-content: center;
@@ -12,84 +14,9 @@
     // }
 }
 
-.header {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .menuButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    z-index: 1001;
-    position: relative;
-    
-    @media (min-width: 768px) {
-      display: none;
-    }
-  }
-  
-  .nav {
-    position: absolute;
-    top: 64px; // altura del header aprox
-    left: -100%;
-    width: 100%;
-    background: white;
-    transition: left 0.3s ease-in-out;
-    z-index: 1000;
-  
-    @media (min-width: 768px) {
-      position: static;
-      width: auto;
-      background: transparent;
-      left: 0;
-      transition: none;
-    }
-  }
-  
-  .navOpen {
-    left: 0;
-  }
-  
-  .navList {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    
-    @media (min-width: 768px) {
-      flex-direction: row;
-      align-items: center;
-      gap: 2rem;
-      padding: 0;
-    }
-  
-    li {
-      margin: 0.5rem 0;
-      @media (min-width: 768px) {
-        margin: 0;
-      }
-    }
-  
-    a {
-      text-decoration: none;
-      color: #333;
-      font-size: 1.2rem;
-  
-      &:hover {
-        color: #0070f3;
-      }
-    }
-  }
-  
+
+/* styles/index.module.scss */
+.blurText {
+  filter: blur(20px);
+  transition: filter 0.3s ease;
+}

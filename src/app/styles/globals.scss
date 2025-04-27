@@ -9,3 +9,8 @@ body {
   height: 100vh;
   background: linear-gradient(-160deg, #999999, #000);
 }
+
+h1 {
+  text-align: center;
+  transition: filter 0.3s ease;
+}
