@@ -6,7 +6,7 @@ import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import styles from '../styles/index.module.scss';
 
-const FloatingCartButton = () => {
+const FloatingCartButton: React.FC = () => {
   const controls = useAnimation();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -28,7 +28,7 @@ const FloatingCartButton = () => {
   const handleDragEnd = () => {
     setIsDragging(false);
     controls.start({
-      top: 100,  // <-- Bajamos más el botón (antes era 20)
+      top: 20,  // <-- Bajamos más el botón (antes era 20)
       right: 20,
       x: 0,
       y: 0,
@@ -45,10 +45,10 @@ const FloatingCartButton = () => {
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
       animate={controls}
-      initial={{ top: 100, right: 20 }} // <-- También acá lo dejamos en 100
+      initial={{ top: 20, right: 20 }} // <-- También acá lo dejamos en 100
       style={{ position: 'fixed' }}
     >
-      <Link href="/Cart">
+      <Link href="/cart">
         <FiShoppingCart size={30} />
       </Link>
     </motion.div>

@@ -26,8 +26,8 @@ export default function Menu() {
       <nav className={`${styles.nav} ${value === 'open' ? styles.navOpen : ''}`}>
         <ul className={styles.navList}>
           <li><Link href="/">Inicio</Link></li>
-          <li><Link href="/about">Nosotros</Link></li>
-          <li><Link href="/services">Servicios</Link></li>
+          <li><Link href="/womanline">Woman Line</Link></li>
+          <li><Link href="/manline">Man Line</Link></li>
           <li><Link href="/projects">Proyectos</Link></li>
           <li><Link href="/contact">Contacto</Link></li>
         </ul>

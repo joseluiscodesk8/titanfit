@@ -1,18 +1,6 @@
 @use "./components/Menu";
 @use "./components/Productos";
-.logo {
-    display: grid;
-    place-content: center;
-    width: 100%;
-    height: 100vh;
-    
-   
-
-    // & img {
-    //     width: 250px;
-    //     height: auto;
-    // }
-}
+@use "./components/Logo";
 
 
 /* styles/index.module.scss */
@@ -28,11 +16,11 @@
   border-radius: 50%;
   width: 65px;
   height: 65px;
-  box-shadow: 0 0 5px rgba(0,0,0,);
+  box-shadow: inset 0 0 15px rgb(3, 235, 223);
   cursor: grab;
   transition: background-color 0.3s;
   right: 20px; // Pegado a la derecha
-  top: 100px;  // Más abajo desde arriba
+  top: 20px;  // Más abajo desde arriba
 
   &:hover {
     background-color: #f0f0f0;
