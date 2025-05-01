@@ -9,7 +9,7 @@ const DynamicButton = dynamic(() => import('../components/FloatingCartButton'));
 const Womanline: NextPage = () => {
   return <>
     <DynamicProductos />
-    <DynamicButton /></>
+  <DynamicButton /></>
 }
 
 export default Womanline;

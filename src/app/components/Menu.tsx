@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { FiMenu, FiX } from 'react-icons/fi'; 
 import Image from 'next/image';
 import styles from '../styles/index.module.scss'; 
-import { useMyContext } from '../context/MyContext'; // importa tu contexto
+import { useMyContext } from '../context/MyContext';
 
-export default function Menu() {
-  const { value, setValue } = useMyContext(); // usamos el contexto
+export default function Menu({ showLogo = true }) { // Prop para controlar la visibilidad del logo
+  const { value, setValue } = useMyContext();
 
   const toggleMenu = () => {
     setValue(value === 'open' ? 'closed' : 'open');
@@ -15,9 +15,11 @@ export default function Menu() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.iconlogo}>
-        <Image src="/sport.png" alt="Logo" width={50} height={50} />
-      </div>
+      {showLogo && ( // Renderiza el logo solo si showLogo es true
+        <div className={styles.iconlogo}>
+          <Image src="/sport.png" alt="Logo" width={50} height={50} />
+        </div>
+      )}
 
       <button onClick={toggleMenu} className={styles.menuButton}>
         {value === 'open' ? <FiX size={28} /> : <FiMenu size={28} />}

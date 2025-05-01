@@ -41,7 +41,7 @@ const FloatingCartButton: React.FC = () => {
       className={styles.floatingCart}
       drag
       dragMomentum={false}
-      dragElastic={0.2}
+      dragElastic={0.1}
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
       animate={controls}

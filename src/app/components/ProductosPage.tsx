@@ -3,6 +3,7 @@ import { useMyContext } from "../context/MyContext";
 import productos from '../data/productos.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
+import Menu from './Menu';
 
 type Producto = {
   id: number;
@@ -39,7 +40,11 @@ const ProductosPage = () => {
 
   return (
     <div className={value === 'open' ? styles.blurText : ''}>
-      <h1>Productos</h1>
+      <section>
+      <Image src="/sportwearwoman.png" width={40} height={50} alt='icon-woman' />
+      <h1>Productos</h1> 
+      <Menu showLogo={false}/>
+      </section>
       <div className={styles.productos_lista}>
         {productos.map((producto: Producto) => (
           <ProductoCard key={producto.id} producto={producto} />

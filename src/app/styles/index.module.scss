@@ -7,6 +7,7 @@
 .blurText {
   filter: blur(20px);
   transition: filter 0.3s ease;
+  
 }
 
 .floatingCart {
@@ -16,11 +17,15 @@
   border-radius: 50%;
   width: 65px;
   height: 65px;
-  box-shadow: inset 0 0 15px rgb(3, 235, 223);
+  background-image: url("/burbuja.avif");
+  background-size: 130%;
+  background-position: 50%;
+  background-repeat: no-repeat;
   cursor: grab;
   transition: background-color 0.3s;
   right: 20px; // Pegado a la derecha
   top: 20px;  // Más abajo desde arriba
+  color: #000000;
 
   &:hover {
     background-color: #f0f0f0;
