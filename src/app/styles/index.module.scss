@@ -7,7 +7,7 @@
 .blurText {
   filter: blur(20px);
   transition: filter 0.3s ease;
-  
+
 }
 
 .floatingCart {
@@ -24,7 +24,7 @@
   cursor: grab;
   transition: background-color 0.3s;
   right: 20px; // Pegado a la derecha
-  top: 20px;  // Más abajo desde arriba
+  top: 20px; // Más abajo desde arriba
   color: #000000;
 
   &:hover {
@@ -36,4 +36,34 @@
   }
 }
 
+.slider {
+  width: 90%;
+  height: 200px;
+  border-radius: 18px;
+  margin: auto;
+  overflow: hidden;
+  border-bottom: 1px solid;
+  box-shadow: 0 1px 1px #000;
 
+  & .swiper {
+    width: 100%;
+    height: auto;
+    box-shadow: none !important;
+
+    & .swiperSlide {
+      display: flex;
+      place-content: center;
+      justify-content: center;
+      box-shadow: none !important;
+
+      & img {
+        border: 1px solid;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px #000;
+      }
+    }
+  }
+
+
+
+}

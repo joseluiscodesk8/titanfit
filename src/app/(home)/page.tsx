@@ -4,16 +4,18 @@ import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { useMyContext } from "../context/MyContext"; // importa tu contexto
-import styles from '../styles/index.module.scss'; // importa el sass
+import { useMyContext } from "../context/MyContext"; 
+import styles from '../styles/index.module.scss'; 
 
 const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
 const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
+const DynamicSlider = dynamic(() => import("../components/Slider"), { ssr: false });
+const DynamicTitan = dynamic(() => import("../components/Titan"), { ssr: false });
 
 
 const Home: NextPage = () => {
   const [showLogo, setShowLogo] = useState(false);
-  const { value } = useMyContext(); // obtiene el estado del menú
+  const { value } = useMyContext(); 
 
   useEffect(() => {
     const lastShown = localStorage.getItem('lastLogoShown');
@@ -44,6 +46,12 @@ const Home: NextPage = () => {
               <br/>
               <strong>TitanFit</strong>
             </h1>
+            <br/>
+            <br/>
+            <DynamicSlider />
+            <br/>
+            <br/>
+            <DynamicTitan />
           </>
         )}
       </AnimatePresence>
