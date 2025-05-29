@@ -17,7 +17,7 @@ const Titan: React.FC = () => {
         style={{
           '--swiper-navigation-color': '#fff',
           '--swiper-pagination-color': '#fff',
-        }}
+        } as React.CSSProperties}
         speed={600}
         parallax={true}
         pagination={{
