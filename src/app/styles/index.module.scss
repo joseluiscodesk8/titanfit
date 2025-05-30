@@ -11,55 +11,62 @@
 }
 
 .floatingCart {
+  position: fixed; // Asegúrate de posicionarla correctamente
   display: grid;
   place-content: center;
   z-index: 1000;
   border-radius: 50%;
   width: 65px;
   height: 65px;
-  background-image: url("/burbuja.avif");
-  background-size: 130%;
-  background-position: 50%;
-  background-repeat: no-repeat;
   cursor: grab;
-  transition: background-color 0.3s;
-  right: 20px; // Pegado a la derecha
-  top: 20px; // Más abajo desde arriba
+  right: 20px; 
+  top: 20px; 
   color: #000000;
+  background-color: transparent;
+  overflow: hidden;
 
   &:hover {
     background-color: #f0f0f0;
   }
 
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0; 
+    background-image: url("/burbuja.avif");
+    background-size: 130%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .5;
+  }
+
   svg {
     color: #000000;
+    z-index: 1;
   }
 }
 
+
 .slider {
   width: 90%;
-  height: 200px;
   border-radius: 18px;
   margin: auto;
-  overflow: hidden;
-  border-bottom: 1px solid;
-  box-shadow: 0 1px 1px #000;
 
   & .swiper {
     width: 100%;
-    height: auto;
     box-shadow: none !important;
 
     & .swiperSlide {
       display: flex;
       place-content: center;
       justify-content: center;
-      box-shadow: none !important;
-
+      
       & img {
-        border: 1px solid;
         border-radius: 15px;
-        box-shadow: 0 5px 15px #000;
+        box-shadow: 0 5px 5px #000;  
       }
     }
   }
@@ -67,3 +74,137 @@
 
 
 }
+
+.footer {
+  position: relative; // necesario para posicionar el ::before
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: #fff;
+  color: #000;
+  font-family: sans-serif;
+  overflow: hidden; // oculta cualquier parte del fondo que se desborde
+
+  // ::before pseudo-elemento para fondo decorativo
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/logo.png');
+    background-repeat: no-repeat;
+    background-position: 10px;
+    background-size: 420px;
+    opacity: .2;
+    z-index: 0;
+  }
+
+  & .section {
+    position: relative; 
+    flex: 1 1 250px;
+    margin: 1rem;
+    z-index: 1;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      a {
+        color: #000;
+        font-size: 1.5rem;
+
+        &:hover {
+          color: #ccc;
+        }
+      }
+    }
+  }
+
+  & img {
+    margin: auto;
+  }
+}
+
+.featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  .imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+
+    .image {
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  .text {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    button {
+      padding: 0.5rem 1.2rem;
+      background-color: #111;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover {
+        background-color: #333;
+      }
+    }
+  }
+}
+

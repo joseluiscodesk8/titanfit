@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+
 import { useMyContext } from "../context/MyContext"; 
 import styles from '../styles/index.module.scss'; 
 
@@ -11,6 +12,9 @@ const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
 const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
 const DynamicSlider = dynamic(() => import("../components/Slider"), { ssr: false });
 const DynamicTitan = dynamic(() => import("../components/Titan"), { ssr: false });
+const DynamicButton = dynamic(() => import('../components/FloatingCartButton'), { ssr: false });
+const DynamicFeatured = dynamic(() => import('../components/FeaturedProducts'), { ssr: false })
+const DynamicFooter = dynamic(() => import('../components/Footer'), { ssr: false })
 
 
 const Home: NextPage = () => {
@@ -41,6 +45,7 @@ const Home: NextPage = () => {
         ) : (
           <>
             <DynamicMenu key="menu" />
+            <DynamicButton />
             <h1 className={value === 'open' ? styles.blurText : ''}>
               Más que verte bien te sentirás bien 
               <br/>
@@ -52,6 +57,8 @@ const Home: NextPage = () => {
             <br/>
             <br/>
             <DynamicTitan />
+            <DynamicFeatured />
+            <DynamicFooter />
           </>
         )}
       </AnimatePresence>

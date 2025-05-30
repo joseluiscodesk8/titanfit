@@ -1,10 +1,10 @@
 [
-  { "id": 1, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 2, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 3, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 4, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 5, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 6, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 7, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" },
-  { "id": 8, "image": "https://http2.mlstatic.com/D_Q_NP_2X_960093-MCO49054941145_022022-T.webp" }
+  { "id": 1, "image": "/slider/s1.webp" },
+  { "id": 2, "image": "/slider/s2.jpg" },
+  { "id": 3, "image": "/slider/s3.webp" },
+  { "id": 4, "image": "/slider/s4.webp" },
+  { "id": 5, "image": "/slider/s5.jpg" },
+  { "id": 6, "image": "/slider/s6.jpeg" },
+  { "id": 7, "image": "/slider/s7.jpg" },
+  { "id": 8, "image": "/slider/s8.avif" }
 ]

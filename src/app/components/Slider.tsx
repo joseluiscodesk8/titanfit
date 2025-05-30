@@ -1,15 +1,20 @@
-import React from "react";
 import Image from "next/image";
+import { useMyContext } from "../context/MyContext"; 
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-cards";
-import styles from "../styles/index.module.scss";
 import { EffectCards, Autoplay } from "swiper/modules";
+
+
+import styles from "../styles/index.module.scss";
 import images from "../data/images.json";
 
 const Slider: React.FC = () => {
+    const { value } = useMyContext(); 
   return (
-    <section className={styles.slider}>
+   <main className={value === 'open' ? styles.blurText : ''}>
+     <section className={styles.slider}>
       <Swiper
         effect="cards"
         grabCursor={true}
@@ -36,6 +41,7 @@ const Slider: React.FC = () => {
         ))}
       </Swiper>
     </section>
+   </main>
   );
 };
 

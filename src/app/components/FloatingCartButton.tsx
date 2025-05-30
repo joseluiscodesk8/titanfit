@@ -28,8 +28,8 @@ const FloatingCartButton: React.FC = () => {
   const handleDragEnd = () => {
     setIsDragging(false);
     controls.start({
-      top: 20,  // <-- Bajamos más el botón (antes era 20)
-      right: 20,
+      top: 40,  // <-- Bajamos más el botón (antes era 20)
+      right: 30,
       x: 0,
       y: 0,
       transition: { type: 'spring', stiffness: 300 },
