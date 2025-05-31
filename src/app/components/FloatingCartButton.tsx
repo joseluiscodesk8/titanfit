@@ -32,7 +32,7 @@ const FloatingCartButton: React.FC = () => {
     controls.stop(); 
   };
 
-  const handleDragEnd = (_: any, info: any) => {
+  const handleDragEnd = () => {
     setIsDragging(false);
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -68,7 +68,6 @@ const FloatingCartButton: React.FC = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       animate={controls}
-      initial={{  }}
       style={{
         position: 'fixed',
         top: 40,
