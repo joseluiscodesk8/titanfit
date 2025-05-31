@@ -57,7 +57,7 @@ const FeaturedProducts = () => {
           <div className={styles.text}>
             <h2>{product.title}</h2>
             <p>{product.description}</p>
-            <button>Comprar ahora</button>
+            <button>Agregar al carrito</button>
           </div>
         </div>
       ))}

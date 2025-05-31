@@ -3,7 +3,6 @@
 @use "./components/Logo";
 
 
-/* styles/index.module.scss */
 .blurText {
   filter: blur(20px);
   transition: filter 0.3s ease;
@@ -11,7 +10,6 @@
 }
 
 .floatingCart {
-  position: fixed; // Asegúrate de posicionarla correctamente
   display: grid;
   place-content: center;
   z-index: 1000;
@@ -30,7 +28,7 @@
   &::before {
     content: "";
     position: absolute;
-    inset: 0; 
+    inset: 0;
     background-image: url("/burbuja.avif");
     background-size: 130%;
     background-position: 50%;
@@ -38,12 +36,13 @@
     border-radius: 50%;
     z-index: -1;
     pointer-events: none;
-    opacity: .5;
+    opacity: .3;
   }
 
   svg {
     color: #000000;
     z-index: 1;
+    transform: translate(0, 3px);
   }
 }
 
@@ -55,21 +54,20 @@
 
   & .swiper {
     width: 100%;
-    box-shadow: none !important;
+      height: 320px;
 
     & .swiperSlide {
       display: flex;
       place-content: center;
       justify-content: center;
-      
+
       & img {
+        object-fit: cover;
         border-radius: 15px;
-        box-shadow: 0 5px 5px #000;  
+        box-shadow: 0 2px 2px #000;
       }
     }
   }
-
-
 
 }
 
@@ -101,7 +99,7 @@
   }
 
   & .section {
-    position: relative; 
+    position: relative;
     flex: 1 1 250px;
     margin: 1rem;
     z-index: 1;
@@ -205,4 +203,3 @@
     }
   }
 }
-

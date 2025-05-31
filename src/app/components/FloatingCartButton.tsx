@@ -26,11 +26,11 @@ const FloatingCartButton: React.FC = () => {
     }
   }, [isDragging, controls]);
 
-  const handleDragStart = () => {
-    setIsDragging(true);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    controls.stop(); 
-  };
+  // const handleDragStart = () => {
+  //   setIsDragging(true);
+  //   if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  //   controls.stop(); 
+  // };
 
   const handleDragEnd = () => {
     setIsDragging(false);
@@ -56,7 +56,7 @@ const FloatingCartButton: React.FC = () => {
           },
         });
       });
-    }, 2000);
+    }, 4000);
   };
 
   return (
@@ -65,7 +65,7 @@ const FloatingCartButton: React.FC = () => {
       drag
       dragMomentum
       dragElastic={3}
-      onDragStart={handleDragStart}
+      // onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       animate={controls}
       style={{
