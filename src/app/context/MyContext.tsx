@@ -3,6 +3,7 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useState,
   ReactNode
 } from 'react';
@@ -42,22 +43,39 @@ const ValueContext = createContext<ValueContextType | undefined>(undefined);
 //
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  // Cart logic
   const [cart, setCart] = useState<Product[]>([]);
+  const [value, setValue] = useState('');
+
+  // ✅ Load cart from localStorage on mount
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      try {
+        setCart(JSON.parse(storedCart));
+      } catch (error) {
+        console.error('Error parsing cart from localStorage', error);
+      }
+    }
+  }, []);
+
+  // ✅ Save cart to localStorage when cart changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const addToCart = (product: Product) => {
     if (!cart.some(p => p.title === product.title)) {
       setCart(prev => [...prev, product]);
     }
   };
+
   const removeFromCart = (product: Product) => {
     setCart(prev => prev.filter(p => p.title !== product.title));
   };
+
   const isInCart = (product: Product) => {
     return cart.some(p => p.title === product.title);
   };
-
-  // Value logic
-  const [value, setValue] = useState('');
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
