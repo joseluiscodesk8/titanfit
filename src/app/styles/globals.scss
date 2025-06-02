@@ -6,9 +6,11 @@
 
 
 body {
+  width: 100%;
   min-height: 100vh;
   // background: linear-gradient(120deg,  #3e3e3e, #999999, #3e3e3e,);
   background-repeat: no-repeat;
+  overflow-x: hidden;
 }
 
 h1 {

@@ -1,3 +1,4 @@
+// Menu.tsx
 'use client'
 
 import Link from 'next/link';
@@ -6,7 +7,12 @@ import Image from 'next/image';
 import styles from '../styles/index.module.scss'; 
 import { useValue } from '../context/MyContext';
 
-export default function Menu({ showLogo = true }) { // Prop para controlar la visibilidad del logo
+interface MenuProps {
+  showLogo?: boolean;
+  logoSrc?: string; 
+}
+
+export default function Menu({ showLogo = true, logoSrc = "/sport.png" }: MenuProps) {
   const { value, setValue } = useValue();
 
   const toggleMenu = () => {
@@ -15,9 +21,9 @@ export default function Menu({ showLogo = true }) { // Prop para controlar la vi
 
   return (
     <header className={styles.header}>
-      {showLogo && ( // Renderiza el logo solo si showLogo es true
+      {showLogo && (
         <div className={styles.iconlogo}>
-          <Image src="/sport.png" alt="Logo" width={50} height={50} />
+          <Image src={logoSrc} alt="Logo" width={50} height={50} />
         </div>
       )}
 
