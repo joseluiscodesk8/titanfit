@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
-import { useMyContext } from "../context/MyContext"; 
+import { useValue } from "../context/MyContext"; 
 import styles from '../styles/index.module.scss'; 
 
 const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
@@ -19,7 +19,7 @@ const DynamicFooter = dynamic(() => import('../components/Footer'), { ssr: false
 
 const Home: NextPage = () => {
   const [showLogo, setShowLogo] = useState(false);
-  const { value } = useMyContext(); 
+  const { value } = useValue(); 
 
   useEffect(() => {
     const lastShown = localStorage.getItem('lastLogoShown');

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { useMyContext } from "../context/MyContext";
+import { useCart } from "../context/MyContext";
 import styles from "../styles/index.module.scss";
 
 const products = [
@@ -43,7 +43,7 @@ const products = [
 ];
 
 const FeaturedProducts = () => {
-  const { addToCart, removeFromCart, isInCart } = useMyContext();
+  const { addToCart, removeFromCart, isInCart } = useCart();
 
     return (
     <section className={styles.featured}>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useMyContext } from "../context/MyContext";
+import { useValue } from "../context/MyContext";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -10,7 +10,7 @@ import styles from "../styles/index.module.scss";
 import images from "../data/images.json";
 
 const Slider: React.FC = () => {
-  const { value } = useMyContext();
+  const { value } = useValue();
   return (
     <main className={value === "open" ? styles.blurText : ""}>
       <section className={styles.slider}>

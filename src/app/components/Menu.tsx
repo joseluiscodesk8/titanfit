@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { FiMenu, FiX } from 'react-icons/fi'; 
 import Image from 'next/image';
 import styles from '../styles/index.module.scss'; 
-import { useMyContext } from '../context/MyContext';
+import { useValue } from '../context/MyContext';
 
 export default function Menu({ showLogo = true }) { // Prop para controlar la visibilidad del logo
-  const { value, setValue } = useMyContext();
+  const { value, setValue } = useValue();
 
   const toggleMenu = () => {
     setValue(value === 'open' ? 'closed' : 'open');

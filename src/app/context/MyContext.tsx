@@ -1,6 +1,15 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode
+} from 'react';
+
+//
+// --- 1. TYPES ---
+//
 
 type Product = {
   title: string;
@@ -9,75 +18,68 @@ type Product = {
   gender: string;
 };
 
-type MyContextType = {
+type CartContextType = {
   cart: Product[];
   addToCart: (product: Product) => void;
   removeFromCart: (product: Product) => void;
   isInCart: (product: Product) => boolean;
 };
 
-const MyContext = createContext<MyContextType | undefined>(undefined);
+type ValueContextType = {
+  value: string;
+  setValue: (newValue: string) => void;
+};
 
-export const MyContextProvider = ({ children }: { children: ReactNode }) => {
+//
+// --- 2. CONTEXTS ---
+//
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+const ValueContext = createContext<ValueContextType | undefined>(undefined);
+
+//
+// --- 3. PROVIDERS ---
+//
+
+export const AppContextProvider = ({ children }: { children: ReactNode }) => {
+  // Cart logic
   const [cart, setCart] = useState<Product[]>([]);
-
   const addToCart = (product: Product) => {
     if (!cart.some(p => p.title === product.title)) {
       setCart(prev => [...prev, product]);
     }
   };
-
   const removeFromCart = (product: Product) => {
     setCart(prev => prev.filter(p => p.title !== product.title));
   };
-
   const isInCart = (product: Product) => {
     return cart.some(p => p.title === product.title);
   };
 
+  // Value logic
+  const [value, setValue] = useState('');
+
   return (
-    <MyContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
-      {children}
-    </MyContext.Provider>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
+      <ValueContext.Provider value={{ value, setValue }}>
+        {children}
+      </ValueContext.Provider>
+    </CartContext.Provider>
   );
 };
 
-export const useMyContext = () => {
-  const context = useContext(MyContext);
-  if (!context) {
-    throw new Error('useMyContext debe ser usado dentro de un MyContextProvider');
-  }
+//
+// --- 4. CUSTOM HOOKS ---
+//
+
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) throw new Error('useCart debe ser usado dentro de AppContextProvider');
   return context;
 };
 
-// 'use client'
-
-// import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-// type MyContextType = {
-//   value: string;
-//   setValue: (newValue: string) => void;
-// };
-
-// // Crear el Context
-// const MyContext = createContext<MyContextType | undefined>(undefined);
-
-// // Crear el Provider
-// export const MyContextProvider = ({ children }: { children: ReactNode }) => {
-//   const [value, setValue] = useState<string>('');
-
-//   return (
-//     <MyContext.Provider value={{ value, setValue }}>
-//       {children}
-//     </MyContext.Provider>
-//   );
-// };
-
-// // Hook para usar el contexto
-// export const useMyContext = () => {
-//   const context = useContext(MyContext);
-//   if (!context) {
-//     throw new Error('useMyContext debe ser usado dentro de un MyContextProvider');
-//   }
-//   return context;
-// };
+export const useValue = () => {
+  const context = useContext(ValueContext);
+  if (!context) throw new Error('useValue debe ser usado dentro de AppContextProvider');
+  return context;
+};

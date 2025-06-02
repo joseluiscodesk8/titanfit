@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useMyContext } from "../context/MyContext"; 
+import { useValue } from "../context/MyContext"; 
 import productos from '../data/productos.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
@@ -36,7 +36,7 @@ const ProductoCard = ({ producto }: { producto: Producto }) => {
 };
 
 const ProductosPage = () => {
-  const { value } = useMyContext();
+  const { value } = useValue();
 
   return (
     <div className={value === 'open' ? styles.blurText : ''}>
