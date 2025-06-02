@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { useMyContext } from "../context/MyContext";
 import styles from "../styles/index.module.scss";
 
 const products = [
@@ -42,25 +43,32 @@ const products = [
 ];
 
 const FeaturedProducts = () => {
-  return (
+  const { addToCart, removeFromCart, isInCart } = useMyContext();
+
+    return (
     <section className={styles.featured}>
-      {products.map((product, index) => (
-        <div className={styles.card} key={index}>
-          <div className={styles.imageWrapper}>
-            <Image
-              src={product.image}
-              alt={product.title}
-              fill
-              className={styles.image}
-            />
+      {products.map((product, index) => {
+        const inCart = isInCart(product);
+        return (
+          <div className={styles.card} key={index}>
+            <div className={styles.imageWrapper}>
+              <Image
+                src={product.image}
+                alt={product.title}
+                fill
+                className={styles.image}
+              />
+            </div>
+            <div className={styles.text}>
+              <h2>{product.title}</h2>
+              <p>{product.description}</p>
+              <button onClick={() => inCart ? removeFromCart(product) : addToCart(product)}>
+                {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
+              </button>
+            </div>
           </div>
-          <div className={styles.text}>
-            <h2>{product.title}</h2>
-            <p>{product.description}</p>
-            <button>Agregar al carrito</button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 };

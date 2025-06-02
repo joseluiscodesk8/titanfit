@@ -1,0 +1,29 @@
+name: CI for Next.js
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clona el repo
+        uses: actions/checkout@v3
+
+      - name: Usa Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instala dependencias
+        run: npm install
+
+      - name: Lint (verifica errores de estilo)
+        run: npm run lint
+
+      - name: Build del proyecto
+        run: npm run build
