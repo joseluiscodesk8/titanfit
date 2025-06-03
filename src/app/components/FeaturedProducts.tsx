@@ -1,53 +1,16 @@
 import Image from "next/image";
-
 import { useCart } from "../context/MyContext";
 import styles from "../styles/index.module.scss";
+import products from "../data/products.json";
+import { FeaturedProduct } from "../types/products";
 
-const products = [
-  {
-    gender: "women",
-    title: "Women's Tech Jacket",
-    description: "Una chaqueta técnica para todo el día y protección meteorológica ligera. Hechas a medida para que te sientas confortable en los trayectos cortos y en cualquier otro lugar.",
-    image: "/featured/f1.avif",
-  },
-  {
-    gender: "men",
-    title: "Men's Rain Jacket",
-    description: "Diseñada para una protección duradera durante los días lluviosos en la ciudad o en la carretera.",
-    image: "/featured/f4.avif",
-  },
-  {
-    gender: "women",
-    title: "Women's Lightweight Windbreaker",
-    description: "Ideal para días ventosos, con materiales livianos y transpirables.",
-    image: "/featured/f2.avif",
-  },
-  {
-    gender: "men",
-    title: "Men's Urban Jacket",
-    description: "Estilo urbano y funcionalidad técnica para los trayectos diarios.",
-    image: "/featured/f3.avif",
-  },
-  {
-    gender: "women",
-    title: "Women's Everyday Jacket",
-    description: "Comodidad y estilo para el día a día, en cualquier estación.",
-    image: "/featured/f5.avif",
-  },
-  {
-    gender: "men",
-    title: "Men's Winter Coat",
-    description: "Abrigo cálido con diseño técnico para soportar bajas temperaturas.",
-    image: "/featured/f1.avif",
-  },
-];
 
 const FeaturedProducts = () => {
   const { addToCart, removeFromCart, isInCart } = useCart();
 
-    return (
+  return (
     <section className={styles.featured}>
-      {products.map((product, index) => {
+      {products.products.featured.map((product: FeaturedProduct, index: number) => {
         const inCart = isInCart(product);
         return (
           <div className={styles.card} key={index}>
@@ -62,7 +25,10 @@ const FeaturedProducts = () => {
             <div className={styles.text}>
               <h2>{product.title}</h2>
               <p>{product.description}</p>
-              <button onClick={() => inCart ? removeFromCart(product) : addToCart(product)}>
+              <button 
+                onClick={() => inCart ? removeFromCart(product) : addToCart(product)}
+                className={styles.cartButton}
+              >
                 {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
               </button>
             </div>

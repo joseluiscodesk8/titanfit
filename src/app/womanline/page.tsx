@@ -3,7 +3,7 @@
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 
-const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
+const DynamicMenu = dynamic(() => import("../components/Menu"));
 const DynamicProductos = dynamic(() => import("../components/ProductosPage"));
 const DynamicButton = dynamic(() => import("../components/FloatingCartButton"));
 

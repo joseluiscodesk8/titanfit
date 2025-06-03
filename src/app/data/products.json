@@ -1,0 +1,101 @@
+{
+  "products": {
+    "woman": [
+      {
+        "id": "W001",
+        "gender": "women",
+        "title": "Women's Tech Jacket",
+        "description": "Una chaqueta técnica para todo el día y protección meteorológica ligera. Hechas a medida para que te sientas confortable en los trayectos cortos y en cualquier otro lugar.",
+        "image": "/featured/f1.avif"
+      },
+      {
+        "id": "W002",
+        "gender": "women",
+        "title": "Women's Lightweight Windbreaker",
+        "description": "Ideal para días ventosos, con materiales livianos y transpirables.",
+        "image": "/featured/f2.avif"
+      },
+      {
+        "id": "W003",
+        "gender": "women",
+        "title": "Women's Everyday Jacket",
+        "description": "Comodidad y estilo para el día a día, en cualquier estación.",
+        "image": "/featured/f5.avif"
+      }
+    ],
+    "man": [
+      {
+        "id": "M001",
+        "gender": "men",
+        "title": "Men's Rain Jacket",
+        "description": "Diseñada para una protección duradera durante los días lluviosos en la ciudad o en la carretera.",
+        "image": "/featured/f4.avif"
+      },
+      {
+        "id": "M002",
+        "gender": "men",
+        "title": "Men's Urban Jacket",
+        "description": "Estilo urbano y funcionalidad técnica para los trayectos diarios.",
+        "image": "/featured/f3.avif"
+      },
+      {
+        "id": "M003",
+        "gender": "men",
+        "title": "Men's Winter Coat",
+        "description": "Abrigo cálido con diseño técnico para soportar bajas temperaturas.",
+        "image": "/featured/f1.avif"
+      }
+    ],
+    "featured": [
+      {
+        "id": "F001",
+        "gender": "women",
+        "title": "Women's Tech Jacket",
+        "description": "Una chaqueta técnica para todo el día y protección meteorológica ligera. Hechas a medida para que te sientas confortable en los trayectos cortos y en cualquier otro lugar.",
+        "image": "/featured/f1.avif"
+      },
+      {
+        "id": "F002",
+        "gender": "men",
+        "title": "Men's Rain Jacket",
+        "description": "Diseñada para una protección duradera durante los días lluviosos en la ciudad o en la carretera.",
+        "image": "/featured/f4.avif"
+      },
+      {
+        "id": "F003",
+        "gender": "women",
+        "title": "Women's Lightweight Windbreaker",
+        "description": "Ideal para días ventosos, con materiales livianos y transpirables.",
+        "image": "/featured/f2.avif"
+      },
+      {
+        "id": "F004",
+        "gender": "men",
+        "title": "Men's Urban Jacket",
+        "description": "Estilo urbano y funcionalidad técnica para los trayectos diarios.",
+        "image": "/featured/f3.avif"
+      },
+      {
+        "id": "F005",
+        "gender": "women",
+        "title": "Women's Everyday Jacket",
+        "description": "Comodidad y estilo para el día a día, en cualquier estación.",
+        "image": "/featured/f5.avif"
+      },
+      {
+        "id": "F006",
+        "gender": "men",
+        "title": "Men's Winter Coat",
+        "description": "Abrigo cálido con diseño técnico para soportar bajas temperaturas.",
+        "image": "/featured/f1.avif"
+      }
+    ]
+  },
+  "metadata": {
+    "lastUpdated": "2025-06-03 22:02:58",
+    "author": "joseluiscodesk8",
+    "categories": {
+      "gender": ["men", "women"]
+    }
+  }
+}

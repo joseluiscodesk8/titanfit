@@ -8,13 +8,13 @@ import { AnimatePresence } from "framer-motion";
 import { useValue } from "../context/MyContext"; 
 import styles from '../styles/index.module.scss'; 
 
-const DynamicLogo = dynamic(() => import("../components/Logo"), { ssr: false });
-const DynamicMenu = dynamic(() => import("../components/Menu"), { ssr: false });
-const DynamicSlider = dynamic(() => import("../components/Slider"), { ssr: false });
-const DynamicTitan = dynamic(() => import("../components/Titan"), { ssr: false });
-const DynamicButton = dynamic(() => import('../components/FloatingCartButton'), { ssr: false });
-const DynamicFeatured = dynamic(() => import('../components/FeaturedProducts'), { ssr: false })
-const DynamicFooter = dynamic(() => import('../components/Footer'), { ssr: false })
+const DynamicLogo = dynamic(() => import("../components/Logo"));
+const DynamicMenu = dynamic(() => import("../components/Menu"));
+const DynamicSlider = dynamic(() => import("../components/Slider"));
+const DynamicTitan = dynamic(() => import("../components/Titan"));
+const DynamicButton = dynamic(() => import('../components/FloatingCartButton'));
+const DynamicFeatured = dynamic(() => import('../components/FeaturedProducts'))
+const DynamicFooter = dynamic(() => import('../components/Footer'))
 
 
 const Home: NextPage = () => {
