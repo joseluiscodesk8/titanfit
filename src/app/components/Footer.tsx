@@ -6,7 +6,8 @@ import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 const Footer: React.FC = () => {
   return (
     <footer className={styles.footer}>
-      <div className={styles.section}>
+      <main>
+        <section>
         <h3>Atención al cliente</h3>
         <ul>
           <li>Centro de Ayuda</li>
@@ -15,9 +16,9 @@ const Footer: React.FC = () => {
           <li>Servicio de Reparaciones</li>
           <li>Guía de Cuidados</li>
         </ul>
-      </div>
+      </section>
 
-      <div className={styles.section}>
+      <section>
         <h3>Información</h3>
         <ul>
           <li>Sobre Tatan Fit</li>
@@ -26,15 +27,16 @@ const Footer: React.FC = () => {
           <li>Política de Privacidad</li>
           <li>Términos y Condiciones</li>
         </ul>
-      </div>
+      </section>
 
-      <div className={styles.section}>
+      <section>
         <h3>Sigue a Tatin Fit</h3>
         <div className={styles.social}>
           <a href="#"><FaFacebookF /></a>
           <a href="#"><FaInstagram /></a>
         </div>
-      </div>
+      </section>
+      </main>
 
       <Image src={'/logo.png'} width={30} height={30} alt='icon_logo' />
     </footer>

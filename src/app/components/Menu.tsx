@@ -1,4 +1,3 @@
-// Menu.tsx
 'use client'
 
 import Link from 'next/link';
@@ -9,10 +8,17 @@ import { useValue } from '../context/MyContext';
 
 interface MenuProps {
   showLogo?: boolean;
-  logoSrc?: string; 
+  logoSrc?: string;
+  width?: number;
+  height?: number;
 }
 
-export default function Menu({ showLogo = true, logoSrc = "/sport.png" }: MenuProps) {
+export default function Menu({
+  showLogo = true,
+  logoSrc = "/sport.png",
+  width = 50,
+  height = 50,
+}: MenuProps) {
   const { value, setValue } = useValue();
 
   const toggleMenu = () => {
@@ -23,7 +29,7 @@ export default function Menu({ showLogo = true, logoSrc = "/sport.png" }: MenuPr
     <header className={styles.header}>
       {showLogo && (
         <div className={styles.iconlogo}>
-          <Image src={logoSrc} alt="Logo" width={50} height={50} />
+          <Image src={logoSrc} alt="Logo" width={width} height={height} />
         </div>
       )}
 

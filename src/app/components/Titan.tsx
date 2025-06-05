@@ -1,11 +1,10 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import '../styles/titan.css';
+import '../styles/titan.scss';
 
 import { Parallax, Navigation } from 'swiper/modules';
 
