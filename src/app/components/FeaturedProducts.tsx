@@ -1,9 +1,14 @@
 import Image from "next/image";
-import { useCart } from "../context/MyContext";
+import { useCart } from "../context/CartContext";
 import styles from "../styles/index.module.scss";
 import products from "../data/products.json";
-import { FeaturedProduct } from "../types/products";
+import { FeaturedProduct, Product } from "../types/products";
 
+// ✅ convertir FeaturedProduct a Product, usando precio del JSON y quantity default
+const convertToProduct = (featured: FeaturedProduct): Product => ({
+  ...featured,
+  quantity: 1,
+});
 
 const FeaturedProducts = () => {
   const { addToCart, removeFromCart, isInCart } = useCart();
@@ -11,7 +16,9 @@ const FeaturedProducts = () => {
   return (
     <section className={styles.featured}>
       {products.products.featured.map((product: FeaturedProduct, index: number) => {
-        const inCart = isInCart(product);
+        const fullProduct = convertToProduct(product);
+        const inCart = isInCart(fullProduct);
+
         return (
           <div className={styles.card} key={index}>
             <div className={styles.imageWrapper}>
@@ -25,8 +32,11 @@ const FeaturedProducts = () => {
             <div className={styles.text}>
               <h2>{product.title}</h2>
               <p>{product.description}</p>
-              <button 
-                onClick={() => inCart ? removeFromCart(product) : addToCart(product)}
+              <strong>${product.price.toFixed(2)}</strong>
+              <button
+                onClick={() =>
+                  inCart ? removeFromCart(fullProduct) : addToCart(fullProduct)
+                }
                 className={styles.cartButton}
               >
                 {inCart ? "Eliminar del carrito" : "Agregar al carrito"}

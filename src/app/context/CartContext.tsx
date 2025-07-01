@@ -1,22 +1,15 @@
-'use client'
+'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode
-} from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-//
-// --- 1. TYPES ---
-//
-
-type Product = {
+export type Product = {
+  id: string;
   title: string;
   description: string;
   image: string;
   gender: string;
+  quantity: number;
+  price: number;
 };
 
 type CartContextType = {
@@ -26,27 +19,11 @@ type CartContextType = {
   isInCart: (product: Product) => boolean;
 };
 
-type ValueContextType = {
-  value: string;
-  setValue: (newValue: string) => void;
-};
-
-//
-// --- 2. CONTEXTS ---
-//
-
 const CartContext = createContext<CartContextType | undefined>(undefined);
-const ValueContext = createContext<ValueContextType | undefined>(undefined);
 
-//
-// --- 3. PROVIDERS ---
-//
-
-export const AppContextProvider = ({ children }: { children: ReactNode }) => {
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);
-  const [value, setValue] = useState('');
 
-  // ✅ Load cart from localStorage on mount
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -58,16 +35,25 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // ✅ Save cart to localStorage when cart changes
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product: Product) => {
-    if (!cart.some(p => p.title === product.title)) {
-      setCart(prev => [...prev, product]);
+  setCart(prev => {
+    const existing = prev.find(p => p.id === product.id);
+    if (existing) {
+      return prev.map(p =>
+        p.id === product.id
+          ? { ...p, quantity: p.quantity + product.quantity }
+          : p
+      );
+    } else {
+      return [...prev, product];
     }
-  };
+  });
+};
+
 
   const removeFromCart = (product: Product) => {
     setCart(prev => prev.filter(p => p.title !== product.title));
@@ -79,25 +65,13 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
-      <ValueContext.Provider value={{ value, setValue }}>
-        {children}
-      </ValueContext.Provider>
+      {children}
     </CartContext.Provider>
   );
 };
 
-//
-// --- 4. CUSTOM HOOKS ---
-//
-
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) throw new Error('useCart debe ser usado dentro de AppContextProvider');
-  return context;
-};
-
-export const useValue = () => {
-  const context = useContext(ValueContext);
-  if (!context) throw new Error('useValue debe ser usado dentro de AppContextProvider');
+  if (!context) throw new Error('useCart debe ser usado dentro de CartProvider');
   return context;
 };

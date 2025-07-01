@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FiMenu, FiX } from 'react-icons/fi'; 
 import Image from 'next/image';
 import styles from '../styles/index.module.scss'; 
-import { useValue } from '../context/MyContext';
+import { useValue } from '../context/ValueContext';
 
 interface MenuProps {
   showLogo?: boolean;

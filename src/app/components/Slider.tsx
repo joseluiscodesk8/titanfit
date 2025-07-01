@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useValue } from "../context/MyContext";
+import { useValue } from "../context/ValueContext"; // Adjusted import to match context usage
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

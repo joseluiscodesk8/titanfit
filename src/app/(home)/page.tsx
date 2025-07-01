@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
-import { useValue } from "../context/MyContext"; 
+import { useValue } from "../context/ValueContext"; 
 import styles from '../styles/index.module.scss'; 
 
 const DynamicLogo = dynamic(() => import("../components/Logo"));

@@ -5,7 +5,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/index.module.scss';
-import { useCart } from '../context/MyContext';
+import { useCart } from '../context/CartContext';
 
 const FloatingCartButton: React.FC = () => {
   const controls = useAnimation();

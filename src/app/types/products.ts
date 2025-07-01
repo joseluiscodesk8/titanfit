@@ -4,17 +4,9 @@ export interface FeaturedProduct {
   title: string;
   description: string;
   image: string;
+  price: number;
 }
 
-
-export interface Product {
-  id: string;
-  imagen: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  title: string;
-  description: string;
-  image: string;
-  gender: string;
+export interface Product extends FeaturedProduct {
+  quantity: number;
 }

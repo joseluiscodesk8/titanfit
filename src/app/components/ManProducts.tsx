@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { useValue, useCart } from "../context/MyContext";
+import { useValue } from "../context/ValueContext";
+import { useCart } from "../context/CartContext";
 import products from '../data/products.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
@@ -16,7 +17,15 @@ type RawProduct = {
 
 const ProductoCard = ({ product }: { product: Product }) => {
   const { addToCart, removeFromCart, isInCart } = useCart();
-  const inCart = isInCart(product);
+
+  // Ensure the product has the required properties for CartContext
+  const cartProduct = {
+    ...product,
+    price: product.precio ?? 0,
+    quantity: 1,
+  };
+
+  const inCart = isInCart(cartProduct);
 
   return (
     <motion.div
@@ -37,7 +46,7 @@ const ProductoCard = ({ product }: { product: Product }) => {
       <p>{product.descripcion}</p>
       <p><strong>Precio: ${product.precio}</strong></p>
       <button
-        onClick={() => inCart ? removeFromCart(product) : addToCart(product)}
+        onClick={() => inCart ? removeFromCart(cartProduct) : addToCart(cartProduct)}
         className={styles.cartButton}
       >
         {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
