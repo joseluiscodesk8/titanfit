@@ -1,10 +1,8 @@
 name: CI for Next.js
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main] # Solo PRs dirigidos a main
 
 jobs:
   lint-and-build:
