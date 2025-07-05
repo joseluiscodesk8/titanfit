@@ -4,10 +4,11 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - main
+      - master
 
 jobs:
   docker:
+    if: github.event.pull_request.merged == true  # ✅ solo corre si fue merge real
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +22,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Construir imagen Docker
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }} .
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/nextjs-app:latest \
+                       -t ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }} .
 
       - name: Subir imagen a Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }}
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/nextjs-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }}
