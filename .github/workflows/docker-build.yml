@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - master
+      - master  # Usa 'master' o 'main' según tu repo
 
 jobs:
   docker:
@@ -12,29 +12,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Importante para asegurar que se trae todo el historial
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Verificar estructura del repositorio
+      - name: Validate Dockerfile
         run: |
-          ls -la
-          echo "Contenido del Dockerfile:"
-          cat Dockerfile || echo "No se encontró Dockerfile"
+          if [ ! -f "Dockerfile" ]; then
+            echo "❌ Error: Dockerfile not found in root directory!"
+            ls -la
+            exit 1
+          fi
 
-      - name: Login a Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}  # Tus variables existentes
+          password: ${{ secrets.DOCKER_PASSWORD }}  # (asegúrate de que sean correctas)
 
-      - name: Construir imagen Docker
+      - name: Build and Push
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/nextjs-app:latest \
-                       -t ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }} .
-
-      - name: Subir imagen a Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/nextjs-app:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }}
+          # Build with cache and tags
+          docker buildx build --push \
+            --tag ${{ secrets.DOCKER_USERNAME }}/nextjs-app:latest \
+            --tag ${{ secrets.DOCKER_USERNAME }}/nextjs-app:${{ github.sha }} 
