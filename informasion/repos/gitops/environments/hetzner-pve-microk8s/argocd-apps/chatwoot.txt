@@ -1,0 +1,97 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chatwoot
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: https://chatwoot.github.io/charts
+      chart: "chatwoot"
+      targetRevision: 2.0.0
+      helm:
+        releaseName: chatwoot
+        values: |
+          services:
+            type: ClusterIP
+          env:
+            MAILER_INBOUND_EMAIL_DOMAIN: "chatwoot.pukara.dev"
+            FRONTEND_URL: "https://support.vitalmotion.ltd"
+            SMTP_ADDRESS: smtp.eu.mailgun.org
+            SMTP_AUTHENTICATION: login
+            SMTP_DOMAIN: polestarpilates.com.br
+            SMTP_ENABLE_STARTTLS_AUTO: true
+            SMTP_PORT: 587
+            SMTP_USERNAME: contato@polestarpilates.com.br
+            ACTIVE_STORAGE_SERVICE: s3_compatible
+            STORAGE_BUCKET_NAME: chatwoot-storage
+            STORAGE_REGION: eu-central-003
+            STORAGE_ENDPOINT: https://s3.eu-central-003.backblazeb2.com
+            LOG_LEVEL: debug
+          existingEnvSecret: chatwoot-secrets
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/hetzner-pve-microk8s/kubernetes-manifests/chatwoot"
+  ignoreDifferences:
+    - group: "apps"
+      kind: "StatefulSet"
+      jqPathExpressions:
+        - ".spec.volumeClaimTemplates[].apiVersion"
+        - ".spec.volumeClaimTemplates[].kind"
+  destination:
+    namespace: chatwoot
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: chatwoot-dr
+#   namespace: argocd
+# spec:
+#   project: apps
+#   sources:
+#     - repoURL: https://chatwoot.github.io/charts
+#       chart: "chatwoot"
+#       targetRevision: 1.1.19
+#       helm:
+#         releaseName: chatwoot-dr
+#         values: |
+#           services:
+#             type: ClusterIP
+#           env:
+#             MAILER_INBOUND_EMAIL_DOMAIN: "chatwoot.pukara.dev"
+#             FRONTEND_URL: "https://support.vitalmotion.ltd"
+#             SMTP_ADDRESS: smtp.eu.mailgun.org
+#             SMTP_AUTHENTICATION: login
+#             SMTP_DOMAIN: polestarpilates.com.br
+#             SMTP_ENABLE_STARTTLS_AUTO: true
+#             SMTP_PORT: 587
+#             SMTP_USERNAME: contato@polestarpilates.com.br
+#           existingEnvSecret: chatwoot-secrets
+#     - repoURL: https://github.com/pukara-dev/gitops.git
+#       targetRevision: main
+#       path: "environments/hetzner-pve-microk8s/kubernetes-manifests/chatwoot"
+#   ignoreDifferences:
+#     - group: "apps"
+#       kind: "StatefulSet"
+#       jqPathExpressions:
+#         - ".spec.volumeClaimTemplates[].apiVersion"
+#         - ".spec.volumeClaimTemplates[].kind"
+#   destination:
+#     namespace: chatwoot-dr
+#     server: https://mk8s-api.pukara.dev:16443
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

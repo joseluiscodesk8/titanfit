@@ -1,0 +1,6 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: backstage-psql-creds
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/oz355fak2aujjg3znpg7lzh57m"

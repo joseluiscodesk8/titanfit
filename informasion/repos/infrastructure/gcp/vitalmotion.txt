@@ -1,0 +1,25 @@
+
+module "bigquery" {
+  source  = "terraform-google-modules/bigquery/google"
+  version = "~> 9"
+
+  dataset_id   = "polestar_pilates_dataset"
+  dataset_name = "polestar_pilates_dataset"
+  description  = "Polestar Pilates Brazil data warehouse"
+  project_id   = module.project_vitalmotion.project_id
+}
+
+
+# 1. Create the SA
+resource "google_service_account" "bigquery_sa" {
+  account_id   = "bigquery-sa"
+  display_name = "BigQuery Service Account"
+  project      = module.project_vitalmotion.project_id
+}
+
+# 2. Assign a BigQuery role to the service account
+resource "google_project_iam_member" "bigquery_sa_binding" {
+  project = module.project_vitalmotion.project_id
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.bigquery_sa.email}"
+}

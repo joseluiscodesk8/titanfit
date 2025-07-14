@@ -1,0 +1,110 @@
+provider "hcloud" {}
+
+locals {
+  ssh_keys = {
+    alejandro = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC90w9KIPh9pCh53Ys6D55li+7Rho6GpTC/kHiktGwMa alejandro@pukara.dev"
+    javier    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQnPlzDvQz1nXnCAz2G+pgX0+kCROmggSdz0uLCDXwY javier@pukara.dev"
+    eduardo   = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDT0V9uHgZ4vrk/42LXCCyG1PqtqGdiARX9dPth70E9F9YkcuZQmq8BaoFAoHl1Z5sUfMQZ4EBnys5T2dzbAssoA9B4x7aXO+MN3nWYNyTszDzVNJE9rrqpCvLYUgv9jkNCHYrdu1sEUfvy9OM9xIkwTWYD/FVjnxDrndVF+AMD98Vll5jm+dTUXUnRxGT1UkOvPtGn++drtr84e+bJ54uXdHzLraEoipVeziaJlQCpGINOmEfnsKPoqiCZD3eK6oRXPJXuLa42YYZCQ4sKn/XJPpmWWWU+3ORvOzRg1V8e6+bU4j+42KXJddIkZRCoAuztZ2h2drisCCV8JymWQp2jmw3XSnO83fQRcAxRIon3ORPEJHuyImCtHDcVlBItYPGUq6i0mPb1j8Sc+aeDv3NpVPxvL6dDajME3oQYuJF0FDOKWNOIi4zG2AmkU/9X3lMCrvDoImP/wQjM/S+WN58Iw/N4suY1qRqbmXXymLM9TaYW8YI2RjVq0wCH26z9PRk= emendez@LT14L-00020-I"
+    ricardo   = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHlW5lC0y/ST8Td45yryqu76x6bzElWAg3vovQpRZAox ricardo@pukara.dev"
+  }
+  packages = []
+}
+
+resource "hcloud_ssh_key" "main" {
+  for_each   = merge(local.ssh_keys)
+  name       = each.key
+  public_key = each.value
+}
+
+##############
+# Networking #
+##############
+
+resource "hcloud_network" "priv_net" {
+  name     = "pukara-privnet"
+  ip_range = "10.0.0.0/8"
+}
+
+resource "hcloud_network_subnet" "main_0" {
+  network_id   = hcloud_network.priv_net.id
+  type         = "cloud"
+  network_zone = "eu-central"
+  ip_range     = "10.0.1.0/24"
+}
+
+resource "hcloud_firewall" "default" {
+  name = "pukara-default-fw"
+
+  rule {
+    direction = "in"
+    protocol  = "icmp"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "443"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}
+
+
+#############
+# Instances #
+#############
+
+module "disaster_recovery" {
+  source = "../modules/hetzner-instance"
+
+  create = false
+
+  instance_name     = "disaster-recovery"
+  instance_type     = "cx22"
+  instance_image    = "ubuntu-24.04"
+  instance_location = "nbg1"
+  network_name      = hcloud_network.priv_net.name
+
+  rules = [
+    {
+      direction  = "in"
+      protocol   = "tcp"
+      port       = "22"
+      source_ips = ["0.0.0.0/0", "::/0"]
+    },
+    {
+      direction  = "in"
+      protocol   = "tcp"
+      port       = "80"
+      source_ips = ["0.0.0.0/0", "::/0"]
+    }
+  ]
+
+  depends_on = [hcloud_ssh_key.main]
+}

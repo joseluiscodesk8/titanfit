@@ -1,0 +1,62 @@
+#How to Use Backblaze B2 as External Storage in Web Applications and Cloud Services
+In this example, we used Nextcloud
+
+##1. Create the Subdomain
+Go to the Domains option in the SiteGround menu and create a subdomain.
+🔹 Note: Only an administrator can perform this action.
+🔹 Enter just the desired name (e.g., nextcloud); SiteGround will automatically complete the address.
+
+![Creación de subdominio en SiteGround](https://i.ibb.co/JRxW4MqG/one.webp)  
+
+##2. Access the File Manager
+Go to the Site > File Manager menu.
+
+Locate the folder of the subdomain you created (it will contain a public_html subfolder).
+
+![Acceso al File Manager](https://i.ibb.co/mVJkT7xC/two.webp)  
+
+##3. Download and Upload Nextcloud
+Download the Nextcloud .zip file from https://nextcloud.com/install
+
+Upload the .zip file to the public_html folder of your subdomain.
+
+Extract the contents directly into the root of public_html.
+⚠️ Make sure the files are not inside a subfolder after extraction.
+
+![Extracción en SiteGround](https://i.ibb.co/Xr1KQq5y/three.webp)  
+
+##4. Create a PostgreSQL Database
+Go to Site Tools > Databases > PostgreSQL.
+
+Create a new database (SiteGround will assign a hash-like name).
+
+Create a user (also hash-style) and set a password.
+
+Assign the user to the database.
+🔹 Important: Save the database name, username, and password.
+
+
+![Creación de BD PostgreSQL](https://i.ibb.co/hxfMLRtB/four.webp)  
+![Asignación de usuario](https://i.ibb.co/01J6q45/five.webp)  
+
+##5. Configure config.sample.php
+In the File Manager, go to public_html/config/.
+
+Edit the config.sample.php file and update these values:
+
+php
+Copiar
+Editar
+'dbtype' => 'pgsql',  // or 'mysql' if you used MySQL
+'dbname' => 'your_hash_db_name',
+'dbuser' => 'your_hash_db_user',
+'dbpassword' => 'your_password',
+
+![Conexion de BD PostgreSQL](https://i.ibb.co/4ZHqhbrt/six.webp)  
+
+##6. Access and Complete Nextcloud Installation
+Steps to access the site:
+
+Open your browser and enter the URL of your subdomain.
+
+

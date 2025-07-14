@@ -1,0 +1,30 @@
+---
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: sloth-slo-coredns
+  namespace: monitoring
+  labels:
+    prometheus: prometheus
+    role: alert-rules
+    app: sloth
+    release: prom-stack
+spec:
+  service: "coredns"
+  labels:
+    owner: "platform"
+    repo: "pukara-dev/gitops"
+    tier: "2"
+  slos:
+    - name: "dns-request-availability"
+      objective: 99.9
+      description: "DNS request availability for CoreDNS based on SERVFAIL, NXDOMAIN, and FORMERR response codes."
+      sli:
+        plugin:
+          id: "sloth-common/coredns/availability"
+      alerting:
+        name: CoreDNSHighErrorRate
+        labels:
+          category: "availability"
+        annotations:
+          summary: "High error rate detected in CoreDNS DNS responses"

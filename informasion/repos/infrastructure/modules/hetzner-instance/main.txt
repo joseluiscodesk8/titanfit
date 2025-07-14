@@ -1,0 +1,54 @@
+data "hcloud_ssh_keys" "all" {}
+
+data "hcloud_network" "req_network" {
+  name = var.network_name
+}
+
+resource "hcloud_firewall" "default" {
+  count = var.create ? 1 : 0
+  name  = "${var.instance_name}-fw"
+
+  dynamic "rule" {
+    for_each = var.rules
+    content {
+      direction  = rule.value["direction"]
+      protocol   = rule.value["protocol"]
+      port       = rule.value["port"]
+      source_ips = rule.value["source_ips"]
+    }
+  }
+}
+
+resource "hcloud_server" "server" {
+  count       = var.create ? 1 : 0
+  name        = var.instance_name
+  image       = var.instance_image
+  server_type = var.instance_type
+  location    = var.instance_location
+
+  network {
+    network_id = data.hcloud_network.req_network.id
+    alias_ips = []
+  }
+
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = true
+  }
+
+  ssh_keys     = var.ssh_keys == null ? data.hcloud_ssh_keys.all.ssh_keys.*.name : keys(var.ssh_keys)
+  firewall_ids = [hcloud_firewall.default[count.index].id]
+
+  user_data = templatefile("${path.module}/templates/cloud-init.tpl", {
+    ssh_keys = var.ssh_keys == null ? data.hcloud_ssh_keys.all.ssh_keys.*.public_key : values(var.ssh_keys),
+    packages = var.packages
+  })
+
+  labels = var.labels
+
+  lifecycle {
+    ignore_changes = [
+      ssh_keys
+    ]
+  }
+}

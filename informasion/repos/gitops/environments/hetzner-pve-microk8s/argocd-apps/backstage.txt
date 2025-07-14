@@ -1,0 +1,32 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: https://backstage.github.io/charts
+      chart: "backstage"
+      targetRevision: 2.5.2
+      helm:
+        releaseName: backstage
+        valueFiles:
+        - $values/deployment-manifests/helm-values/prd.yaml
+    - repoURL: 'https://github.com/pukara-dev/backstage.git'
+      targetRevision: main
+      ref: values
+    - repoURL: 'https://github.com/pukara-dev/backstage.git'
+      targetRevision: main
+      path: deployment-manifests/kubernetes
+  destination:
+    namespace: backstage
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

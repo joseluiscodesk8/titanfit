@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: couchdb-couchdb
+  namespace: couchdb
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/nm656kbjlnfn6p4nuqksqfjlw4"

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ths-bot-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ths-bot-assistant
+  template:
+    metadata:
+      labels:
+        app: ths-bot-assistant
+    spec:
+      containers:
+      - name: ths-bot-assistant
+        image: ghcr.io/mogaal/ths_scrapping:1.0.2
+        env:
+        - name: TELEGRAM_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: TELEGRAM_API_TOKEN
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: OPENAI_API_KEY
+      imagePullSecrets:
+      - name: github-registry

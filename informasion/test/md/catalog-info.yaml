@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-troc
+  annotations:
+    github.com/project-slug: Trocdigital/sample-troc
+    backstage.io/techdocs-ref: dir:.
+spec:
+  dependsOn:
+    - resource:default/argocd
+  type: other
+  lifecycle: production
+  system: navigator-system
+  owner: user:default/troc

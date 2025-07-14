@@ -1,0 +1,227 @@
+
+##################
+# Data Resources #
+##################
+
+data "onepassword_vault" "platform_automation" {
+  name = "[Platform] Automation"
+}
+
+data "onepassword_item" "github_pat" {
+  vault = data.onepassword_vault.platform_automation.uuid
+  uuid  = "ArgoCD - Pukara Github Token"
+}
+
+data "onepassword_item" "one_password_credentials_file" {
+  vault = data.onepassword_vault.platform_automation.uuid
+  uuid  = "[1Password Connect] production Credentials File"
+}
+
+data "onepassword_item" "one_password_access_token" {
+  vault = data.onepassword_vault.platform_automation.uuid
+  uuid  = "[1Password Connect] Access Token: terraform-k8s"
+}
+
+data "onepassword_item" "github_argocd_oauth_client_secret" {
+  vault = data.onepassword_vault.platform_automation.uuid
+  uuid  = "[Github] ArgoCD OAuth App - Client Secret"
+}
+
+########################
+# Kubernetes Resources #
+########################
+
+# ArgoCD
+
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata["annotations"]
+    ]
+  }
+}
+
+
+resource "helm_release" "argocd" {
+  name = "argocd"
+
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  namespace  = kubernetes_namespace.argocd.id
+  version    = "7.8.26"
+
+  values = [
+    templatefile("${path.module}/resources/argocd-values.yaml", {
+      oauth_client_secret = data.onepassword_item.github_argocd_oauth_client_secret.password
+    })
+  ]
+}
+
+resource "kubernetes_secret" "argocd_repos" {
+  for_each = {
+    "pukara-github-backstage-repo"       = "https://github.com/pukara-dev/backstage.git"
+    "pukara-github-infrastructure-repo"  = "https://github.com/pukara-dev/infrastructure.git"
+    "pukara-github-cloudsploit-repo"     = "https://github.com/pukara-dev/cloudsploit.git"
+    "pukara-github-gitops-repo"          = "https://github.com/pukara-dev/gitops.git"
+    "pukara-github-kubescape-middleware" = "https://github.com/pukara-dev/kubescape-middleware.git"
+    "pukara-github-bululu"               = "https://github.com/pukara-dev/bululu-portal.git"
+  }
+
+  metadata {
+    name      = each.key
+    namespace = kubernetes_namespace.argocd.id
+    labels = {
+      "argocd.argoproj.io/secret-type" = "repository"
+    }
+  }
+
+  data = {
+    url      = each.value
+    password = data.onepassword_item.github_pat.password
+    username = "pukara-dev"
+  }
+}
+
+resource "kubernetes_manifest" "argocd_root" {
+  field_manager {
+    force_conflicts = true
+  }
+
+  manifest = yamldecode(templatefile(
+    "${path.module}/resources/argocd-root-app.yaml", {}
+  ))
+
+  depends_on = [
+    helm_release.argocd,
+  ]
+}
+
+# 1Password
+
+resource "kubernetes_namespace" "one_password" {
+  metadata {
+    name = "1password-connect"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata["annotations"]
+    ]
+  }
+}
+
+resource "kubernetes_secret" "one_password_token" {
+  metadata {
+    name      = "onepassword-token"
+    namespace = kubernetes_namespace.one_password.id
+  }
+
+  data = {
+    "token" = data.onepassword_item.one_password_access_token.password
+  }
+}
+
+resource "kubernetes_secret" "one_password_credentials" {
+  metadata {
+    name      = "op-credentials"
+    namespace = kubernetes_namespace.one_password.id
+  }
+
+  data = {
+    "1password-credentials.json" = data.onepassword_item.one_password_credentials_file.password
+  }
+}
+
+##########################################
+# ReadOnly service account for Backstage #
+##########################################
+
+resource "kubernetes_service_account" "read_only_sa" {
+  count = var.create_read_only_service_account ? 1 : 0
+
+  metadata {
+    name      = "readonly"
+    namespace = "kube-system"
+  }
+}
+
+resource "kubernetes_secret" "read_only_sa" {
+  count = var.create_read_only_service_account ? 1 : 0
+
+  metadata {
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.read_only_sa[0].metadata[0].name
+    }
+
+    namespace     = "kube-system"
+    generate_name = "readonly-"
+  }
+
+  type                           = "kubernetes.io/service-account-token"
+  wait_for_service_account_token = true
+}
+
+resource "kubernetes_cluster_role" "read_only_sa" {
+  count = var.create_read_only_service_account ? 1 : 0
+
+  metadata {
+    name = "readonly"
+  }
+
+  rule {
+    api_groups = ["*"]
+    resources = [
+      "pods",
+      "configmaps",
+      "services",
+      "deployments",
+      "replicasets",
+      "horizontalpodautoscalers",
+      "ingresses",
+      "statefulsets",
+      "limitranges",
+      "resourcequotas",
+      "daemonsets",
+    ]
+    verbs = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = ["batch"]
+    resources = [
+      "jobs",
+      "cronjobs",
+    ]
+    verbs = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = ["metrics.k8s.io"]
+    resources  = ["pods"]
+    verbs      = ["get", "list"]
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "read_only_sa" {
+  count = var.create_read_only_service_account ? 1 : 0
+
+  metadata {
+    name = "readonly"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.read_only_sa[0].metadata[0].name
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = kubernetes_service_account.read_only_sa[0].metadata[0].name
+    namespace = "kube-system"
+  }
+}

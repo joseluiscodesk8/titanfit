@@ -1,0 +1,26 @@
+name: Kubescape scanning for misconfigurations
+
+on: [push, pull_request]
+
+jobs:
+  kubescape:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: kubescape/github-action@main
+      continue-on-error: true
+      with:
+        format: sarif
+        outputFile: results
+        severityThreshold: medium
+
+    # Unfortunatly (from https://shorturl.at/VcRGp): 
+    # If you are on a free, pro, or team plan, you can only use code scanning on repositories that are publically available. To enable code scanning for private or internal repositories, you must upgrade to GitHub Enterprise with GitHub Advanced Security and enable GitHub Advanced Security for the repository. For more information, see "GitHub’s plans" and "About GitHub Advanced Security."
+    # - name: Upload Kubescape scan results to Github Code Scanning
+    #   uses: github/codeql-action/upload-sarif@v3
+    #   with:
+    #     sarif_file: results.sarif

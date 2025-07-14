@@ -1,0 +1,30 @@
+# It is not properly working, I saw in the cluster: 0/2 nodes are available: 2 Too many pods
+# Checking why, I realised there were 334 pods in ImagePullBackOff. Disable until mor info
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: cloudsploit
+#   namespace: argocd
+# spec:
+#   project: apps
+#   sources:
+#     - repoURL: 'https://github.com/pukara-dev/cloudsploit.git'
+#       targetRevision: main
+#       ref: values
+#     - repoURL: 'https://github.com/pukara-dev/cloudsploit.git'
+#       targetRevision: main
+#       path: deployment/helm-chart
+#       helm:
+#         valueFiles:
+#         - $values/deployment/helm-values/prd.yaml
+#   destination:
+#     namespace: cloudsploit
+#     server: https://kubernetes.default.svc
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

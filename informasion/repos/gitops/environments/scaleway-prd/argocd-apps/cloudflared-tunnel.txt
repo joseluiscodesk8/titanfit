@@ -1,0 +1,47 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudflared-tunnel
+  namespace: argocd
+spec:
+  project: base-infra
+  destination:
+    namespace: cloudflare-tunnel
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://cloudflare.github.io/helm-charts
+      chart: "cloudflare-tunnel"
+      targetRevision: 0.3.2
+      helm:
+        values: |
+          cloudflare:
+            tunnelName: 92d259e8-89e9-4f83-ab14-ed0f1b0b5290
+            secretName: tunnel-credentials
+            ingress:
+              - hostname: argocd-internal.pukara.dev
+                service: http://argocd-server.argocd.svc.cluster.local
+              - hostname: monitoring.pukara.dev
+                service: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
+              - hostname: grafana.pukara.dev
+                service: http://prometheus-operator-grafana.monitoring.svc.cluster.local
+              - hostname: prometheus.pukara.dev
+                service: http://prometheus-operator-kube-p-prometheus.monitoring.svc.cluster.local:9090
+              - hostname: alertmanager.pukara.dev
+                service: http://prometheus-operator-kube-p-alertmanager.monitoring.svc.cluster.local:9093
+              - hostname: atlantis.pukara.dev
+                service: http://atlantis.atlantis.svc.cluster.local
+              - hostname: pgadmin.pukara.dev
+                service: http://pgadmin-pgadmin4.pgadmin.svc.cluster.local
+              - hostname: opencost.pukara.dev
+                service: http://opencost.opencost.svc.cluster.local:9090
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/scaleway-prd/kubernetes-manifests/cloudflare-tunnel"
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

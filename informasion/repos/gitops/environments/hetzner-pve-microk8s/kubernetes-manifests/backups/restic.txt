@@ -1,0 +1,127 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restic-backup
+  namespace: backups
+  labels:
+    app: restic-backup
+    environment: production
+    team: platform
+  annotations:
+    description: "CronJob to back up databases using Restic"
+spec:
+  successfulJobsHistoryLimit: 6
+  failedJobsHistoryLimit: 3
+  schedule: "0 2 * * *" # Schedule (daily at 2 AM)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: restic-backup
+            image: restic/restic:0.17.3
+            env:
+            - name: RESTIC_REPOSITORY
+              value: "s3:https://s3.eu-central-003.backblazeb2.com/pukara-backups"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: RESTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: RESTIC_PASSWORD
+            - name: DB_MINIFLUX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: DB_MINIFLUX_PASSWORD
+            - name: COUCHDB_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: COUCHDB_ADMIN_PASSWORD
+            - name: DB_CHATWOOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: DB_CHATWOOT_PASSWORD
+            - name: DB_WINDMILL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-creds
+                  key: DB_WINDMILL_PASSWORD
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backup
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -e
+
+                # ANSI Color Codes
+                RED='\033[0;31m'
+                GREEN='\033[0;32m'
+                BLUE='\033[0;34m'
+                YELLOW='\033[1;33m'
+                NC='\033[0m' # No Color
+
+                echo -e "${BLUE}====> Initializing Backup Process...${NC}"
+
+                # Check for required environment variables
+                if [ -z "$DB_MINIFLUX_PASSWORD" ] || [ -z "$DB_CHATWOOT_PASSWORD" ] || [ -z "$DB_WINDMILL_PASSWORD" ] || [ -z "$COUCHDB_ADMIN_PASSWORD" ]; then
+                  echo -e "${RED}[ERROR] Required environment variables are missing!${NC}" >&2
+                  exit 1
+                fi
+
+                echo -e "${GREEN}✓ All required environment variables are set.${NC}"
+                echo -e "${YELLOW}Installing required tools...${NC}"
+                apk add --no-cache curl postgresql-client
+
+                mkdir /backups
+
+                echo -e "${BLUE}===== Starting PostgreSQL Database Backup =====${NC}"
+
+                echo -e "${YELLOW}⏳ Backing up MiniFlux database...${NC}"
+                export DATABASE_URL="postgres://postgres:$DB_MINIFLUX_PASSWORD@miniflux-postgresql.miniflux.svc.cluster.local/miniflux?sslmode=disable"
+                pg_dump "$DATABASE_URL" -Fp > /backups/miniflux-backup.dump
+                echo -e "${GREEN}✅ MiniFlux backup completed.${NC}"
+
+                echo -e "${YELLOW}⏳ Backing up ChatWoot database...${NC}"
+                export DATABASE_URL_CHATWOOT="postgres://postgres:$DB_CHATWOOT_PASSWORD@chatwoot-chatwoot-postgresql.chatwoot.svc.cluster.local/chatwoot_production?sslmode=disable"
+                pg_dump "$DATABASE_URL_CHATWOOT" -Fp > /backups/chatwoot-backup.dump
+                echo -e "${GREEN}✅ ChatWoot backup completed.${NC}"
+
+                echo -e "${YELLOW}⏳ Backing up Windmill database...${NC}"
+                export DATABASE_URL_WINDMILL="postgres://postgres:$DB_WINDMILL_PASSWORD@windmill-postgresql.windmill.svc.cluster.local/windmill?sslmode=disable"
+                pg_dump "$DATABASE_URL_WINDMILL" -Fp > /backups/windmill-backup.dump
+                echo -e "${GREEN}✅ Windmill backup completed.${NC}"
+
+                echo -e "${YELLOW}⏳ Fetching CouchDB backup...${NC}"
+                curl -X GET "http://admin:${COUCHDB_ADMIN_PASSWORD}@couchdb-svc-couchdb.couchdb.svc.cluster.local:5984/obsidian/_all_docs?include_docs=true" -o /backups/couchdb-obisidian
+                echo -e "${GREEN}✅ CouchDB backup completed.${NC}"
+
+                echo -e "${BLUE}===== Running Restic to Store Backup =====${NC}"
+                restic backup /backups
+                echo -e "${GREEN}✅ Backup stored in Restic.${NC}"
+
+                echo -e "${BLUE}===== Cleaning Up Old Backups =====${NC}"
+                restic forget --keep-within 15d --prune --group-by ""
+                echo -e "${GREEN}✅ Old backups cleaned.${NC}"
+
+                echo -e "${BLUE}===== Notifying Healthchecks.io =====${NC}"
+                curl -fsS --retry 3 https://hc-ping.com/0a687aa8-ad2a-430e-9f35-b78f450c9e2c
+                echo -e "${GREEN}✅ Notification sent.${NC}"
+
+                echo -e "${GREEN}🎉 Backup process completed successfully!${NC}"
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-storage
+            emptyDir: {}

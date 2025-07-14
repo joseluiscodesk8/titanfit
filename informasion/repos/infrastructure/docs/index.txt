@@ -1,0 +1,3 @@
+# Pukara Platform Hub
+
+Welcome to the Pukara Platform Hub. This is the central portal where we document **everything related to the Platform**, including internal processes, guidelines, and best practices. Here, you'll find detailed instructions on how to manage and interact with our infrastructure, ensuring smooth operations across all of Pukara’s services. Whether you're onboarding or troubleshooting, this hub serves as your go-to resource for all platform-related tasks. related to Platform and how to do things internally within Pukara. 

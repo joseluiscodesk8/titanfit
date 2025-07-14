@@ -1,0 +1,36 @@
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: pgadmin
+#   namespace: argocd
+# spec:
+#   project: default
+#   source:
+#     chart: pgadmin4
+#     repoURL: 'https://helm.runix.net'
+#     targetRevision: 1.34.0
+#     helm:
+#       values: |
+#         persistentVolume:
+#           enabled: false
+#         env:
+#           # Not a big deal, this is protected with cloudflare WAF
+#           # to only allow @pukara.dev.
+#           password: HTkUG3ktapzsa6Fdcf3r
+#           email: hi@pukara.dev
+#           variables:
+#             - name: PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT
+#               value: 'False'
+#             - name: PGADMIN_CONFIG_WTF_CSRF_ENABLED
+#               value: 'False'
+#   destination:
+#     namespace: pgadmin
+#     server: https://mk8s-api.pukara.dev:16443
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

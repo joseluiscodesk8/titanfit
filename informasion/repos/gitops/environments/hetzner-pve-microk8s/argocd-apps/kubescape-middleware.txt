@@ -1,0 +1,24 @@
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: mk8s-kubescape-middleware
+#   namespace: argocd
+# spec:
+#   project: base-infra
+#   destination:
+#     namespace: kubescape
+#     server: https://mk8s-api.pukara.dev:16443
+#   sources:
+#     - repoURL: 'https://github.com/pukara-dev/kubescape-middleware.git'
+#       targetRevision: main
+#       path: helm/kubescape-middleware
+#       # helm:
+#       #   valueFiles:
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

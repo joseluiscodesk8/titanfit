@@ -1,0 +1,18 @@
+# The pre-commit framework works on developers' machines, but it can be easily bypassed
+# (for example, when editing directly through the GitHub UI). That’s why we enforce
+# it in the CI process as an additional safeguard.
+
+name: pre-commit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v3.0.1

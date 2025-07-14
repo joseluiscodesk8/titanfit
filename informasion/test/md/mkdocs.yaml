@@ -1,0 +1,10 @@
+site_name: 'Platform Hub'
+
+nav:
+  - Home: index.md
+  - Navigator-plarform: navigator-platform.md
+  - Navigator-api: navigator-api.md
+  - Flowcore: flowcore.md
+  - Navigator-data-integration-worker: navigator-data-integration-worker.md
+plugins:  
+  - techdocs-core

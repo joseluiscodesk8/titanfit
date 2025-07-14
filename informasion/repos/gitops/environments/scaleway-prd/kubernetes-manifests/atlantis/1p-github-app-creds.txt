@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: github-app-creds
+  namespace: atlantis
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/ea63at2aqxi6wuitq2mi7aursy"

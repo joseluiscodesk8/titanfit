@@ -1,0 +1,186 @@
+app:
+  baseUrl: http://localhost:3000
+  title: Pukara Portal
+
+organization:
+  name: Pukara
+
+backend:
+  # Used for enabling authentication, secret is shared by all backend plugins
+  # See https://backstage.io/docs/auth/service-to-service-auth for
+  # information on the format
+  # auth:
+  #   keys:
+  #     - secret: ${BACKEND_SECRET}
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+    # Uncomment the following host directive to bind to specific interfaces
+    # host: 127.0.0.1
+  reading:
+    allow:
+      - host: '*.pukara.dev'
+      - host: '*.bonito-stonecat.ts.net'
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # This is for local development only, it is not recommended to use this in production
+  # The production database configuration is stored in app-config.production.yaml
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
+  # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+integrations:
+  github:
+    - host: github.com
+      apps:
+        - $include: pukara-github-credentials.yaml
+
+# proxy:
+  ### Example for how to add a proxy endpoint for the frontend.
+  ### A typical reason to do this is to handle HTTPS and CORS for internal services.
+  # endpoints:
+  #   '/test':
+  #     target: 'https://example.com'
+  #     changeOrigin: true
+      # '/opencost': http://opencost.monitoring.svc.cluster.local:9091
+
+# Reference documentation http://backstage.io/docs/features/techdocs/configuration
+# Note: After experimenting with basic setup, use CI/CD to generate docs
+# and an external cloud storage when deploying TechDocs for production use-case.
+# https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'docker' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+auth:
+  environment: development
+  providers:
+    guest: {}
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # Matches the GitHub username with the Backstage user entity name.
+            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+            - resolver: usernameMatchingUserEntityName
+
+scaffolder:
+  scaffolder:
+    defaultAuthor:
+      name: Pukara Scaffolder
+      email: platform@pukara.dev
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location, Domain]
+  locations:
+    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    - type: file
+      target: ../../examples/entities.yaml
+
+    # Local example template
+    - type: file
+      target: ../../examples/template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local example template
+    - type: file
+      target: ../../templates/create-generic-repo/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local example organizational data
+    - type: file
+      target: ../../examples/org.yaml
+      rules:
+        - allow: [User, Group]
+
+    ## Uncomment these lines to add more example data
+    # - type: url
+    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+
+    ## Uncomment these lines to add an example org
+    # - type: url
+    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
+    #   rules:
+    #     - allow: [User, Group]
+
+  providers:
+    githubOrg:
+      id: production
+      githubUrl: https://github.com
+      orgs: ['pukara-dev']
+      schedule:
+        initialDelay: { seconds: 30 }
+        frequency: { hours: 1 }
+        timeout: { minutes: 50 }
+    github:
+      # the provider ID can be any camelCase string
+      pukara:
+        organization: 'pukara-dev' # string
+        catalogPath: '/catalog-info.yaml' # string
+        filters:
+          branch: 'main' # string
+          repository: '.*' # Regex
+        schedule: # same options as in TaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 30 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 3 }
+      templateProvider:
+        organization: 'pukara-dev' # string
+        catalogPath: '/templates/**/*template.yaml' # this will search all folders for files that end in template.yaml
+        filters:                                    # optional filters
+          branch: 'main'                            # optional string
+          repository: 'backstage'                   # optional Regex
+        schedule:                                   # same options as in TaskScheduleDefinition
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+
+kubernetes:
+  # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://ece44c08-b328-4d91-8214-a5fbc480677a.api.k8s.fr-par.scw.cloud:6443
+          name: pukara
+          authProvider: 'serviceAccount'
+          skipTLSVerify: false
+          skipMetricsLookup: true
+          serviceAccountToken: ${SCALEWAY_K8S_SERVICE_ACCOUNT_TOKEN}
+          caData: ${SCALEWAY_K8S_CA_DATA}
+
+aws:
+  accounts:
+    - accountId: '663221468720'
+      accessKeyId: ${AWS_ACCESS_KEY_ID}
+      secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+
+# see https://backstage.io/docs/permissions/getting-started for more on the permission framework
+permission:
+  # setting this to `false` will disable permissions
+  enabled: true
+
+slack:
+  webhookUrl: ${SLACK_WEBHOOK_URL}
+
+# opencost:
+#   baseUrl: https://backstage.pukara.dev/api/proxy/opencost

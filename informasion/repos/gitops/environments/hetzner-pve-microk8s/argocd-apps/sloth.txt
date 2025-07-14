@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sloth
+  namespace: argocd
+spec:
+  project: base-infra
+  sources:
+   - repoURL: https://slok.github.io/sloth
+     targetRevision: 0.12.1
+     chart: sloth
+     helm:
+       releaseName: sloth
+  destination:
+    namespace: monitoring
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    # Prune Last (i.e. after it was synced) to not removed dynamically created admissions/patch jobs/pods
+    - PruneLast=true

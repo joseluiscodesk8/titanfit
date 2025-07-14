@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: https://community-charts.github.io/helm-charts
+      chart: n8n
+      targetRevision: 0.1.9
+      helm:
+        releaseName: n8n
+        values: |
+          db:
+            type: postgresdb
+          postgresql:
+            enabled: true
+            auth:
+              existingSecret: n8n-postgresql
+          extraEnvVars:
+            N8N_HOST: n8n.vitalmotion.ltd
+            WEBHOOK_URL: https://n8n.vitalmotion.ltd/
+          # Helm chart does not support encryptionKey as secret :-/
+          encryptionKey: cOoxGLA8L9MJ51pPpHhaE1DuE6IMPwoi
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/hetzner-pve-microk8s/kubernetes-manifests/n8n"
+  destination:
+    namespace: n8n
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

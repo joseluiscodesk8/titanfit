@@ -1,0 +1,7 @@
+module "bootstrap" {
+  source  = "trussworks/bootstrap/aws"
+  version = "7.0.0"
+
+  region        = "eu-west-1"
+  account_alias = "pukara-prd"
+}

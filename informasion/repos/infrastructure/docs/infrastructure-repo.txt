@@ -1,0 +1,55 @@
+# Pukara's infrastructure repository 
+
+This repository contains the infrastructure as code (IaC) and GitOps manifests for Pukara. The code in this repository is used to automate the provisioning and management of our infrastructure resources, such as servers, networks, and storage, domains names, etc.
+
+## Pre-requisites
+
+We are using [terraform](https://developer.hashicorp.com/terraform/install), so make sure you have the latest version installed.
+
+### 1. [1Password CLI](https://developer.1password.com/docs/cli/get-started/).
+
+Make sure you can access Pukara vaults using: `op vault list`. The environment variable that needs to be exported is:
+
+```
+export OP_SERVICE_ACCOUNT_TOKEN=XXX
+```
+
+### 2. [pre-commit framework](https://pre-commit.com/).
+
+We use the pre-commit framework to ensure consistency ([conventional-commits](https://www.conventionalcommits.org) ) and security ([gitleaks](https://github.com/gitleaks/gitleaks)).
+
+```
+$ pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+
+### Credentials for the Cloud Provider
+
+- AWS
+- Scaleway
+- DigitalOcean
+
+## Getting Started
+
+To get started with this repository, follow these steps:
+
+1. Clone the repository to your local machine:
+
+``` sh
+$ git clone git@github.com:pukara-dev/infrastructure.git
+```
+
+2. Branch off master and make the desired changes.
+3. Open a Pull Request and wait for [atlantis](https://www.runatlantis.io/) to plan your changes. Make sure you are happy with them.
+4. If you are happy with the changes, ask a member of the team to review & approve your MR.
+5. Once the MR is approved, you can instruct atlantis to make them happen with `atlantis apply`
+
+### Manually executing terraform on **Scaleway**
+
+We use Scaleway to host most of our services. It is cost-effective, and we have Terraform modules and APIs for interaction, including support for Kubernetes.
+
+Always try to use ATLANTIS for applying changes. However, sometimes it is not possible, or for whatever reason, you may need to apply changes manually. For that, you will need:
+
+- Scaleway Credentials (`SCW_ACCESS_KEY`, `SCW_SECRET_KEY`, `SCW_DEFAULT_PROJECT_ID`, and `SCW_DEFAULT_ORGANIZATION_ID`) to perform CRUD operations on the infrastructure.
+- AWS Credentials to manage the Terraform state (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION`).
+- OnePassword credentials to read secrets (`OP_SERVICE_ACCOUNT_TOKEN`).

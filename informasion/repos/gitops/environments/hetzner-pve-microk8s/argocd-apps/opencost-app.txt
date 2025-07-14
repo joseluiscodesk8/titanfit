@@ -1,0 +1,55 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opencost
+  namespace: argocd 
+spec:
+  project: base-infra
+  source:
+    repoURL: https://opencost.github.io/opencost-helm-chart/
+    chart: opencost
+    targetRevision: 2.1.2
+    helm:
+      releaseName: opencost
+      values: |
+        opencost:
+          customPricing:
+            enabled: true
+            provider: hetzner
+            costModel:
+              description: MicroK8s custom pricing
+              CPU: 1.825
+              RAM: 4.35
+              storage: 43.80
+              projectID: "microk8s-lab"
+          exporter:
+            defaultClusterId: microk8s-cluster
+          prometheus:
+            internal:
+              enabled: false
+            external:
+              enabled: true
+              serviceName: prom-stack-kube-prometheus-prometheus
+              namespaceName: monitoring
+              url: http://prom-stack-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+          ui:
+            enabled: true
+            uiPort: 9091
+          metrics:
+            kubeStateMetrics:
+              emitPodAnnotations: false
+              emitNamespaceAnnotations: false
+              emitKsmV1Metrics: false
+              emitKsmV1MetricsOnly: false
+  destination:
+    server: https://mk8s-api.pukara.dev:16443
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true

@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: operator-oauth
+  namespace: tailscale
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/jlzbdrbq67fcjgh625qspc2j54"

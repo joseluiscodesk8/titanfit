@@ -1,0 +1,11 @@
+site_name: 'Platform Hub'
+
+nav:
+  - Home: index.md
+  - Infra Repo: infrastructure-repo.md
+  - Monitoring & Alerting: monitoring-and-alerting.md
+  - Gitops & Kubernetes: gitops.md
+  - Disaster Recovery: dr.md
+  - Nextcloud with Backblaze: nextcloud-backblaze-integration.md 
+plugins:
+  - techdocs-core

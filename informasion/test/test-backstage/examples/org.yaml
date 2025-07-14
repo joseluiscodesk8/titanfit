@@ -1,0 +1,24 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: jode
+spec:
+  memberOf: [infrastructure]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: maria
+spec:
+  memberOf: [infrastructure]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: infrastructure
+spec:
+  type: team
+  children: []

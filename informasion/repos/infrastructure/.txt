@@ -1,0 +1,1 @@
+aws/pukara-prd/bootstrap/terraform.tfstate filter=git-crypt diff=git-crypt

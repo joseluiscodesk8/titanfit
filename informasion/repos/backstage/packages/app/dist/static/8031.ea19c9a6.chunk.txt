@@ -1,0 +1,1 @@
+"use strict";(()=>{(self.webpackChunkapp=self.webpackChunkapp||[]).push([[8031],{48031:(u,l,s)=>{s.r(l),s.d(l,{PullRequestsTable:()=>e.Q,PullRequestsTableView:()=>e.p});var e=s(40449)}}]);})();

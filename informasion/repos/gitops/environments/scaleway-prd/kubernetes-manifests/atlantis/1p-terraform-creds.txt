@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: terraform-credentials
+  namespace: atlantis
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/76377xvr3hdyxtrfv23sdsimp4"

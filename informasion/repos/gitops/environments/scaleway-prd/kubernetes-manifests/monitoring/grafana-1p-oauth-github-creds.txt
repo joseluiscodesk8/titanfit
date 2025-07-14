@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: oauth-github-creds
+  namespace: monitoring
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/foes3lz3gy2iyokqzv6pdaiazm"

@@ -1,0 +1,32 @@
+terraform {
+  backend "s3" {
+    bucket         = "pukara-prd-tf-state-eu-west-1"
+    key            = "scaleway/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+    region         = "eu-west-1"
+    encrypt        = "true"
+  }
+  required_providers {
+    scaleway = {
+      source  = "scaleway/scaleway"
+      version = "2.50.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.3"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.17.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.36.0"
+    }
+    onepassword = {
+      source  = "1Password/onepassword"
+      version = "2.1.2"
+    }
+  }
+  required_version = ">= 0.13"
+}

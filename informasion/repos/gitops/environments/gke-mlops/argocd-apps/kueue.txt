@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kueue
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    namespace: kueue-system
+    server: https://35.224.146.45
+  sources:
+    - repoURL: 'https://github.com/pukara-dev/gitops.git'
+      targetRevision: main
+      path: environments/gke-mlops/kubernetes-manifests/kueue-system
+    - repoURL: registry.k8s.io/kueue/charts
+      chart: "kueue"
+      targetRevision: 0.11.1
+      helm:
+        releaseName: kueue
+        # values: |
+        #   operator:
+        #     create: true
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

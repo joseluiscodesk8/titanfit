@@ -1,0 +1,125 @@
+#######
+# DNS #
+#######
+
+data "cloudflare_zones" "polestarpilates_brasil" {
+  filter {
+    name = "polestarpilates.com.br"
+  }
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_txt" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "@"
+  content = "google-site-verification=ffXVa-nrUtKcTbCH5_Hsq0iBxWOZnDLkNplSxE_ST4U"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_root" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "@"
+  content = local.siteground_pukara_dev_ip
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_www" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "www"
+  content = "polestarpilates.com.br"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_mx" {
+  zone_id  = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name     = "@"
+  content  = "smtp.google.com."
+  type     = "MX"
+  priority = "1"
+  proxied  = false
+}
+
+
+resource "cloudflare_record" "polestarpilates_brasil_mailgun_sending_pdk1" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "pdk1._domainkey"
+  content = "pdk1._domainkey.eccc4.dkim2.eu.mgsend.org"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_mailgun_sending_pdk2" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "pdk2._domainkey"
+  content = "pdk2._domainkey.eccc4.dkim2.eu.mgsend.org"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_mailgun_tracking" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "email"
+  content = "eu.mailgun.org"
+  type    = "CNAME"
+  proxied = false
+}
+
+
+resource "cloudflare_record" "polestarpilates_brasil_mailgun_sending" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "@"
+  content = "v=spf1 include:mailgun.org ~all"
+  type    = "TXT"
+  proxied = false
+}
+
+# Amazon SES
+
+resource "cloudflare_record" "amazon_ses_polestarpilates_brasil_txt" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "_dmarc"
+  content = "v=DMARC1; p=none; rua=mailto:hostmaster@vitalmotion.ltd"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "amazon_ses_polestarpilates_brasil_cname" {
+  for_each = {
+    "ibpalkmdmuy72fxkvflohzn6j6znbgnc._domainkey" = "ibpalkmdmuy72fxkvflohzn6j6znbgnc.dkim.amazonses.com"
+    "tzdpthusxglkwtahsrmec5eif3exi5b4._domainkey" = "tzdpthusxglkwtahsrmec5eif3exi5b4.dkim.amazonses.com"
+    "yr3rchdo7dulw6fuf227in5sytthzduc._domainkey" = "yr3rchdo7dulw6fuf227in5sytthzduc.dkim.amazonses.com"
+  }
+
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = each.key
+  content = each.value
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_marketing_mx" {
+  zone_id  = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name     = "marketing"
+  content  = "feedback-smtp.us-west-2.amazonses.com"
+  type     = "MX"
+  priority = "10"
+  proxied  = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_marketing_txt" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  name    = "marketing"
+  content = "v=spf1 include:amazonses.com ~all"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "polestarpilates_brasil_campaigns" {
+  zone_id = data.cloudflare_zones.polestarpilates_brasil.zones[0].id
+  content = local.siteground_pukara_dev_ip
+  name    = "campaigns"
+  type    = "A"
+  proxied = false
+}

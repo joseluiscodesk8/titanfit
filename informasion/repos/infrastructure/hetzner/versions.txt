@@ -1,0 +1,24 @@
+terraform {
+  backend "s3" {
+    bucket         = "pukara-prd-tf-state-eu-west-1"
+    key            = "hetzner/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+    region         = "eu-west-1"
+    encrypt        = "true"
+  }
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.3"
+    }
+    onepassword = {
+      source  = "1Password/onepassword"
+      version = "2.1.2"
+    }
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = "~> 1.45"
+    }
+  }
+  required_version = ">= 0.13"
+}

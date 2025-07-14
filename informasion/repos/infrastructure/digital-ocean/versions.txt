@@ -1,0 +1,25 @@
+terraform {
+  backend "s3" {
+    bucket         = "pukara-prd-tf-state-eu-west-1"
+    key            = "digitalocean/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+    region         = "eu-west-1"
+    encrypt        = "true"
+  }
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.36.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.17.0"
+    }
+  }
+  required_version = ">= 0.13"
+}
+

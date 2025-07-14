@@ -1,0 +1,18 @@
+terraform {
+  backend "s3" {
+    bucket         = "pukara-prd-tf-state-eu-west-1"
+    key            = "aws/pukara-prd/resources/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+    region         = "eu-west-1"
+    encrypt        = "true"
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+  required_version = ">= 0.13"
+}

@@ -1,0 +1,13 @@
+# Pukara's Internal Developer Portal
+
+At Pukara, we use Backstage as our internal developer portal. We manage our software catalog, Git repository templates, documentation, and liveness integration with our Kubernetes clusters to observe the real-time health of our services.
+
+## How the IDP Works for Pukara
+
+Backstage is configured to automatically discover all repositories in our organization (*https://github.com/pukara-dev*) and index two things:
+
+1. The `catalog-info.yaml` file in the root directory.
+2. All `/templates/**/*template.yaml` files in [Pukara's Backstage repository](https://github.com/pukara-dev/backstage) to index the software templates.
+
+It also indexes all of Pukara's users and groups within GitHub, including their logos 😏.
+

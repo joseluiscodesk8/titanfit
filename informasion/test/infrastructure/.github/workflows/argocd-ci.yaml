@@ -1,0 +1,27 @@
+name: Deploy ArgoCD with Helm
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ARGOCD_GITHUB_CLIENT_ID: ${{ secrets.ARGOCD_GITHUB_CLIENT_ID }}
+      ARGOCD_GITHUB_CLIENT_SECRET: ${{ secrets.ARGOCD_GITHUB_CLIENT_SECRET }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Deploy ArgoCD
+      run: |
+        terraform init
+        terraform apply -auto-approve \
+          -var="argocd_github_client_id=$ARGOCD_GITHUB_CLIENT_ID" \
+          -var="argocd_github_client_secret=$ARGOCD_GITHUB_CLIENT_SECRET"
+      working-directory: modules/kubernetes-components

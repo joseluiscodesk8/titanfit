@@ -1,0 +1,52 @@
+# Disaster Recovery (DR)
+
+## About DR
+
+Disaster Recovery (DR) is a **critical part of our infrastructure strategy**. Sometimes things go wrong, and we need to restore systems to a specific point in time. This is where backups come into play. We should periodically back up our stateful services to ensure we can recover from failures, data loss, or other disruptions.
+
+## Backups
+
+Backup procedures depend on the environment where the service is running. Some of our services run on virtual machines (VMs) or bare metal, while others run on Kubernetes. Each scenario requires a different approach:
+
+### Bare Metal / VM
+
+1. Create a DR VM, ideally in the same cloud provider & availability zone (if applies) where the primary instance is hosted.
+2. Snapshot the disk or use backup tools to capture the state of the VM. Here we almost always use [restic](https://restic.net/). E.g. the script for backing up aristotle apps is in `/srv/backup.sh`.
+3. Store backups in a secure and redundant storage location. We use restic and restic uses [backblaze](backblaze.com) under.
+4. Schedule backups at regular intervals. E.g. the cronjob that executes aristotle apps backup is in `/etc/cron.d/backup_apps`.
+5. Monitor backup success and log any issues for follow-up. E.g. logs for aristotle apps backup is in `/var/log/apps-backup-job.log`.
+
+### Kubernetes
+
+1. Identify the stateful services (e.g., databases, file stores).
+2. Once you have identified the service, create a new CronJob manifest (if it doesn't exist already), that backups the database (e.g. using pg_dump for postgres db), and store it (e.g. using restic) in a secure location (e.g. backblaze). Take a look to our [restic manifest](https://github.com/pukara-dev/gitops/blob/main/environments/hetzner-pve-microk8s/kubernetes-manifests/backups/restic.yaml) as an example.
+3. Run the job, and make sure the copies (e.g. sql/dump/zip) are not empty, and is uploading the copies to the secure location.
+
+## Restores
+
+Just like backups, restore procedures vary by environment. It's important to test these procedures periodically to ensure reliability.
+
+### Bare Metal / VM
+
+1. Provision a clean VM instance.
+2. Retrieve the appropriate backup image or snapshot using restic. E.g. `restic snapshots`.
+3. Restore the backup to the new instance. E.g. `restic restore --target /srv/app-restore {snapshot-hash}`.
+4. Validate the restored system functionality and data consistency.
+5. If applicable, update DNS or service references to point to the new instance.
+
+### Kubernetes
+
+1. Deploy a temporary namespace or environment for restore testing, from now on, you'll work in this temporary namespace.
+2. Restore PVCs and configurations using the same tool used for backups. E.g. you can restore a database copy in your local and copy it to the statefulset pod (postgres pod).
+3. Most of the times you will need to scale down the replicas that are connected to the statefulset services (e.g. postgres), so you can safely remove the default app database, and create a new one (with the same name as the original).
+4. Import the database copy to the statefulset pod.
+5. Scale up the replicas that were using the statefulset service.
+6. Test the app in your local. E.g. `kubectl port-forward deployment/app-dr-web 3000:3000`.
+7. Make sure the app has the restored data.
+
+## Important Notes
+
+- Always verify backups are completing successfully and can be restored.
+- Ensure access permissions to backups are strictly controlled.
+- Don't forget to delete any resources created for DR testing once validation is complete.
+- Document each backup and restore event for future reference.

@@ -1,0 +1,26 @@
+# After Prometheus 3.0 reconsidering using kube-prometheus-stack!
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: mk8s-victoria-metrics-k8s-stack
+#   namespace: argocd
+# spec:
+#   project: base-infra
+#   sources:
+#    - repoURL: https://victoriametrics.github.io/helm-charts/
+#      targetRevision: 0.35.2
+#      chart: victoria-metrics-k8s-stack
+#      helm:
+#        releaseName: vm-stack
+#   destination:
+#     namespace: monitoring
+#     server: https://mk8s-api.pukara.dev:16443
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true
+

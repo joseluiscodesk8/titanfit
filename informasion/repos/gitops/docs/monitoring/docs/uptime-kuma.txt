@@ -1,0 +1,14 @@
+# Uptime-Kuma - http://monitoring.pukara.dev
+
+We often monitor our client's websites/APIs/DNS using [uptime-kuma](https://github.com/louislam/uptime-kuma). Initially, monitoring typically involves HTTP checks, but it can extend beyond that. Alerts are usually sent to our Slack channel ([#alerts](https://pukara.slack.com/archives/C04NQTLA25N)).
+
+## Adding Monitor Targets
+
+This is done manually, as we currently do not have an automated system to register targets in Uptime Kuma.
+
+Steps to add new targets:
+
+  1. Log in to Uptime Kuma (credentials are in 1Password).
+  2. Select "Add New Monitor" and enter the details of what you need to monitor.
+
+You could also add a Status Page, but keep in mind that it will be public at https://monitoring.pukara.dev/status/$GroupName.

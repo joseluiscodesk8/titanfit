@@ -1,0 +1,78 @@
+
+#######
+# DNS #
+#######
+
+data "cloudflare_zones" "bululu_agency" {
+  filter {
+    name = "bululu.agency"
+  }
+}
+
+resource "cloudflare_record" "bululu_app" {
+  for_each = toset(local.siteground)
+
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "app.bululu.agency"
+  content = each.value
+  type    = "NS"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_root" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "@"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_www" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "www"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_root_txt" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "@"
+  content = "google-site-verification=ItSSU7ojl0AL7KyXaXaBXeAY62Z-Z8d9GC6Eq0jiZIs"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_automation" {
+  for_each = toset(local.siteground)
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "automation"
+  content = each.value
+  type    = "NS"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_mx" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name     = "@"
+  content  = "smtp.google.com."
+  type     = "MX"
+  priority = "1"
+  proxied  = false
+}
+
+resource "cloudflare_record" "bululu_mailgun_txt1" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "s1._domainkey.bululu.agency"
+  content = "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1LwQyONCOYFXNv1Wqpo8m6rS1jlqu8iL9Q7zaP5qTTub7NLAipY82UJPtQowqWkaw1C+aWZ4jKFx8uH1uXQAPOjPgzpuYp6e7BI4YnGB96B7F0aUOJTxd8LuXLWcUQhhs4wMOzvlb9uAeuOG1cbL+AbYFdmHGzfCGyej0X43lAQIDAQAB"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "bululu_mailgun_txt2" {
+  zone_id = data.cloudflare_zones.bululu_agency.zones[0].id
+  name    = "@"
+  content = "v=spf1 include:mailgun.org ~all"
+  type    = "TXT"
+  proxied = false
+}

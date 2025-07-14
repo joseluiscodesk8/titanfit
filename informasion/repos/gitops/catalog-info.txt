@@ -1,0 +1,18 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: gitops-customer-entities
+spec:
+  type: url
+  targets:
+    - https://github.com/pukara-dev/gitops/blob/main/.catalog-info/customer-services-entities.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: gitops-platform-entities
+spec:
+  type: url
+  targets:
+    - https://github.com/pukara-dev/gitops/blob/main/.catalog-info/platform-services-entities.yaml

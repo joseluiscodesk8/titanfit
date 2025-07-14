@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: windmill
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: https://windmill-labs.github.io/windmill-helm-charts/
+      chart: windmill
+      targetRevision: 2.0.418
+      helm:
+        releaseName: windmill
+        values: |
+          ingress:
+            enabled: false
+  ignoreDifferences:
+    - group: "apps"
+      kind: "StatefulSet"
+      jqPathExpressions:
+        - ".spec.volumeClaimTemplates[].apiVersion"
+        - ".spec.volumeClaimTemplates[].kind"
+  destination:
+    namespace: windmill
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

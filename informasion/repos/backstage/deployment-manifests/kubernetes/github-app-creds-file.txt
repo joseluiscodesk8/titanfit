@@ -1,0 +1,6 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: github-app-creds-file
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/qh7nnsqwk7n34zq4iarhqd3ylu" 

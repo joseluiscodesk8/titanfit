@@ -1,0 +1,40 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage
+  description: Pukara Internal Developer Portal
+  links:
+    - url: https://backstage.pukara.dev
+      title: Backstage
+      icon: docs
+  annotations:
+    github.com/project-slug: pukara-dev/backstage
+    backstage.io/techdocs-ref: dir:docs
+  tags:
+    - k8s
+    - idp
+    - backstage
+    - portal
+spec:
+  type: website
+  owner: Platform
+  lifecycle: experimental
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: org-domains
+spec:
+  type: url
+  targets:
+    - https://github.com/pukara-dev/backstage/blob/main/catalog-info/domains.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: org-systems
+spec:
+  type: url
+  targets:
+    - https://github.com/pukara-dev/backstage/blob/main/catalog-info/systems.yaml

@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mk8s-backups
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: 'https://github.com/pukara-dev/gitops.git'
+      targetRevision: main
+      path: environments/hetzner-pve-microk8s/kubernetes-manifests/backups
+  destination:
+    namespace: backups
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

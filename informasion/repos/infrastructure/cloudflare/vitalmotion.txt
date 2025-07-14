@@ -1,0 +1,68 @@
+
+#######
+# DNS #
+#######
+
+data "cloudflare_zones" "vitalmotion_ltd" {
+  filter {
+    name = "vitalmotion.ltd"
+  }
+}
+
+resource "cloudflare_record" "vitalmotion_crm" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "crm"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+# Hetzner cloudflare tunnel to the K8S Cluster
+resource "cloudflare_record" "vitalmotion_support" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "support"
+  content = "59622cde-0173-470c-a530-1cb7f4468beb.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}
+
+# Hetzner cloudflare tunnel to the K8S Cluster
+resource "cloudflare_record" "vitalmotion_n8n" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "n8n"
+  content = "59622cde-0173-470c-a530-1cb7f4468beb.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}
+
+resource "cloudflare_record" "vitalmotion_root_txt" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "vitalmotion.ltd"
+  content = "google-site-verification=_p_Fdevw295peL_N3WgqQebuA-d-NRHOV-yhbOjSWoc"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "vitalmotion_root" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "@"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "vitalmotion_www" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "www"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "vitalmotion_spf" {
+  zone_id = data.cloudflare_zones.vitalmotion_ltd.zones[0].id
+  name    = "@"
+  content = "v=spf1 include:_spf.google.com ~all"
+  type    = "TXT"
+  proxied = false
+}

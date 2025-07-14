@@ -1,0 +1,141 @@
+
+provider "aws" {
+  region  = "us-west-2"
+  profile = "pukara-prd"
+}
+
+#######
+# IAM #
+#######
+
+module "iam_group_with_assumable_roles_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-assumable-roles-policy"
+  version = "5.52.2"
+
+  name = "admins"
+
+  assumable_roles = [
+    "arn:aws:iam::aws:policy/AdministratorAccess" # these roles can be created using `iam_assumable_roles` submodule
+  ]
+
+  group_users = [
+    module.iam_user_eduardo.iam_user_name,
+    module.iam_user_javier.iam_user_name,
+  ]
+}
+
+module "iam_user_eduardo" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+  version = "5.52.2"
+
+  name                          = "eduardo"
+  force_destroy                 = true
+  password_reset_required       = true
+  create_iam_access_key         = false
+  create_iam_user_login_profile = false
+}
+
+module "iam_user_javier" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+  version = "5.52.2"
+
+  name                          = "javier"
+  force_destroy                 = true
+  password_reset_required       = true
+  create_iam_access_key         = false
+  create_iam_user_login_profile = false
+}
+
+######
+# S3 #
+######
+
+module "backups" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "4.5.0"
+
+  bucket = "pukara-backups"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = true
+  }
+}
+
+module "datalake" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "4.5.0"
+
+  bucket = "pukara-datalake"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = false
+  }
+}
+
+######################
+# Backstage TechDocs #
+######################
+
+module "backstage_techdocs" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "4.5.0"
+
+  bucket = "pukara-backstage-techdocs"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = false
+  }
+}
+
+module "iam_user_backstage" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+  version = "5.52.2"
+
+  name                          = "backstage-techdocs"
+  create_iam_user_login_profile = false
+  create_iam_access_key         = false
+  policy_arns                   = [module.iam_policy_backstage_techdocs.arn]
+}
+
+module "iam_policy_backstage_techdocs" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.52.2"
+
+  name        = "backstage-techdoc-policy"
+  path        = "/"
+  description = "Policy to write in TechDocs bucket"
+
+  policy = data.aws_iam_policy_document.backstage_policy.json
+
+  tags = {
+    PolicyDescription = "Policy created for Backstage documentation bucket"
+  }
+}
+
+data "aws_iam_policy_document" "backstage_policy" {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:DeleteObject"
+    ]
+    effect = "Allow"
+    resources = [
+      module.backstage_techdocs.s3_bucket_arn,
+      "${module.backstage_techdocs.s3_bucket_arn}/*",
+    ]
+  }
+}

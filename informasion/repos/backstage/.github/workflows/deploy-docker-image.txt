@@ -1,0 +1,68 @@
+name: ci
+
+on:
+  push:
+    paths-ignore:
+      - 'deployment-manifests/**'
+      - 'catalog-info.yaml'
+      - 'catalog-info/**'
+      - 'README.md'
+      - 'templates/**'
+      - 'docs/**'
+    branches:
+      - 'main'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Add empty file so builds pass. This file is not used in production, the right file
+      # is passed to the container through the helm chart values
+      - name: Create empty file so pipeline do not complain that "file does not exist"
+        run: touch pukara-github-credentials.yaml
+
+      - name: use node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/ # Needed for auth
+
+      - name: yarn install
+        uses: backstage/actions/yarn-install@v0.5.9
+        with:
+          cache-prefix: ${{ runner.os }}-v18
+
+      - name: yarn build
+        run: yarn build:backend
+        working-directory: .
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: packages/backend/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/pukara-dev/backstage:latest

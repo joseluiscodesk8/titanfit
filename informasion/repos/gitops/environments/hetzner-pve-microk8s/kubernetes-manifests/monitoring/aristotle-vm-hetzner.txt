@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: monitoring
+  annotations:
+    tailscale.com/tailnet-fqdn: aristotle.bonito-stonecat.ts.net
+  name: aristotle-vm-hetzner
+  labels:
+    host: baremetal
+spec:
+  externalName: placeholder   # any value - will be overwritten by operator
+  type: ExternalName
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: aristotle-vm-hetzner
+  namespace: monitoring
+  labels:
+    release: prom-stack
+spec:
+  staticConfigs:
+    - labels:
+        job: prometheus
+      targets:
+        - aristotle-vm-hetzner.monitoring.svc.cluster.local:9100
+  metricsPath: /metrics

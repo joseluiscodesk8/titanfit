@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: backup-creds
+  namespace: backups
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/dobcsgcfaj4czritfwvpd7n47i"

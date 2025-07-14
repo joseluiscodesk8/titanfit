@@ -1,0 +1,62 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mk8s-cloudflared-tunnel
+  namespace: argocd
+spec:
+  project: base-infra
+  destination:
+    namespace: cloudflare-tunnel
+    server: https://mk8s-api.pukara.dev:16443
+  sources:
+    - repoURL: https://cloudflare.github.io/helm-charts
+      chart: "cloudflare-tunnel"
+      targetRevision: 0.3.2
+      helm:
+        releaseName: cloudflared
+        values: |
+          image:
+            tag: 2024.8.2
+          cloudflare:
+            tunnelName: 59622cde-0173-470c-a530-1cb7f4468beb
+            secretName: tunnel-credentials
+            ingress:
+              - hostname: mk8s-kubernetes-dashboard.pukara.dev
+                service: https://kubernetes-dashboard.kube-system.svc.cluster.local
+                originRequest:
+                  noTLSVerify: true
+              - hostname: backstage.pukara.dev
+                service: http://backstage.backstage.svc.cluster.local:7007
+              - hostname: devlake.pukara.dev
+                service: http://devlake-ui.devlake.svc.cluster.local:4000
+              - hostname: rss.pukara.dev
+                service: http://miniflux.miniflux.svc.cluster.local:8080
+              - hostname: support.vitalmotion.ltd
+                service: http://chatwoot.chatwoot.svc.cluster.local:3000
+              - hostname: n8n.vitalmotion.ltd
+                service: http://n8n.n8n.svc.cluster.local:5678
+              - hostname: airbyte.pukara.dev
+                service: http://airbyte-airbyte-webapp-svc.airbyte.svc.cluster.local:80
+              - hostname: grafana.pukara.dev
+                service: http://prom-stack-grafana.monitoring.svc.cluster.local
+              - hostname: opencost.pukara.dev
+                service: http://opencost.monitoring.svc.cluster.local:9091
+              - hostname: prometheus.pukara.dev
+                service: http://prom-stack-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+              - hostname: alertmanager.pukara.dev
+                service: http://prom-stack-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+              - hostname: alertmanager.pukara.dev
+                service: http://prom-stack-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+              - hostname: windmill.pukara.dev
+                service: http://windmill-app.windmill.svc.cluster.local:8000
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/hetzner-pve-microk8s/kubernetes-manifests/cloudflare-tunnel"
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

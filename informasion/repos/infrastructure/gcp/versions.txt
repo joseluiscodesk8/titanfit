@@ -1,0 +1,24 @@
+terraform {
+  backend "s3" {
+    bucket         = "pukara-prd-tf-state-eu-west-1"
+    key            = "gcp/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+    region         = "eu-west-1"
+    encrypt        = "true"
+  }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.21.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "6.21.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.3"
+    }
+  }
+  required_version = ">= 0.13"
+}

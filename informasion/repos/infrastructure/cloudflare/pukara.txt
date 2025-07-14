@@ -1,0 +1,228 @@
+provider "cloudflare" {}
+
+locals {
+  sendgrid = {
+    "em5504.pukara.dev"        = "u25398607.wl108.sendgrid.net"
+    "s1._domainkey.pukara.dev" = "s1.domainkey.u25398607.wl108.sendgrid.net"
+    "s2._domainkey.pukara.dev" = "s2.domainkey.u25398607.wl108.sendgrid.net"
+    "url9549.pukara.dev"       = "sendgrid.net"
+    "31342705.pukara.dev"      = "sendgrid.net"
+  }
+  account_id = "4050cda5b9e1df9216eebcfd9ef87654"
+  siteground = ["ns1.siteground.net", "ns2.siteground.net"]
+  a_records = {
+    "hz-ds-pve.pukara.dev" = "85.10.196.138"
+    "mk8s-api.pukara.dev"  = "85.10.196.138"
+  }
+  siteground_pukara_dev_ip = "35.214.52.153"
+}
+
+#######
+# DNS #
+#######
+
+data "cloudflare_zones" "pukara_dev" {
+  filter {
+    name = "pukara.dev"
+  }
+}
+
+# Root records
+resource "cloudflare_record" "pukara_dev_www" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  content = local.siteground_pukara_dev_ip
+  name    = "www"
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "pukara_dev_root" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  content = local.siteground_pukara_dev_ip
+  name    = "@"
+  type    = "A"
+  proxied = false
+}
+
+# Subdomain records
+
+resource "cloudflare_record" "culture_github_pages" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = "culture"
+  content = "pukara-dev.github.io"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "pukara_dev_verify_site" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = "_github-pages-challenge-pukara-dev"
+  content = "5bf5f0e07ac36783e72ad072e13fd3"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "stg_pukara" {
+  for_each = toset(local.siteground)
+  zone_id  = data.cloudflare_zones.pukara_dev.zones[0].id
+  content  = each.value
+  name     = "stg.pukara.dev"
+  type     = "NS"
+  proxied  = false
+}
+
+resource "cloudflare_record" "chatwoot_pukara" {
+  for_each = toset(local.siteground)
+  zone_id  = data.cloudflare_zones.pukara_dev.zones[0].id
+  content  = each.value
+  name     = "chatwoot.pukara.dev"
+  type     = "NS"
+  proxied  = false
+}
+
+resource "cloudflare_record" "sendgrid" {
+  for_each = local.sendgrid
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = each.key
+  content = each.value
+  type    = "CNAME"
+  proxied = false
+}
+
+# generic A records
+resource "cloudflare_record" "a_records" {
+  for_each = local.a_records
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = each.key
+  content = each.value
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "platform_pukara" {
+  for_each = toset(local.siteground)
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  content = each.value
+  name    = "platform.pukara.dev"
+  type    = "NS"
+  proxied = false
+}
+
+resource "cloudflare_record" "pukara_crm" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = "crm"
+  content = "35.214.52.153"
+  type    = "A"
+  proxied = false
+}
+
+# Hetzner cloudflare tunnel to the K8S Cluster
+resource "cloudflare_record" "mk8s" {
+  for_each = toset([
+    "backstage",
+    "devlake",
+    "rss",
+    "airbyte",
+    "prometheus",
+    "alertmanager",
+    "grafana",
+    "windmill",
+    "opencost"
+  ])
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = each.value
+  content = "59622cde-0173-470c-a530-1cb7f4468beb.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}
+
+# Hetzner cloudflare tunnel to aristotle
+resource "cloudflare_record" "hetzner_aristotle" {
+  for_each = toset([
+    "whatsapp",
+    "odoo",
+    "nocodb",
+    "appsmith",
+    "erp",
+    "loki",
+  ])
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = each.value
+  content = "6ec1c78e-b926-4cdb-964f-70a11a97ea0a.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}
+
+# Scaleway - cloudflare tunnel to the K8S Cluster
+resource "cloudflare_record" "scaleway" {
+  for_each = toset(["monitoring", "argocd-internal", "atlantis"])
+
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = each.value
+  content = "92d259e8-89e9-4f83-ab14-ed0f1b0b5290.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}
+
+##########
+# Resend #
+##########
+
+resource "cloudflare_record" "resend_mx" {
+  zone_id  = data.cloudflare_zones.pukara_dev.zones[0].id
+  name     = "send.updates"
+  content  = "feedback-smtp.us-east-1.amazonses.com"
+  type     = "MX"
+  priority = "10"
+  proxied  = false
+}
+
+resource "cloudflare_record" "resend_txt_1" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = "resend._domainkey.updates"
+  content = "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDW2MjCTkJyP+WxLnLtX1zgT7y3pal+F0WlCkqI430HXHlztUUSKQ2j3tQlT4aouHhtpnIaYdhtls3t3Lj+s+RIH0gWDdLSPcwvnroRbpulD8iGSSoChq/UL1YEQj8Pa3BaBw+4uf+nZkeTOpuHq2peUmzzSyxR2GBaoCVojk+XrwIDAQAB"
+  type    = "TXT"
+  proxied = false
+}
+
+resource "cloudflare_record" "resend_txt_2" {
+  zone_id = data.cloudflare_zones.pukara_dev.zones[0].id
+  name    = "send.updates"
+  content = "v=spf1 include:amazonses.com ~all"
+  type    = "TXT"
+  proxied = false
+}
+
+################
+# R2 (buckets) #
+################
+
+resource "cloudflare_r2_bucket" "backups" {
+  account_id = "4050cda5b9e1df9216eebcfd9ef87654"
+  name       = "pukara-backups"
+  location   = "WEUR"
+}
+
+data "cloudflare_api_token_permission_groups" "all" {}
+
+resource "cloudflare_api_token" "backups" {
+  name = "R2-backups-read-write"
+
+  policy {
+    permission_groups = [
+      data.cloudflare_api_token_permission_groups.all.r2["Workers R2 Storage Bucket Item Read"],
+      data.cloudflare_api_token_permission_groups.all.r2["Workers R2 Storage Bucket Item Write"],
+    ]
+
+    # I know, nasty! Thank you CloudFlare 🙄
+    resources = {
+      "com.cloudflare.edge.r2.bucket.${local.account_id}_default_${cloudflare_r2_bucket.backups.name}" = "*"
+    }
+  }
+}
+

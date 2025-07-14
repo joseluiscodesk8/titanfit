@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mk8s-tailscale-operator
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    namespace: tailscale-operator
+    server: https://mk8s-api.pukara.dev:16443
+  sources:
+    - repoURL: https://pkgs.tailscale.com/helmcharts
+      targetRevision: 1.82.5
+      chart: tailscale-operator
+      helm:
+        releaseName: tailscale-op
+        values: |
+          operatorConfig:
+            hostname: mk8s-ts-op
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/hetzner-pve-microk8s/kubernetes-manifests/tailscale-operator"
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

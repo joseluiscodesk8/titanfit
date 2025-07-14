@@ -1,0 +1,9 @@
+# Add Resources to the Catalog
+
+By creating a [`catalog-info.yaml`](https://backstage.io/blog/2023/07/08/stash-adopter-post/#easy-adoption-and-catalog-usage) file in any GitHub repository, Backstage will automatically load its content, which can include any [common resource](https://backstage.io/docs/features/software-catalog/descriptor-format#contents).
+
+For examples, see the files in [pukara-dev/backstage](https://github.com/pukara-dev/backstage/blob/main/catalog-info.yaml) or [pukara-dev/infrastructure](https://github.com/pukara-dev/backstage/blob/main/catalog-info.yaml).
+
+## Adding Templates
+
+All templates are stored within the [backstage repository](https://github.com/pukara-dev/backstage) in the [templates folder](https://github.com/pukara-dev/backstage/tree/main/templates). They will be auto-discovered and loaded into Backstage.

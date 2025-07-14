@@ -1,0 +1,6 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: oauth-creds
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/um6nf63y2mfirj6cozqhu2cg7e"

@@ -1,0 +1,9 @@
+# kube-prometheus-stack: Prometheus, Alertmanager, and Grafana
+
+To monitor our Kubernetes clusters, we use the kube-prometheus-stack, which includes a comprehensive collection of Prometheus rules (alerts) and dashboards that work out of the box. Here are the details:
+
+- **Prometheus**: Collects and processes metrics for the cluster, ranging from node metrics (via node-exporters) to application metrics.
+- **Alertmanager**: Takes Prometheus alerts and forwards them to various receivers (e.g., Slack, Telegram). At Pukara, we use the Slack `#alerts` channel.
+- **Grafana**: Features robust dashboards and is pre-configured to connect to Prometheus for visualizing metrics. At Pukara, we use GitHub authentication for Grafana.
+
+For more information about the kube-prometheus-stack, visit [their documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).

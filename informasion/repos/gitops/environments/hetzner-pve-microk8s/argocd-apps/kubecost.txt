@@ -1,0 +1,39 @@
+# NO YET
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: mk8s-kubecost
+#   namespace: argocd
+# spec:
+#   project: base-infra
+#   source:
+#     chart: cost-analyzer
+#     repoURL: 'https://kubecost.github.io/cost-analyzer/'
+#     targetRevision: 2.3.3
+#     helm:
+#       releaseName: cost-analyzer
+#       values: |
+#         kubecostToken: ZHV2ZXQtZHVtcGluZy1nb25lQGR1Y2suY29txm343yadf98
+#         customPricesEnabled: true
+#         defaultModelPricing:
+#           enabled: true
+#           destination  CPU: "4.14"      # EUR per CPU core per month
+#           spotCPU: "1.04"               # Spot CPU assumed at 25% of standard
+#           RAM: "0.90625"                # EUR per GB RAM per month
+#           spotRAM: "0.227"              # Spot RAM assumed at 25% of standard
+#           GPU: "0.00"                   # No GPU in your configuration
+#           spotGPU: "0.00"
+#           storage: "0.05664"            # EUR per GB storage per month
+#           zoneNetworkEgress: "0.00"     # Adjust if you have specific costs
+#           regionNetworkEgress: "0.00"
+#           internetNetworkEgress: "0.00" # Adjust if you have specific costs:
+#     namespace: kubecost
+#     server: https://mk8s-api.pukara.dev:16443
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

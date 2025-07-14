@@ -1,0 +1,63 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-system
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: examples
+spec:
+  owner: guests
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: example-website
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples
+  providesApis: [example-grpc-api]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: example-grpc-api
+spec:
+  type: grpc
+  lifecycle: experimental
+  owner: guests
+  system: examples
+  definition: |
+    syntax = "proto3";
+
+    service Exampler {
+      rpc Example (ExampleMessage) returns (ExampleMessage) {};
+    }
+
+    message ExampleMessage {
+      string example = 1;
+    };
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: kubescape-middleware
+  description: This is a PoC of a Golang API used as a middleware for Kubescape
+  links:
+    - url: https://mk8s-security-middleware.bonito-stonecat.ts.net
+      title: API
+      icon: docs
+  annotations:
+    github.com/project-slug: pukara-dev/kubescape-middleware
+  tags:
+  - demo
+  - api
+  - golang
+spec:
+  type: openapi
+  lifecycle: production
+  owner: Platform
+  definition:
+    $text: https://mk8s-security-middleware.bonito-stonecat.ts.net/swagger/doc.json

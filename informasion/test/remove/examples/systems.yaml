@@ -1,0 +1,90 @@
+# Systems for platform-services Domain
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: ci-cd-system
+  title: CI/CD System
+  description: Continuous Integration and Deployment pipelines using GitHub Actions, ArgoCD, etc.
+spec:
+  owner: platform
+  domain: platform-services
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: observability-system
+  title: Observability System
+  description: Monitoring and logging stack with Prometheus, Grafana, AlertManager, uptime-kuma, etc.
+spec:
+  owner: platform
+  domain: platform-services
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: cloud-infrastructure
+  title: Cloud Infrastructure System
+  description: Kubernetes clusters, Terraform automation, and cloud networking.
+spec:
+  owner: platform
+  domain: platform-services
+
+# Systems for customer-services Domain
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: vital-motion-system
+  title: Vital Motion System
+  description: The entire application stack managed for Vital Motion.
+  tags:
+    - customer
+spec:
+  owner: platform
+  domain: customer-services
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: bululu-system
+  title: Bululu System
+  description: The entire application stack managed for Bululu.
+  tags:
+    - customer
+spec:
+  owner: platform
+  domain: customer-services
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: polestar-pilates-system
+  title: Polestar Pilates System
+  description: The entire application stack managed for Polestar Pilates.
+  tags:
+    - customer
+spec:
+  owner: polestar-pilates
+  domain: customer-services
+
+#troc
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: navigator-system
+  title: Navigator System
+  description: System responsible for application navigation and routing, including menus, dynamic routes, and state management.
+spec:
+  owner: Platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: ci-cd-system
+  title: CI/CD System
+  description: Continuous Integration and Deployment pipelines using GitHub Actions, ArgoCD, etc.
+spec:
+  owner: platform
+

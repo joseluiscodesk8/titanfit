@@ -1,0 +1,8 @@
+# Google Cloud Platform (GCP)
+
+We currently don't have GCP support in Atlantis (TODO). To apply changes, we need to log in to AWS (for the state bucket) and enable GCP credentials from our local machine by running:
+
+```sh
+gcloud auth application-default login
+```
+

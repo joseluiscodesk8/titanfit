@@ -1,0 +1,6 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: techdocs-bucket-creds
+spec:
+  itemPath: "vaults/2ezpyocxfplnoxnmmsetn4pxqq/items/3iufgbqjqjt5za62nqvtiw4ft4"

@@ -1,0 +1,28 @@
+# Monitoring & Alerting
+
+This document covers most of the aspects related to monitoring, both internally and for our customers. 
+
+## External Monitoring: Uptime-Kuma - http://monitoring.pukara.dev
+
+We often monitor our client's websites/APIs/DNS using [uptime-kuma](https://github.com/louislam/uptime-kuma). Initially, monitoring typically involves HTTP checks, but it can extend beyond that. Alerts are usually sent to our Slack channel ([#alerts](https://pukara.slack.com/archives/C04NQTLA25N)).
+
+### Adding Monitor Targets
+
+This is done manually, as we currently do not have an automated system to register targets in Uptime Kuma.
+
+Steps to add new targets:
+
+  1. Log in to Uptime Kuma (credentials are in 1Password).
+  2. Select "Add New Monitor" and enter the details of what you need to monitor.
+
+You could also add a Status Page, but keep in mind that it will be public at https://monitoring.pukara.dev/status/$GroupName.
+
+## Internal Monitoring: kube-prometheus-stack (Prometheus, Alertmanager, and Grafana)
+
+To monitor our Kubernetes clusters, we use the kube-prometheus-stack, which includes a comprehensive collection of Prometheus rules (alerts) and dashboards that work out of the box. Here are the details:
+
+- **Prometheus**: Collects and processes metrics for the cluster, ranging from node metrics (via node-exporters) to application metrics.
+- **Alertmanager**: Takes Prometheus alerts and forwards them to various receivers (e.g., Slack, Telegram). At Pukara, we use the Slack `#alerts` channel.
+- **Grafana**: Features robust dashboards and is pre-configured to connect to Prometheus for visualizing metrics. At Pukara, we use GitHub authentication for Grafana.
+
+For more information about the kube-prometheus-stack, visit [their documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).

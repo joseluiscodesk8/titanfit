@@ -1,0 +1,102 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atlantis
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+   - repoURL: https://runatlantis.github.io/helm-charts
+     targetRevision: 5.13.0
+     chart: atlantis
+     helm:
+      values: |
+        vcsSecretName: github-app-creds
+        orgAllowlist: github.com/pukara-dev/infrastructure
+        atlantisUrl: https://atlantis.pukara.dev
+        logLevel: info
+
+        # This doesn't need to be a secret, atlantis UI is read-only.
+        # Still we don't want to expose it to the world
+        basicAuth:
+          username: "pukara"
+          password: "hSPH7CcxTJdF2ntfB63aVv"
+
+        githubApp:
+          id: 885420
+          slug: atlantis-pukara
+
+        ingress:
+          enabled: false
+        
+        googleServiceAccountSecrets:
+          - name: pukara-infra-ops-sa
+            secretName: terraform-credentials
+
+        environment:
+          ATLANTIS_GH_ALLOW_MERGEABLE_BYPASS_APPLY: true
+
+        environment:
+          AWS_DEFAULT_REGION: eu-west-1
+          SCW_DEFAULT_PROJECT_ID: bf440c88-ed78-4a43-95bc-22a958cc4eca
+          SCW_DEFAULT_ORGANIZATION_ID: bf440c88-ed78-4a43-95bc-22a958cc4eca
+          GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/pukara-infra-ops-sa/infrastructure-ops-ed37-ce2602019056.json
+
+        environmentSecrets:
+          - name: OP_SERVICE_ACCOUNT_TOKEN
+            secretKeyRef:
+              name: terraform-credentials
+              key: OP_SERVICE_ACCOUNT_TOKEN
+          - name: SCW_ACCESS_KEY
+            secretKeyRef:
+              name: terraform-credentials
+              key: SCW_ACCESS_KEY
+          - name: SCW_SECRET_KEY
+            secretKeyRef:
+              name: terraform-credentials
+              key: SCW_SECRET_KEY
+          - name: AWS_ACCESS_KEY_ID
+            secretKeyRef:
+              name: terraform-credentials
+              key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            secretKeyRef:
+              name: terraform-credentials
+              key: AWS_SECRET_ACCESS_KEY
+          - name: CLOUDFLARE_API_TOKEN
+            secretKeyRef:
+              name: terraform-credentials
+              key: CLOUDFLARE_API_TOKEN
+          - name: HCLOUD_TOKEN
+            secretKeyRef:
+              name: terraform-credentials
+              key: HCLOUD_TOKEN
+
+        initConfig:
+          enabled: true
+          script: |
+            #!/bin/sh
+            set -eoux pipefail
+
+            OP_FILE="${INIT_SHARED_DIR}/op.zip"
+            ARCH="amd64"
+            OP_VERSION="v2.27.0"
+
+            wget -O "${OP_FILE}" https://cache.agilebits.com/dist/1P/op2/pkg/"$OP_VERSION"/op_linux_"$ARCH"_"$OP_VERSION".zip \
+                && unzip "${OP_FILE}" -d "${INIT_SHARED_DIR}" \
+                && rm "${OP_FILE}"
+
+   - repoURL: https://github.com/pukara-dev/gitops.git
+     targetRevision: main
+     path: "environments/scaleway-prd/kubernetes-manifests/atlantis"
+  destination:
+   server: https://kubernetes.default.svc
+   namespace: atlantis
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

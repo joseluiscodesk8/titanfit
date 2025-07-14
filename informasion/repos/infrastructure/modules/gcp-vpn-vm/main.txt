@@ -1,0 +1,84 @@
+#############
+# Instances #
+#############
+
+resource "google_compute_address" "openvpn_address" {
+  name    = "open-vpn-address"
+  region  = var.region
+  project = var.project_id
+  labels = {
+    environment = var.environment
+  }
+}
+
+resource "google_compute_instance" "vm_instance" {
+  name         = "openvpn"
+  machine_type = "e2-medium"
+  zone         = "${var.region}-a"
+  project      = var.project_id
+
+  tags = ["gcp-vpn-vm"]
+  labels = {
+    environment = var.environment
+  }
+
+  boot_disk {
+    initialize_params {
+
+      image = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
+    }
+  }
+
+  network_interface {
+    subnetwork = var.subnetwork
+
+    access_config {
+      nat_ip = resource.google_compute_address.openvpn_address.address
+    }
+  }
+
+  metadata = {
+    ssh-keys               = join("\n", [for key in var.ssh_keys : "${key.user}:${key.publickey}"])
+    block-project-ssh-keys = true
+  }
+
+  lifecycle {
+    ignore_changes = [ ## ignoring these changes to avoid vm recreation
+      boot_disk[0].initialize_params["image"]
+    ]
+  }
+}
+
+resource "google_compute_firewall" "openvpn_rules" {
+  project     = var.project_id
+  name        = "allow-ssh-ovpn"
+  network     = var.network_name
+  description = "Creates firewall rule to allow SSH into OpenVPN instance"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["1194", "22"]
+  }
+
+  allow {
+    protocol = "udp"
+    ports    = ["1194"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["gcp-vpn-vm"]
+}
+
+resource "google_compute_firewall" "allow_proxy_connection" {
+  project     = var.project_id
+  name        = "allow-proxy-connection"
+  network     = var.network_name
+  description = "Allow proxy connection to the gke cluster"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  source_ranges = ["10.129.0.0/23"]
+}

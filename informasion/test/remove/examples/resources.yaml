@@ -1,0 +1,314 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: terraform-state
+  description: Stores terraform state for Pukara Infrastructure
+  tags:
+    - terraform
+spec:
+  type: s3-bucket
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: pukara-backups
+  description: Stores all backups for Pukara using restic
+  tags:
+    - backup
+    - restic
+  links:
+    - url: https://secure.backblaze.com/b2_buckets.htm
+      title: BackBlaze
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: s3-bucket
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: kubernetes-scaleway
+  description: Pukara's first Kubernetes cluster in Scaleway
+  tags:
+    - backstage
+    - kubernetes
+    - argocd
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: kubernetes-cluster
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: kubernetes-microk8s
+  description: Hetzner MicroK8S cluster running in bare-metal instance
+  tags:
+    - kubernetes
+    - hetzner
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/seneca
+  type: kubernetes-cluster
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: aristotle
+  description: Hetzner baremetal server with docker & containers
+  tags:
+    - docker
+    - hetzner
+    - baremetal
+  links:
+    - url: https://robot.hetzner.com/server
+      title: Hetzner Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: server-baremetal
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: seneca
+  description: Hetzner baremetal server with Promox and VMs
+  tags:
+    - promox
+    - hetzner
+    - baremetal
+  links:
+    - url: https://robot.hetzner.com/server
+      title: Hetzner Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: server-baremetal
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: siteground-hosting
+  description: SiteGround is a web hosting platform providing managed hosting services,
+    including support for WordPress, PostgreSQL, MySQL, FTP, DNS, and email management.
+  tags:
+    - hosting
+    - siteground
+    - webhosting
+    - postgres
+    - mysql
+    - dns
+  links:
+    - url: https://world.siteground.com
+      title: siteground Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: hosting
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cloudflare
+  description: Cloudflare provides DNS, CDN, and security services for Pukara's domains.
+  tags:
+    - cloudflare
+    - dns
+    - cdn
+    - security
+  links:
+    - url: https://dash.cloudflare.com
+      title: Cloudflare Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: dns-cdn-security
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: argocd
+  description: ArgoCD is the service to handle all Kubernetes components
+  annotations:
+    github.com/project-slug: pukara-dev/infrastructure
+    backstage.io/kubernetes-id: argocd
+    backstage.io/techdocs-entity: domain:default/platform
+  tags:
+    - kubernetes
+    - argocd
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-scaleway
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: ci-cd-system
+  lifecycle: production
+
+#troc
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: aws
+  description: AWS is the cloud provider hosting the Kubernetes infrastructure and related components.
+  annotations:
+    github.com/project-slug: aws-dev
+    backstage.io/kubernetes-id: aws
+  tags:
+    - kubernetes
+    - aws
+    - cloud
+  links:
+    - url: https://console.aws.amazon.com
+      title: AWS Management Console
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: cloud-infra-system
+  lifecycle: dev
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: aws
+  description: AWS is the cloud provider hosting the Kubernetes infrastructure and related components.
+  annotations:
+    github.com/project-slug: aws-dev
+    backstage.io/kubernetes-id: aws
+  tags:
+    - kubernetes
+    - aws
+    - cloud
+  links:
+    - url: https://console.aws.amazon.com
+      title: AWS Management Console
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: cloud-infra-system
+  lifecycle: prod
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: argocd
+  description: ArgoCD is the service to handle all Kubernetes components
+  tags:
+    - kubernetes
+    - argocd
+  links:
+    - url: https://argocd.internal-dev.trocdigital.io/
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: ci-cd-system
+  lifecycle: dev
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: argocd
+  description: ArgoCD is the service to handle all Kubernetes components
+  tags:
+    - kubernetes
+    - argocd
+  links:
+    - url: https://argocd.internal.trocdigital.io/
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: ci-cd-system
+  lifecycle: prod
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: vault-dev
+  description: Vault is the secret management service used for storing and accessing sensitive configuration securely.
+  tags:
+    - vault
+    - secrets
+    - security
+  links:
+    - url: https://vault.internal-dev.trocdigital.io/
+      title: Vault UI
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: security-system
+  lifecycle: dev
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata: 
+  name: vault-prod
+  description: Vault is the secret management service used for storing and accessing sensitive configuration securely.
+  tags:
+    - vault
+    - secrets
+    - security
+  links:
+    - url: https://vault.internal-dev.trocdigital.io/
+      title: Vault UI
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/kubernetes-aws
+  type: service
+  owner: platform
+  system: security-system
+  lifecycle: prod

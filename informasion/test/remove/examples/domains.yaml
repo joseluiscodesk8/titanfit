@@ -1,0 +1,36 @@
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: customer-services
+  title: Customer Services
+  description: Domain for applications and infrastructure managed for customers.
+  tags:
+    - customer
+spec:
+  owner: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: platform-services
+  title: Platform Services
+  description: Domain for internal developer platforms, CI/CD, observability, and infrastructure.
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/pukara-dev/infrastructure
+  tags:
+    - platform
+    - pukara
+spec:
+  owner: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: development-services
+  title: Development Services
+  description: APIs, libraries, and SDKs that support application development.
+  tags:
+    - dev
+    - pukara
+spec:
+  owner: full-stack

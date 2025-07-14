@@ -1,0 +1,63 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: couchdb
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    namespace: couchdb
+    server: https://mk8s-api.pukara.dev:16443
+  sources:
+    - repoURL: https://apache.github.io/couchdb-helm
+      chart: "couchdb"
+      targetRevision: 4.6.0
+      helm:
+        releaseName: couchdb
+        values: |
+          clusterSize: 1
+          createAdminSecret: false
+          persistentVolume:
+            enabled: true
+          couchdbConfig:
+            couchdb:
+              uuid: b23336cc-33b2-46b3-91eb-862078cab579
+              max_document_size: 50000000
+            chttpd_auth:
+              require_valid_user: true
+            chttpd:
+              bind_address: any
+              require_valid_user: true
+              enable_cors: true
+              max_http_request_size: 4294967296
+            httpd:
+              WWW-Authenticate: "Basic realm='couchdb'"
+              enable_cors: true
+            cors:
+              credentials: true
+              origins: "app://obsidian.md,capacitor://localhost,http://localhost"
+          ingress:
+            enabled: true
+            className: tailscale
+            hosts:
+              - couchdb
+            tls:
+              - hosts:
+                - couchdb
+    - repoURL: https://github.com/pukara-dev/gitops.git
+      targetRevision: main
+      path: "environments/hetzner-pve-microk8s/kubernetes-manifests/couchdb"
+  ignoreDifferences:
+    - group: "apps"
+      kind: "StatefulSet"
+      jqPathExpressions:
+        - ".spec.volumeClaimTemplates[].apiVersion"
+        - ".spec.volumeClaimTemplates[].kind"
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

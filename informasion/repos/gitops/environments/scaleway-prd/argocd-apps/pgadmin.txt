@@ -1,0 +1,58 @@
+# ----------------------------------
+# --- This is not currently used ---
+# ----------------------------------
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: pgadmin
+#   namespace: argocd
+# spec:
+#   project: default
+#   source:
+#     chart: pgadmin4
+#     repoURL: 'https://helm.runix.net'
+#     targetRevision: 1.25.1
+#     helm:
+#       values: |
+#         persistentVolume:
+#           enabled: false
+#         env:
+#           # Not a big deal, this is protected with cloudflare WAF
+#           # to only allow @pukara.dev.
+#           password: HTkUG3ktapzsa6Fdcf3r
+#           email: hi@pukara.dev
+#           variables:
+#             - name: PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT
+#               value: 'False'
+#             - name: PGADMIN_CONFIG_WTF_CSRF_ENABLED
+#               value: 'False'
+#         serverDefinitions:
+#           enabled: true
+#           servers:
+#             backstage:
+#               Name: "Backstage"
+#               Group: "Scaleway"
+#               Port: 5432
+#               Username: "backstage"
+#               Host: "192.168.0.2"
+#               SSLMode: "prefer"
+#               MaintenanceDB: "postgres"
+#             odoo:
+#               Name: "Odoo"
+#               Group: "Scaleway"
+#               Port: 5432
+#               Username: "odoo"
+#               Host: "192.168.0.2"
+#               SSLMode: "prefer"
+#               MaintenanceDB: "postgres"
+#   destination:
+#     namespace: pgadmin
+#     server: https://kubernetes.default.svc
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

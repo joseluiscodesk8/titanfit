@@ -1,0 +1,191 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: n8n
+  annotations:
+    argocd/app-name: n8n
+    github.com/project-slug: 'n8n/n8n'
+  description: workflow automation tool
+  tags:
+    - kubernetes
+    - automation
+    - data
+    - customer
+  links:
+    - url: https://n8n.vitalmotion.ltd
+      title: n8n
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/argocd
+    - resource:default/kubernetes-microk8s
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: airbyte
+  annotations:
+    backstage.io/kubernetes-namespace: airbyte
+    argocd/app-name: airbyte
+    github.com/project-slug: 'airbyte/airbyte'
+  description: data integration platform that helps to move data between different sources and destinations, like databases, APIs, and data warehouses
+  tags:
+    - kubernetes
+    - data
+    - automation
+    - customer
+  links:
+    - url: https://airbyte.pukara.dev/
+      title: airbyte
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/argocd
+    - resource:default/kubernetes-microk8s
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: chatwoot
+  annotations:
+    backstage.io/kubernetes-namespace: chatwoot
+    argocd/app-name: chatwoot
+    github.com/project-slug: 'chatwoot/chatwoot'
+  description: customer engagement platform (like Zendesk) that helps businesses communicate with their customers across various channels
+  tags:
+    - kubernetes
+    - chat
+    - whatsapp
+  links:
+    - url: https://support.vitalmotion.ltd
+      title: chatwoot
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/argocd
+    - resource:default/kubernetes-microk8s
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: odoo
+  annotations:
+    backstage.io/kubernetes-namespace: odoo
+    github.com/project-slug: 'backstage/backstage'
+  description: ERP services for customers
+  tags:
+    - inventory-logistics
+    - accounting-finance
+    - sales-crm
+    - manufacturing-supply-chain
+    - human-resources-hr
+    - reporting-analysis
+  links:
+    - url: https://erp.pukara.dev/
+      title: odoo
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/aristotle
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: evolution-api
+  annotations:
+    backstage.io/kubernetes-namespace: evolution-api
+  description: WhatsApp integration API for customer communication
+  tags:
+    - kubernetes
+    - whatsapp
+    - chat
+    - customer-support
+  links:
+    - url: https://whatsapp.pukara.dev/
+      title: evolution-api
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/aristotle
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: postiz
+  annotations:
+    backstage.io/kubernetes-namespace: postiz
+  description: Schedule and publish content directly to Facebook, Instagram, and Twitter
+  tags:
+    - post-scheduling
+    - social-media
+    - multi-account
+    - analytics
+    - image-editing
+  links:
+    - url: https://postiz.vitalmotion.ltd/auth
+      title: postiz
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/aristotle
+    - resource:default/cloudflare
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: nextcloud
+  annotations:
+    backstage.io/kubernetes-namespace: nextcloud
+  description: Cloud storage allows you to have your own private server to securely manage files, applications, and communications.
+  tags:
+    - cloud-storage
+    - security-privacy
+    - collaboration
+    - onlyoffice-integration
+  links:
+    - url: https://drive.vitalmotion.ltd/
+      title: nextcloud
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/siteground-hosting
+  type: service
+  owner: platform
+  system: vital-motion-system
+  lifecycle: production

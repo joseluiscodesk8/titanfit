@@ -1,0 +1,32 @@
+# THIS OCCUPY QUITE A LOT OF SPACE ON THE MICRK8S CLUSTER
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: ollama
+#   namespace: argocd
+# spec:
+#   project: apps
+#   destination:
+#     namespace: ollama
+#     server: https://mk8s-api.pukara.dev:16443
+#   sources:
+#     - repoURL: https://helm.openwebui.com
+#       chart: "open-webui"
+#       targetRevision: 3.3.0
+#       helm:
+#         releaseName: open-webui
+#         values: |
+#           ollama:
+#             ollama:
+#               models:
+#                 - llama2
+#                 - phi3.5
+#                 - mistral
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

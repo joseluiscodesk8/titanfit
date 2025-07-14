@@ -1,0 +1,66 @@
+# ALl monitoring stack is moved to Hetzner/MK8S
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus-operator
+#   namespace: argocd
+# spec:
+#   project: base-infra
+#   sources:
+#    - repoURL: https://prometheus-community.github.io/helm-charts
+#      targetRevision: 67.9.0
+#      chart: kube-prometheus-stack
+#      helm:
+#        values: |
+#          defaultRules:
+#            rules:
+#              kubeSchedulerRecording: false
+#              kubeSchedulerAlerting: false
+#              kubeControllerManager: false
+#              kubeProxy: false
+#          coreDns:
+#            enabled: false
+#          grafana:
+#            sidecar:
+#              dashboards:
+#                folderAnnotation: grafana_folder
+#                provider:
+#                  foldersFromFilesStructure: true
+#            envFromSecrets:
+#              - name: oauth-github-creds
+#            grafana.ini:
+#              server:
+#                root_url: https://grafana.pukara.dev
+#              auth:
+#                disable_login_form: true
+#              auth.basic:
+#                enabled: false
+#              auth.github:
+#                enabled: true
+#                allow_sign_up: true
+#                scopes: user:email,read:org
+#                auth_url: https://github.com/login/oauth/authorize
+#                token_url: https://github.com/login/oauth/access_token
+#                api_url: https://api.github.com/user
+#                allowed_organizations: "pukara-dev"
+#                role_attribute_path: "[login=='mogaal'][0] && 'GrafanaAdmin' || 'Viewer'"
+#                allow_assign_grafana_admin: true
+#    - repoURL: https://github.com/pukara-dev/gitops.git
+#      targetRevision: main
+#      path: "environments/scaleway-prd/kubernetes-manifests/monitoring"
+#   ignoreDifferences:
+#   - group: ""
+#     kind: Service
+#     jsonPointers:
+#     - /spec/externalName
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

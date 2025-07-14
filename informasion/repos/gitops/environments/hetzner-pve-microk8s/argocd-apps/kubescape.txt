@@ -1,0 +1,36 @@
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: mk8s-kubescape
+#   namespace: argocd
+# spec:
+#   project: base-infra
+#   destination:
+#     namespace: kubescape
+#     server: https://mk8s-api.pukara.dev:16443
+#   sources:
+#     - repoURL: https://kubescape.github.io/helm-charts/
+#       chart: "kubescape-operator"
+#       targetRevision: 1.25.0
+#       helm:
+#         releaseName: kubescape
+#         values: |
+#           capabilities:
+#             prometheusExporter: enable
+#   ignoreDifferences:
+#   - group: apps
+#     kind: Deployment
+#     jqPathExpressions:
+#       - .spec.template.spec.containers[].env[].valueFrom.resourceFieldRef.divisor
+#   - group: apps
+#     kind: DaemonSet
+#     jqPathExpressions:
+#       - .spec.template.spec.containers[].env[].valueFrom.resourceFieldRef.divisor
+#   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#     - CreateNamespace=true
+#     - ServerSideApply=true

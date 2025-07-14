@@ -1,0 +1,84 @@
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = "https://${module.pukara_mlops_platform.gke_endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.pukara_mlops_platform.gke_ca_certificate)
+}
+
+locals {
+  project_id = module.project_mlops.project_id
+  devops_ssh_keys = [
+    {
+      user      = "alejandro@pukara.dev"
+      publickey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC90w9KIPh9pCh53Ys6D55li+7Rho6GpTC/kHiktGwMa hi@mogaal.com"
+    },
+    {
+      user      = "javier@pukara.dev"
+      publickey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQnPlzDvQz1nXnCAz2G+pgX0+kCROmggSdz0uLCDXwY javier@pukara.es"
+    },
+    {
+      user      = "pablo@pukara.dev"
+      publickey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYMV7qOpX6y8NmZYYG6wFHIPlLNQrT1eyMoez6Es/zI pablo@pukara.dev"
+    }
+  ]
+}
+
+module "pukara_mlops_platform" {
+  source = "../modules/gke-gcp-components"
+
+  name_prefix = "mlops-platform"
+  project_id  = local.project_id
+  environment = "dev"
+
+  ssh_keys = local.devops_ssh_keys
+}
+
+module "gcs_buckets" {
+  source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version = "~> 10.0"
+
+  project_id = local.project_id
+  location   = "us-central1"
+  name       = "mlops-ai-dubbing"
+  versioning = false
+
+  iam_members = [{
+    role   = "roles/storage.objectAdmin"
+    member = "serviceAccount:${module.pukara_mlops_platform.gke_service_account}"
+  }]
+}
+
+# So the serviceAccount can access the GCS without creds 
+module "dubbing_workload_identity" {
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  version = "~> 36.0"
+
+  name       = "dubbing"
+  namespace  = "default"
+  project_id = local.project_id
+  roles      = ["roles/storage.objectAdmin"]
+}
+
+# Registry to push Docker images
+module "mlops_artifact_registry" {
+  source  = "GoogleCloudPlatform/artifact-registry/google"
+  version = "~> 0.3"
+
+  # Required variables
+  project_id    = local.project_id
+  location      = "us-central1"
+  format        = "DOCKER"
+  repository_id = "dubbing"
+}
+
+module "mlops_docker_sa" {
+  source  = "terraform-google-modules/service-accounts/google"
+  version = "~> 4.0"
+
+  project_id    = local.project_id
+  names         = ["docker-registry"]
+  project_roles = ["${local.project_id}=>roles/artifactregistry.writer"]
+  display_name  = "Docker Registry"
+  description   = "Service account to push images from Github Actions to Docker Registry"
+}

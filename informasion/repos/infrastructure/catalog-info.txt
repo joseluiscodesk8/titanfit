@@ -1,0 +1,170 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: terraform-state
+  description: Stores terraform state for Pukara Infrastructure
+  tags:
+    - terraform
+spec:
+  type: s3-bucket
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: pukara-backups
+  description: Stores all backups for Pukara using restic
+  tags:
+    - backup
+    - restic
+  links:
+    - url: https://secure.backblaze.com/b2_buckets.htm
+      title: BackBlaze
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: s3-bucket
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: kubernetes-scaleway
+  description: Pukara's first Kubernetes cluster in Scaleway
+  tags:
+    - backstage
+    - kubernetes
+    - argocd
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: kubernetes-cluster
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: kubernetes-microk8s
+  description: Hetzner MicroK8S cluster running in bare-metal instance
+  tags:
+    - kubernetes
+    - hetzner
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  dependsOn:
+    - resource:default/seneca
+  type: kubernetes-cluster
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: aristotle
+  description: Hetzner baremetal server with docker & containers
+  tags:
+    - docker
+    - hetzner
+    - baremetal
+  links:
+    - url: https://robot.hetzner.com/server
+      title: Hetzner Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: server-baremetal
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: seneca
+  description: Hetzner baremetal server with Promox and VMs
+  tags:
+    - promox
+    - hetzner
+    - baremetal
+  links:
+    - url: https://robot.hetzner.com/server
+      title: Hetzner Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: server-baremetal
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: siteground-hosting
+  description: SiteGround is a web hosting platform providing managed hosting services,
+    including support for WordPress, PostgreSQL, MySQL, FTP, DNS, and email management.
+  tags:
+    - hosting
+    - siteground
+    - webhosting
+    - postgres
+    - mysql
+    - dns
+  links:
+    - url: https://world.siteground.com
+      title: siteground Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: hosting
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: argocd
+  description: ArgoCD instance managing deployments
+  tags:
+    - argocd
+    - cd
+    - gitops
+    - kubernetes
+  links:
+    - url: https://argocd-internal.pukara.dev
+      title: ArgoCD Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: cd
+  owner: platform
+  system: cloud-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cloudflare
+  description: Cloudflare provides DNS, CDN, and security services for Pukara's domains.
+  tags:
+    - cloudflare
+    - dns
+    - cdn
+    - security
+  links:
+    - url: https://dash.cloudflare.com
+      title: Cloudflare Dashboard
+      icon: dashboard
+      type: admin-dashboard
+spec:
+  type: dns-cdn-security
+  owner: platform
+  system: cloud-infrastructure

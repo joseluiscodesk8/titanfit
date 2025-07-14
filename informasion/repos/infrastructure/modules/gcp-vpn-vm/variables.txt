@@ -1,0 +1,39 @@
+variable "project_id" {
+  description = "The ID of the project where this VM will be created"
+  type        = string
+}
+
+variable "network_name" {
+  description = "Network name"
+  type        = string  
+}
+
+variable "region" {
+  description = "Region where everything is going to be created"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "environment" {
+  description = "Environment. Variable used specially for tags and DNS names"
+  type        = string
+}
+
+variable "subnetwork" {
+  description = "subnetwork. Variable used to specify subnetwork of the current project"
+  type        = string
+}
+
+variable "ssh_keys" {
+  type = list(object({
+    publickey = string
+    user = string
+  }))
+  description = "List of public ssh keys that have access to the VM"
+  default = [
+      {
+        user = "username"
+        publickey = "ssh-rsa yourkeyabc username@PC"
+      }
+  ]
+}

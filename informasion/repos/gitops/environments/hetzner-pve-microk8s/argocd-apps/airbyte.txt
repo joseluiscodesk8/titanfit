@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airbyte
+  namespace: argocd
+spec:
+  project: apps
+  sources:
+    - repoURL: https://airbytehq.github.io/helm-charts
+      chart: airbyte
+      targetRevision: 1.6.2
+      helm:
+        releaseName: airbyte
+        values: |
+          global:
+            env_vars:
+              HTTP_IDLE_TIMEOUT: 1800s
+  destination:
+    namespace: airbyte
+    server: https://mk8s-api.pukara.dev:16443
+  syncPolicy:
+   automated:
+     prune: true
+     selfHeal: true
+   syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

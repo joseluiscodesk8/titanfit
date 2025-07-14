@@ -1,0 +1,89 @@
+provider "google" {
+  region = "us-central1"
+}
+
+locals {
+  organization_id = "120629367356"
+  billing_account = "012FF1-9671A3-81E5E8"
+}
+
+resource "google_folder" "folder_platform" {
+  display_name = "Platform"
+  parent       = "organizations/${local.organization_id}"
+}
+
+resource "google_folder" "folder_customers" {
+  display_name = "Customers"
+  parent       = "organizations/${local.organization_id}"
+}
+
+resource "google_folder" "folder_mlops" {
+  display_name = "MLOps"
+  parent       = "organizations/${local.organization_id}"
+}
+
+module "project_infrastructure_ops" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "infrastructure-ops"
+  random_project_id = true
+  org_id            = local.organization_id
+  billing_account   = local.billing_account
+  sa_role           = "roles/resourcemanager.organizationAdmin"
+  project_sa_name   = "terraform-sa"
+  folder_id         = google_folder.folder_platform.id
+
+  # These APIs are required to manage resources in other projects.
+  # For instance, BigQuery is not used in infrastructure-ops, but it is in vitalmotion.
+  # Since this Service Account manages VitalMotion, the BigQuery API must be enabled.
+  # More info:
+  # - https://astrafy.io/the-hub/blog/technical/terraform-provider-using-multiple-credentials
+  # - https://gitlab.com/a10969/terraform-alias-creds-example/-/tree/main?ref_type=heads
+  activate_apis = [
+    "bigquery.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com",
+  ]
+}
+
+module "project_vitalmotion" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "vitalmotion"
+  random_project_id = true
+  org_id            = local.organization_id
+  billing_account   = local.billing_account
+  folder_id         = google_folder.folder_customers.id
+  activate_apis = [
+    "bigquery.googleapis.com",
+    "bigquerystorage.googleapis.com"
+  ]
+}
+
+module "project_mlops" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "mlops"
+  random_project_id = true
+  org_id            = local.organization_id
+  billing_account   = local.billing_account
+  folder_id         = google_folder.folder_mlops.id
+  activate_apis = [
+    // GKE
+    "container.googleapis.com",
+    "containerregistry.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "gkehub.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "gkehub.googleapis.com",
+    // AI Platform
+    "aiplatform.googleapis.com",
+    "artifactregistry.googleapis.com",
+    "bigquerystorage.googleapis.com",
+    
+  ]
+}
