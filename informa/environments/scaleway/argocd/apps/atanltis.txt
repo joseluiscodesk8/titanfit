@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atlantis
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://runatlantis.github.io/helm-charts
+    targetRevision: 5.13.0
+    chart: atlantis
+    helm:
+      values: |
+        service:
+          type: ClusterIP
+          port: 8080  # Puerto del Service en Kubernetes
+          targetPort: 4141  # Puerto del contenedor (no cambia)
+        
+        # Configuración de Atlantis
+        github:
+          user: "joseluiscodesk8"
+          token: "$github_token"
+          webhookSecret: "$webhook_secret"
+          repoWhitelist: "github.com/joseluiscodesk8/*"
+        
+        ingress:
+          enabled: true
+          className: nginx
+          hosts:
+            - host: atlantis.tudominio.com
+          tls:
+            - secretName: atlantis-tls
+              hosts:
+                - atlantis.tudominio.com
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: atlantis
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

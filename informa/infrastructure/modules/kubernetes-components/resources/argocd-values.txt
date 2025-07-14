@@ -1,0 +1,30 @@
+configs:
+  params:
+    server.insecure: true
+  
+  cm:
+    admin.enabled: true
+    url: http://localhost:8080
+    accounts.admin: apiKey
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: ${github_client_id}
+            clientSecret: ${github_client_secret}
+            redirectURI: http://localhost:8080/api/dex/callback
+  
+  rbac:
+    # match by github username using preferred_username
+    scopes: '[groups, preferred_username]'
+    policy.default: 'role:readonly'
+    policy.csv: |
+      p, role:admin, applications, *, */*, allow
+      g, mogaal, role:admin
+      g, jaacu, role:admin
+      g, eddymdz, role:admin
+      g, pabloberrettoni, role:admin
+      g, ricardocamacho, role:admin
+      g, joseluiscodesk8, role:admin

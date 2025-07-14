@@ -1,0 +1,389 @@
+# #custumer-servies
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: n8n
+#   description: workflow automation tool
+#   tags:
+#     - kubernetes
+#     - automation
+#     - data
+#     - customer
+#   links:
+#     - url: https://n8n.vitalmotion.ltd
+#       title: n8n
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: airbyte
+#   annotations:
+#     backstage.io/kubernetes-namespace: airbyte
+#   description: data integration platform that helps to move data between different sources and destinations, like databases, APIs, and data warehouses
+#   tags:
+#     - kubernetes
+#     - data
+#     - automation
+#     - customer
+#   links:
+#     - url: https://airbyte.pukara.dev/
+#       title: airbyte
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: chatwoot
+#   annotations:
+#     backstage.io/kubernetes-namespace: chatwoot
+#     github.com/project-slug: 'chatwoot/chatwoot'
+#     argocd/app-name: chatwoot
+#   description: customer engagement platform (like Zendesk) that helps businesses communicate with their customers across various channels
+#   tags:
+#     - kubernetes
+#     - chat
+#     - whatsapp
+#   links:
+#     - url: https://support.vitalmotion.ltd
+#       title: chatwoot
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     # - resource:default/argocd
+#     # - resource:default/kubernetes-microk8s
+#     # - resource:default/cloudflare
+#     - resource:default/aws
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production v 1.0.0
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: odoo
+#   annotations:
+#     backstage.io/kubernetes-namespace: odoo
+#   description: ERP services for customers
+#   tags:
+#     - inventory-logistics
+#     - accounting-finance
+#     - sales-crm
+#     - manufacturing-supply-chain
+#     - human-resources-hr
+#     - reporting-analysis
+#   links:
+#     - url: https://erp.pukara.dev/
+#       title: odoo
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/aristotle
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: evolution-api
+#   annotations:
+#     backstage.io/kubernetes-namespace: evolution-api
+#   description: WhatsApp integration API for customer communication
+#   tags:
+#     - kubernetes
+#     - whatsapp
+#     - chat
+#     - customer-support
+#   links:
+#     - url: https://whatsapp.pukara.dev/
+#       title: evolution-api
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/aristotle
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: postiz
+#   annotations:
+#     backstage.io/kubernetes-namespace: postiz
+#   description: Schedule and publish content directly to Facebook, Instagram, and Twitter
+#   tags:
+#     - post-scheduling
+#     - social-media
+#     - multi-account
+#     - analytics
+#     - image-editing
+#   links:
+#     - url: https://postiz.vitalmotion.ltd/auth
+#       title: postiz
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/aristotle
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: nextcloud
+#   annotations:
+#     backstage.io/kubernetes-namespace: nextcloud
+#   description: Cloud storage allows you to have your own private server to securely manage files, applications, and communications.
+#   tags:
+#     - cloud-storage
+#     - security-privacy
+#     - collaboration
+#     - onlyoffice-integration
+#   links:
+#     - url: https://drive.vitalmotion.ltd/
+#       title: nextcloud
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/siteground-hosting
+#   type: service
+#   owner: platform
+#   system: vital-motion-system
+#   lifecycle: production
+# #platform-services
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: uptime-kuma
+#   description: Monitoring service we offer for customers
+#   annotations:
+#     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=uptime-kuma'
+#     backstage.io/kubernetes-namespace: uptime-kuma
+#     backstage.io/techdocs-entity: domain:default/platform
+#   tags:
+#     - kubernetes
+#     - monitoring
+#     - scaleway
+#   links:
+#     - url: https://monitoring.pukara.dev
+#       title: Monitoring
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-scaleway
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: observability-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: kube-prometheus-stack
+#   description: Robust monitoring platform that efficiently collects and processes metrics at scale
+#   annotations:
+#     backstage.io/kubernetes-namespace: monitoring
+#     backstage.io/techdocs-entity: domain:default/platform
+#   tags:
+#     - kubernetes
+#     - monitoring
+#     - scaleway
+#     - grafana
+#     - alertmanager
+#     - prometheus
+#   links:
+#     - url: https://prometheus.pukara.dev
+#       title: Prometheus
+#       icon: dashboard
+#       type: admin-dashboard
+#     - url: https://grafana.pukara.dev
+#       title: Grafana
+#       icon: dashboard
+#       type: admin-dashboard
+#     - url: https://alertmanager.pukara.dev
+#       title: AlertManager
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: observability-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: atlantis
+#   annotations:
+#     backstage.io/kubernetes-namespace: atlantis
+#     backstage.io/techdocs-entity: domain:default/platform
+#   description: Terraform Pull Request Automation
+#   tags:
+#     - kubernetes
+#     - terraform
+#     - automation
+#   links:
+#     - url: https://atlantis.pukara.dev
+#       title: Atlantis UI
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-scaleway
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: ci-cd-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: ArgoCD
+#   description: ArgoCD is the service to handle all Kubernetes components
+#   annotations:
+#     github.com/project-slug: pukara-dev/infrastructure
+#     backstage.io/kubernetes-id: argocd
+#     backstage.io/techdocs-entity: domain:default/platform
+#   tags:
+#     - kubernetes
+#     - argocd
+#   links:
+#     - url: https://argocd-internal.pukara.dev
+#       title: ArgoCD
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/kubernetes-scaleway
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: ci-cd-system
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: DevLake
+#   description: Collects, analyzes, and visualizes engineering data to help improve developer productivity and software delivery performance
+#   annotations:
+#     backstage.io/kubernetes-id: devlake
+#     backstage.io/techdocs-entity: domain:default/platform
+#   tags:
+#     - kubernetes
+#     - devlake
+#     - dora
+#   links:
+#     - url: https://devlake.pukara.dev/
+#       title: DevLake
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: cloud-infrastructure
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: windmill
+#   description: |
+#     Developer platform and workflow engine used for automations and integrations, similar to Zapier. Real-world use cases include:
+#     - Sending a Slack message every fortnight to remember engineers to create customer's report.
+#     - Whenever someone makes a Stripe payment in VitalMotion, sending a Slack message and creating a Jira ticket for invoicing.
+#   annotations:
+#     backstage.io/kubernetes-id: windmill
+#   tags:
+#     - kubernetes
+#     - automation
+#   links:
+#     - url: https://windmill.pukara.dev/
+#       title: Windmill
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: cloud-infrastructure
+#   lifecycle: production
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: opencost
+#   annotations:
+#     backstage.io/kubernetes-namespace: monitoring
+#   description: OpenCost is a tool for monitoring, allocating, and optimizing resource costs on Kubernetes clusters in real time.
+#   tags:
+#     - monitoring
+#     - allocating
+#     - optimizing
+#     - cost-model
+#   links:
+#     - url: https://opencost.pukara.dev/
+#       title: opencost
+#       icon: dashboard
+#       type: admin-dashboard
+# spec:
+#   dependsOn:
+#     - resource:default/argocd
+#     - resource:default/kubernetes-microk8s
+#     - resource:default/cloudflare
+#   type: service
+#   owner: platform
+#   system: observability-system
+#   lifecycle: production
+---

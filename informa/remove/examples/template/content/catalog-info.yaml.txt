@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name | dump }}
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: experimental
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: maracaibo
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: paceo-ciencias
