@@ -15,6 +15,7 @@ const Womanline: NextPage = () => {
       {/* <DynamicProductos /> */}
       <DynamicButton />
       <br />
+      <h3>skate or die</h3>
       <DynamicFooter />
     </>
   );
