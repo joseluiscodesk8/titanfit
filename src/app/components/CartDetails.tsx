@@ -16,12 +16,12 @@ const CartDetails: React.FC = () => {
 
   if (!isMounted) return null
 
+  const total = cart.reduce((acc, product) => acc + product.price * product.quantity, 0)
+
   return (
     <div className={styles.cartDetailsContainer}>
       {cart.length === 0 ? (
-        <>
-          <p className={styles.emptyMessage}>Tu carrito está vacío.</p>
-        </>
+        <p className={styles.emptyMessage}>Tu carrito está vacío.</p>
       ) : (
         <>
           {cart.map((product, index) => (
@@ -37,9 +37,16 @@ const CartDetails: React.FC = () => {
                 <h3 className={styles.productTitle}>{product.title}</h3>
                 <p className={styles.productPrice}>Precio: ${product.price}</p>
                 <p className={styles.productQuantity}>Cantidad: {product.quantity}</p>
+                <p className={styles.productSubtotal}>
+                  Subtotal: ${(product.price * product.quantity).toFixed(2)}
+                </p>
               </div>
             </div>
           ))}
+
+          <div className={styles.totalSection}>
+            <h2>Total: ${total.toFixed(2)}</h2>
+          </div>
         </>
       )}
 

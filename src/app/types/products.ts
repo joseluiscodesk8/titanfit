@@ -5,6 +5,7 @@ export interface FeaturedProduct {
   description: string;
   image: string;
   price: number;
+  stock: number;
 }
 
 export interface Product extends FeaturedProduct {
