@@ -10,6 +10,7 @@ export type Product = {
   gender: string;
   quantity: number;
   price: number;
+  stock: number;
 };
 
 type CartContextType = {
@@ -40,27 +41,42 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [cart]);
 
   const addToCart = (product: Product) => {
-  setCart(prev => {
-    const existing = prev.find(p => p.id === product.id);
-    if (existing) {
-      return prev.map(p =>
-        p.id === product.id
-          ? { ...p, quantity: p.quantity + product.quantity }
-          : p
-      );
-    } else {
-      return [...prev, product];
-    }
-  });
-};
-
+    setCart(prev => {
+      const existing = prev.find(p => p.id === product.id);
+      if (existing) {
+        const newQuantity = existing.quantity + product.quantity;
+        if (newQuantity > product.stock) {
+          return prev; // no agregar si excede el stock
+        }
+        return prev.map(p =>
+          p.id === product.id
+            ? { ...p, quantity: newQuantity }
+            : p
+        );
+      } else {
+        return product.quantity <= product.stock ? [...prev, product] : prev;
+      }
+    });
+  };
 
   const removeFromCart = (product: Product) => {
-    setCart(prev => prev.filter(p => p.title !== product.title));
+    setCart(prev => {
+      const existing = prev.find(p => p.id === product.id);
+      if (existing) {
+        if (existing.quantity > 1) {
+          return prev.map(p =>
+            p.id === product.id ? { ...p, quantity: p.quantity - 1 } : p
+          );
+        } else {
+          return prev.filter(p => p.id !== product.id);
+        }
+      }
+      return prev;
+    });
   };
 
   const isInCart = (product: Product) => {
-    return cart.some(p => p.title === product.title);
+    return cart.some(p => p.id === product.id);
   };
 
   return (

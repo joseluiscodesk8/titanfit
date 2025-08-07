@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { useValue } from "../context/ValueContext";
 import { useCart } from "../context/CartContext";
@@ -7,15 +9,21 @@ import Image from 'next/image';
 import { Product, FeaturedProduct } from '../types/products';
 
 const ProductoCard = ({ product }: { product: Product }) => {
-  const { addToCart, removeFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, cart } = useCart();
 
-  const cartProduct = {
-    ...product,
-    quantity: product.quantity ?? 1,
-    price: product.price ?? 0,
+  const cartItem = cart.find((p) => p.id === product.id);
+  const currentQuantity = cartItem?.quantity || 0;
+  const maxReached = currentQuantity >= product.stock;
+
+  const handleAdd = () => {
+    if (!maxReached) {
+      addToCart({ ...product, quantity: 1 });
+    }
   };
 
-  const inCart = isInCart(cartProduct);
+  const handleRemove = () => {
+    removeFromCart({ ...product });
+  };
 
   return (
     <motion.div
@@ -35,12 +43,27 @@ const ProductoCard = ({ product }: { product: Product }) => {
       <h3>{product.title}</h3>
       <p>{product.description}</p>
       <p><strong>Precio: ${product.price}</strong></p>
-      <button
-        onClick={() => inCart ? removeFromCart(cartProduct) : addToCart(cartProduct)}
-        className={styles.cartButton}
-      >
-        {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
-      </button>
+      <p>Stock disponible: {product.stock - currentQuantity}</p>
+      <p>Agregado al carrito: {currentQuantity}</p>
+
+      <div className={styles.buttonGroup}>
+        <button
+          onClick={handleAdd}
+          className={styles.cartButton}
+          disabled={maxReached}
+        >
+          {maxReached ? "Stock máximo alcanzado" : "Agregar al carrito"}
+        </button>
+
+        {currentQuantity > 0 && (
+          <button
+            onClick={handleRemove}
+            className={styles.removeButton}
+          >
+            Eliminar del carrito
+          </button>
+        )}
+      </div>
     </motion.div>
   );
 };
@@ -48,10 +71,9 @@ const ProductoCard = ({ product }: { product: Product }) => {
 const ManProductos = () => {
   const { value } = useValue();
 
-  // Map FeaturedProduct[] to Product[]
   const productsList: Product[] = products.products.man.map((product: FeaturedProduct) => ({
     ...product,
-    quantity: 1, // inicializa la cantidad
+    quantity: 1,
   }));
 
   return (

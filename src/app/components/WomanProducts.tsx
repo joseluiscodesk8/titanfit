@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { useValue } from "../context/ValueContext";
 import { useCart } from "../context/CartContext";
@@ -7,8 +9,21 @@ import Image from 'next/image';
 import { Product, FeaturedProduct } from '../types/products';
 
 const ProductoCard = ({ product }: { product: Product }) => {
-  const { addToCart, removeFromCart, isInCart } = useCart();
-  const inCart = isInCart(product);
+  const { addToCart, removeFromCart, cart } = useCart();
+
+  const cartItem = cart.find((p) => p.id === product.id);
+  const currentQuantity = cartItem?.quantity || 0;
+  const maxReached = currentQuantity >= product.stock;
+
+  const handleAdd = () => {
+    if (!maxReached) {
+      addToCart({ ...product, quantity: 1 });
+    }
+  };
+
+  const handleRemove = () => {
+    removeFromCart({ ...product });
+  };
 
   return (
     <motion.div
@@ -28,12 +43,27 @@ const ProductoCard = ({ product }: { product: Product }) => {
       <h3>{product.title}</h3>
       <p>{product.description}</p>
       <p><strong>Precio: ${product.price}</strong></p>
-      <button
-        onClick={() => inCart ? removeFromCart(product) : addToCart(product)}
-        className={styles.cartButton}
-      >
-        {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
-      </button>
+      <p>Stock disponible: {product.stock - currentQuantity}</p>
+      <p>Agregado al carrito: {currentQuantity}</p>
+
+      <div className={styles.buttonGroup}>
+        <button
+          onClick={handleAdd}
+          className={styles.cartButton}
+          disabled={maxReached}
+        >
+          {maxReached ? "Stock máximo alcanzado" : "Agregar al carrito"}
+        </button>
+
+        {currentQuantity > 0 && (
+          <button
+            onClick={handleRemove}
+            className={styles.removeButton}
+          >
+            Eliminar del carrito
+          </button>
+        )}
+      </div>
     </motion.div>
   );
 };
@@ -41,10 +71,9 @@ const ProductoCard = ({ product }: { product: Product }) => {
 const WomanProductos = () => {
   const { value } = useValue();
 
-  // Map FeaturedProduct[] to Product[]
   const productsList: Product[] = products.products.woman.map((product: FeaturedProduct) => ({
     ...product,
-    quantity: 1 // Agrega la propiedad que necesita el tipo Product
+    quantity: 1, // Inicializa la cantidad
   }));
 
   return (

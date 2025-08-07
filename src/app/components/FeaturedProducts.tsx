@@ -1,23 +1,37 @@
+'use client';
+
 import Image from "next/image";
 import { useCart } from "../context/CartContext";
 import styles from "../styles/index.module.scss";
 import products from "../data/products.json";
 import { FeaturedProduct, Product } from "../types/products";
 
-// ✅ convertir FeaturedProduct a Product, usando precio del JSON y quantity default
+// Convertir FeaturedProduct a Product con cantidad por defecto
 const convertToProduct = (featured: FeaturedProduct): Product => ({
   ...featured,
   quantity: 1,
 });
 
 const FeaturedProducts = () => {
-  const { addToCart, removeFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, cart } = useCart();
 
   return (
     <section className={styles.featured}>
       {products.products.featured.map((product: FeaturedProduct, index: number) => {
         const fullProduct = convertToProduct(product);
-        const inCart = isInCart(fullProduct);
+        const cartItem = cart.find((p) => p.id === fullProduct.id);
+        const currentQuantity = cartItem?.quantity || 0;
+        const maxReached = currentQuantity >= fullProduct.stock;
+
+        const handleAdd = () => {
+          if (!maxReached) {
+            addToCart({ ...fullProduct, quantity: 1 });
+          }
+        };
+
+        const handleRemove = () => {
+          removeFromCart(fullProduct);
+        };
 
         return (
           <div className={styles.card} key={index}>
@@ -29,18 +43,33 @@ const FeaturedProducts = () => {
                 className={styles.image}
               />
             </div>
+
             <div className={styles.text}>
               <h2>{product.title}</h2>
               <p>{product.description}</p>
               <strong>${product.price.toFixed(2)}</strong>
-              <button
-                onClick={() =>
-                  inCart ? removeFromCart(fullProduct) : addToCart(fullProduct)
-                }
-                className={styles.cartButton}
-              >
-                {inCart ? "Eliminar del carrito" : "Agregar al carrito"}
-              </button>
+
+              <p>Stock disponible: {product.stock - currentQuantity}</p>
+              <p>Agregado al carrito: {currentQuantity}</p>
+
+              <div className={styles.buttonGroup}>
+                <button
+                  onClick={handleAdd}
+                  className={styles.cartButton}
+                  disabled={maxReached}
+                >
+                  {maxReached ? "Stock máximo alcanzado" : "Agregar al carrito"}
+                </button>
+
+                {currentQuantity > 0 && (
+                  <button
+                    onClick={handleRemove}
+                    className={styles.removeButton}
+                  >
+                    Eliminar del carrito
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         );

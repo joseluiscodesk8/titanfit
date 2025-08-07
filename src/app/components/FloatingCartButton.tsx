@@ -68,7 +68,9 @@ const FloatingCartButton: React.FC = () => {
       <Link href="/cart" style={{ position: 'relative' }}>
         <FiShoppingCart size={30} />
         {cart.length > 0 && (
-          <span className={styles.cartCount}>{cart.length}</span>
+          <span className={styles.cartCount}>
+            {cart.reduce((total, item) => total + item.quantity, 0)}
+          </span>
         )}
       </Link>
     </motion.div>
