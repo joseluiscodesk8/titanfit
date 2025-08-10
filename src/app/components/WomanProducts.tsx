@@ -3,12 +3,18 @@
 import { motion } from 'framer-motion';
 import { useValue } from "../context/ValueContext";
 import { useCart } from "../context/CartContext";
-import products from '../data/products.json';
+import productsData from '../data/products_woman.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
-import { Product, FeaturedProduct } from '../types/products';
+import { ProductWoman, ProductWomanCart, ProductsWomanData } from '../types/products';
 
-const ProductoCard = ({ product }: { product: Product }) => {
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCreative, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/effect-creative';
+
+const ProductoCard = ({ product }: { product: ProductWomanCart }) => {
   const { addToCart, removeFromCart, cart } = useCart();
 
   const cartItem = cart.find((p) => p.id === product.id);
@@ -17,12 +23,21 @@ const ProductoCard = ({ product }: { product: Product }) => {
 
   const handleAdd = () => {
     if (!maxReached) {
-      addToCart({ ...product, quantity: 1 });
+      addToCart({
+        ...product,
+        quantity: 1,
+        gender: '',
+        price: 0
+      });
     }
   };
 
   const handleRemove = () => {
-    removeFromCart({ ...product });
+    removeFromCart({
+      ...product,
+      gender: '',
+      price: 0
+    });
   };
 
   return (
@@ -33,16 +48,46 @@ const ProductoCard = ({ product }: { product: Product }) => {
       exit={{ opacity: 0, y: -100 }}
       transition={{ duration: 0.5 }}
     >
-      <Image
-        src={product.image}
-        alt={product.title}
-        width={300}
-        height={300}
-        priority={true}
-      />
+      {/* Slider con Creative Effect */}
+      <picture>
+      <Swiper
+        grabCursor
+        effect="creative"
+        creativeEffect={{
+          prev: {
+            shadow: false,
+            translate: ['-20%', 0, -1],
+          },
+          next: {
+            translate: ['100%', 0, 0],
+          },
+        }}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        loop
+        modules={[EffectCreative, Autoplay]}
+        className={styles.producto_slider}
+      >
+        {product.images.map((img, idx) => (
+          <SwiperSlide key={idx}>
+            <Image
+              src={img}
+              alt={`${product.title} - imagen ${idx + 1}`}
+              width={300}
+              height={300}
+              priority={idx === 0}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      </picture>
+
       <h3>{product.title}</h3>
       <p>{product.description}</p>
-      <p><strong>Precio: ${product.price}</strong></p>
+      <p><strong>Precio Detal: ${product.detal_price}</strong></p>
+      <p><strong>Precio Mayorista: ${product.majority_price}</strong></p>
       <p>Stock disponible: {product.stock - currentQuantity}</p>
       <p>Agregado al carrito: {currentQuantity}</p>
 
@@ -71,10 +116,15 @@ const ProductoCard = ({ product }: { product: Product }) => {
 const WomanProductos = () => {
   const { value } = useValue();
 
-  const productsList: Product[] = products.products.woman.map((product: FeaturedProduct) => ({
-    ...product,
-    quantity: 1, // Inicializa la cantidad
-  }));
+  const productsList: ProductWomanCart[] =
+    (productsData as ProductsWomanData).products_woman.enterizo.map(
+      (product: ProductWoman) => ({
+        ...product,
+        image: product.images[0], // Para compatibilidad
+        images: product.images,   // Todas las imágenes para el slider
+        quantity: 1
+      })
+    );
 
   return (
     <div className={value === 'open' ? styles.blurText : ''}>
