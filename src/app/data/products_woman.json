@@ -1,0 +1,45 @@
+{
+    "products_woman": {
+      "enterizo": [
+        {
+          "id": "1",
+          "ref": "AR01",
+          "title": "ENTERIZO BOTA ANCHA MULTICOLOR",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "61.000",
+          "majority_price": "73.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/ea1.jpeg",
+            "/products/woman/ea3.jpeg",
+            "/products/woman/em1.jpeg",
+            "/products/woman/em2.jpeg",
+            "/products/woman/er1.jpeg",
+            "/products/woman/er2.jpeg",
+            "/products/woman/ev1.jpeg",
+            "/products/woman/ev2.jpeg"
+          ]
+        },
+        {
+            "id": "2",
+            "ref": "AR01",
+            "title": "ENTERIZO BOTA ANCHA MULTICOLOR",
+            "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+            "detal_price": "61.000",
+            "majority_price": "73.000",
+            "stock": 20,
+            "images": [
+              "/products/woman/ea1.jpeg",
+              "/products/woman/ea3.jpeg",
+              "/products/woman/em1.jpeg",
+              "/products/woman/em2.jpeg",
+              "/products/woman/er1.jpeg",
+              "/products/woman/er2.jpeg",
+              "/products/woman/ev1.jpeg",
+              "/products/woman/ev2.jpeg"
+            ]
+          }
+      ]
+    }
+  }
+  
