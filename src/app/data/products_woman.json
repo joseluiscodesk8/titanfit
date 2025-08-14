@@ -17,7 +17,17 @@
             "/products/woman/er1.jpeg",
             "/products/woman/er2.jpeg",
             "/products/woman/ev1.jpeg",
-            "/products/woman/ev2.jpeg"
+            "/products/woman/ev2.jpeg",
+            "/products/woman/ea4.jpeg",
+            "/products/woman/ea5.jpeg",
+            "/products/woman/em3.jpeg",
+            "/products/woman/em4.jpeg",
+            "/products/woman/en1.jpeg",
+            "/products/woman/en2.jpeg",
+            "/products/woman/ev3.jpeg",
+            "/products/woman/ev4.jpeg",
+            "/products/woman/ez1.jpeg",
+            "/products/woman/ez2.jpeg"
           ]
         },
         {
@@ -64,6 +74,36 @@
             "/products/woman/ec6.jpeg",
             "/products/woman/ec7.jpeg",
             "/products/woman/ec8.jpeg"
+          ]
+        },
+        {
+          "id": "4",
+          "ref": "A7034",
+          "title": "ENTERIZO NEGRO PUSH UP",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "68.000",
+          "majority_price": "53.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/en3.jpeg",
+            "/products/woman/en4.jpeg",
+            "/products/woman/en5.jpeg",
+            "/products/woman/en6.jpeg",
+            "/products/woman/en7.jpeg"
+          ]
+        },
+        {
+          "id": "5",
+          "ref": "A7046",
+          "title": "ENTERIZO SHORT PUSH UP",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "63.000",
+          "majority_price": "50.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/es1.jpeg",
+            "/products/woman/es2.jpeg",
+            "/products/woman/es3.jpeg"
           ]
         }
       ]
