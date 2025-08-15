@@ -6,15 +6,17 @@ import { useCart } from "../context/CartContext";
 import productsData from '../data/products_woman.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
-import { ProductWoman, ProductWomanCart, ProductsWomanData } from '../types/products';
+import { ProductWoman, ProductWomanCart, ProductsWomanData, ProductoCardProps, SwiperInstance } from '../types/products';
 
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCreative, Autoplay } from 'swiper/modules';
+import type { Swiper as SwiperClass } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-creative';
+import { useRef, useEffect } from 'react';
 
-const ProductoCard = ({ product }: { product: ProductWomanCart }) => {
+const ProductoCard = ({ product, registerSwiper }: ProductoCardProps) => {
   const { addToCart, removeFromCart, cart } = useCart();
 
   const cartItem = cart.find((p) => p.id === product.id);
@@ -45,43 +47,39 @@ const ProductoCard = ({ product }: { product: ProductWomanCart }) => {
       className={styles.producto_card}
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -100 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
       {/* Slider con Creative Effect */}
       <picture>
-      <Swiper
-        grabCursor
-        effect="creative"
-        creativeEffect={{
-          prev: {
-            shadow: false,
-            translate: ['-20%', 0, -1],
-          },
-          next: {
-            translate: ['100%', 0, 0],
-          },
-        }}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        loop
-        modules={[EffectCreative, Autoplay]}
-        className={styles.producto_slider}
-      >
-        {product.images.map((img, idx) => (
-          <SwiperSlide key={idx}>
-            <Image
-              src={img}
-              alt={`${product.title} - imagen ${idx + 1}`}
-              width={300}
-              height={300}
-              priority={idx === 0}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        <Swiper
+          onSwiper={(swiper: SwiperClass) => registerSwiper(swiper)}
+          grabCursor
+          effect="creative"
+          creativeEffect={{
+            prev: { shadow: false, translate: ['-20%', 0, -1] },
+            next: { translate: ['100%', 0, 0] },
+          }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          loop
+          modules={[EffectCreative, Autoplay]}
+          className={styles.producto_slider}
+        >
+          {product.images.map((img, idx) => (
+            <SwiperSlide key={idx}>
+              <Image
+                src={img}
+                alt={`${product.title} - imagen ${idx + 1}`}
+                width={300}
+                height={300}
+                priority={idx === 0}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </picture>
 
       <h3>{product.title}</h3>
@@ -115,13 +113,47 @@ const ProductoCard = ({ product }: { product: ProductWomanCart }) => {
 
 const WomanProductos = () => {
   const { value } = useValue();
+  const swiperInstances = useRef<SwiperInstance[]>([]);
+
+  // Un solo observer para todos los sliders
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const swiper = swiperInstances.current.find(
+            (s) => s.el === entry.target
+          );
+          if (swiper?.autoplay) {
+            if (entry.isIntersecting) {
+              swiper.autoplay.start();
+            } else {
+              swiper.autoplay.stop();
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    swiperInstances.current.forEach((swiper) => {
+      observer.observe(swiper.el);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const registerSwiper = (swiper: SwiperClass) => {
+    swiperInstances.current.push(swiper as SwiperInstance);
+  };
 
   const productsList: ProductWomanCart[] =
     (productsData as ProductsWomanData).products_woman.enterizo.map(
       (product: ProductWoman) => ({
         ...product,
-        image: product.images[0], // Para compatibilidad
-        images: product.images,   // Todas las imágenes para el slider
+        image: product.images[0], // imagen principal
+        images: product.images,
         quantity: 1
       })
     );
@@ -133,7 +165,11 @@ const WomanProductos = () => {
       </section>
       <div className={styles.productos_lista}>
         {productsList.map((product) => (
-          <ProductoCard key={product.id} product={product} />
+          <ProductoCard
+            key={product.id}
+            product={product}
+            registerSwiper={registerSwiper}
+          />
         ))}
       </div>
     </div>

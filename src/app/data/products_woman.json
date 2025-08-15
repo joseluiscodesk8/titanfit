@@ -105,6 +105,85 @@
             "/products/woman/es2.jpeg",
             "/products/woman/es3.jpeg"
           ]
+        },
+        {
+          "id": "6",
+          "ref": "AR01",
+          "title": "ENTERIZO SHORT PUSH UP SEAMLESS",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "125.000",
+          "majority_price": "98.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/el17.jpeg",
+            "/products/woman/el18.jpeg",
+            "/products/woman/el19.jpeg",
+            "/products/woman/el20.jpeg",
+            "/products/woman/el21.jpeg",
+            "/products/woman/el22.jpeg",
+            "/products/woman/el39.jpeg",
+            "/products/woman/el40.jpeg",
+            "/products/woman/el41.jpeg",
+            "/products/woman/el42.jpeg",
+            "/products/woman/el43.jpeg",
+            "/products/woman/el44.jpeg"
+          ]
+        },
+        {
+          "id": "7",
+          "ref": "",
+          "title": "ENTERIZO PUSH UP MOLDEADOR CON MANGA CORTA Y CIERRE AL FRENTE",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "55.000",
+          "majority_price": "43.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/el23.jpeg",
+            "/products/woman/el24.jpeg",
+            "/products/woman/el25.jpeg",
+            "/products/woman/el26.jpeg",
+            "/products/woman/el27.jpeg"
+          ]
+        },
+        {
+          "id": "8",
+          "ref": "",
+          "title": "ENTERIZO CORTO MALLA AL FRENTE Y ESCOTE ATRAS",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "55.000",
+          "majority_price": "43.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/el28.jpeg",
+            "/products/woman/el29.jpeg",
+            "/products/woman/el30.jpeg",
+            "/products/woman/el31.jpeg",
+            "/products/woman/el32.jpeg",
+            "/products/woman/el33.jpeg",
+            "/products/woman/el34.jpeg",
+            "/products/woman/el35.jpeg",
+            "/products/woman/el36.jpeg",
+            "/products/woman/el37.jpeg",
+            "/products/woman/el38.jpeg",
+            "/products/woman/el45.jpeg"
+          ]
+        },
+        {
+          "id": "9",
+          "ref": "7072",
+          "title": "ENTERIZO LULU CON PUCH UP LISO AL FRENTE",
+          "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+          "detal_price": "63.000",
+          "majority_price": "53.000",
+          "stock": 20,
+          "images": [
+            "/products/woman/el46.jpeg",
+            "/products/woman/el47.jpeg",
+            "/products/woman/el48.jpeg",
+            "/products/woman/el49.jpeg",
+            "/products/woman/el50.jpeg",
+            "/products/woman/el51.jpeg"
+          ]
         }
       ]
     }
