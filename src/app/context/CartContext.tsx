@@ -7,10 +7,11 @@ export type Product = {
   title: string;
   description: string;
   image: string;
-  gender: string;
+  gender?: string;
   quantity: number;
   price: number;
-  stock: number;
+  size?: string;
+  color?: string;
 };
 
 type CartContextType = {
@@ -25,6 +26,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);
 
+  // Recuperar carrito desde localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -36,29 +38,28 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  // Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  // Agregar producto (sin stock máximo)
   const addToCart = (product: Product) => {
     setCart(prev => {
       const existing = prev.find(p => p.id === product.id);
       if (existing) {
-        const newQuantity = existing.quantity + product.quantity;
-        if (newQuantity > product.stock) {
-          return prev; // no agregar si excede el stock
-        }
         return prev.map(p =>
           p.id === product.id
-            ? { ...p, quantity: newQuantity }
+            ? { ...p, quantity: p.quantity + product.quantity }
             : p
         );
       } else {
-        return product.quantity <= product.stock ? [...prev, product] : prev;
+        return [...prev, product];
       }
     });
   };
 
+  // Eliminar producto (disminuir cantidad o quitarlo si llega a 0)
   const removeFromCart = (product: Product) => {
     setCart(prev => {
       const existing = prev.find(p => p.id === product.id);

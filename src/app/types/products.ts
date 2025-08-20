@@ -13,6 +13,8 @@ export interface FeaturedProduct {
 
 export interface Product extends FeaturedProduct {
   quantity: number;
+  size?: string;
+  color?: string;
 }
 
 export interface ProductWoman {
@@ -24,13 +26,14 @@ export interface ProductWoman {
   majority_price: string;
   stock: number;
   images: string[];
+  tallas?: string[];
+  colores?: string[];
 }
 
-export interface ProductWomanCart extends ProductWoman {
-  image: string;
-  quantity: number;
-  gender?: string;
-  price?: number;
+export interface ProductWomanCart extends Product, ProductWoman {
+  image: string;   // puedes sobrescribirlo si necesitas
+  size?: string;
+  color?: string;
 }
 
 export interface ProductsWomanData {
@@ -40,8 +43,7 @@ export interface ProductsWomanData {
 }
 
 export interface ProductoCardProps {
-  product: ProductWomanCart;
-  registerSwiper: (swiper: SwiperClass) => void;
+  product: ProductWoman;
 }
 
 export type SwiperInstance = SwiperClass & {

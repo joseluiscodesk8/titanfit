@@ -8,6 +8,8 @@
       "detal_price": "61.000",
       "majority_price": "73.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/ea1.jpeg",
         "/products/woman/ea3.jpeg",
@@ -37,6 +39,8 @@
       "detal_price": "85.000",
       "majority_price": "73.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/el1.jpeg",
         "/products/woman/el2.jpeg",
@@ -64,6 +68,8 @@
       "detal_price": "68.000",
       "majority_price": "53.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/ec1.jpeg",
         "/products/woman/ec2.jpeg",
@@ -83,6 +89,8 @@
       "detal_price": "68.000",
       "majority_price": "53.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/en3.jpeg",
         "/products/woman/en4.jpeg",
@@ -99,6 +107,8 @@
       "detal_price": "63.000",
       "majority_price": "50.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/es1.jpeg",
         "/products/woman/es2.jpeg",
@@ -113,6 +123,8 @@
       "detal_price": "125.000",
       "majority_price": "98.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/el17.jpeg",
         "/products/woman/el18.jpeg",
@@ -136,6 +148,8 @@
       "detal_price": "55.000",
       "majority_price": "43.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/el23.jpeg",
         "/products/woman/el24.jpeg",
@@ -152,6 +166,8 @@
       "detal_price": "55.000",
       "majority_price": "43.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/el28.jpeg",
         "/products/woman/el29.jpeg",
@@ -175,6 +191,8 @@
       "detal_price": "63.000",
       "majority_price": "53.000",
       "stock": 20,
+      "tallas": ["S", "M", "L", "XL"],
+      "colores": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
       "images": [
         "/products/woman/el46.jpeg",
         "/products/woman/el47.jpeg",
@@ -185,5 +203,4 @@
       ]
     }
   ]
-  }
-  
+}
