@@ -1,12 +1,12 @@
-'use client';
-import Enterizo from './Enterizo';
+// 'use client';
+// import Enterizo from './Enterizo';
 
-const WomanProductos = () => {
-  return (
-    <section>
-      <Enterizo />
-    </section>
-  );
-};
+// const WomanProductos = () => {
+//   return (
+//     <section>
+//       <Enterizo />
+//     </section>
+//   );
+// };
 
-export default WomanProductos;
+// export default WomanProductos;

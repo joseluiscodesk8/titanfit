@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCart } from "../context/CartContext";
 import styles from "../styles/index.module.scss";
 import products from "../data/products.json";
-import { FeaturedProduct, Product } from "../types/products";
+import { FeaturedProduct, Product } from "../types/enterizo";
 
 // Convertir FeaturedProduct a Product con cantidad por defecto
 const convertToProduct = (featured: FeaturedProduct): Product => ({

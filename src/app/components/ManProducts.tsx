@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 import products from '../data/products.json';
 import styles from "../styles/index.module.scss";
 import Image from 'next/image';
-import { Product, FeaturedProduct } from '../types/products';
+import { Product, FeaturedProduct } from '../types/enterizo';
 
 const ProductoCard = ({ product }: { product: Product }) => {
   const { addToCart, removeFromCart, cart } = useCart();
