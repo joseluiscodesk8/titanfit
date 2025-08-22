@@ -7,6 +7,7 @@ import { EnterizoData, ProductoCardProps, EnterizoCartItem } from "../types/ente
 import data from "../data/enterizo.json";
 import styles from "../styles/index.module.scss";
 import { useCart } from "../context/CartContext";
+import { useValue } from "../context/ValueContext";
 
 // Import Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,6 +19,7 @@ const ProductoCard: React.FC<ProductoCardProps> = ({ product }) => {
     const [selectedSize, setSelectedSize] = useState<string>("");
     const [selectedColor, setSelectedColor] = useState<string>("");
     const { addToCart, removeFromCart, isInCart } = useCart();
+ 
   
     const handleAddToCart = () => {
       if (!selectedSize || !selectedColor) {
@@ -59,8 +61,10 @@ const ProductoCard: React.FC<ProductoCardProps> = ({ product }) => {
                 <Image
                   src={img}
                   alt={`${product.title} ${index + 1}`}
-                  width={350}
+                  width={150}
                   height={400}
+                  priority={true}
+                  quality={50}
                 />
               </SwiperSlide>
             ))}
@@ -119,13 +123,17 @@ const ProductoCard: React.FC<ProductoCardProps> = ({ product }) => {
 const Enterizo: React.FC = () => {
   const productos: EnterizoData = data;
 
+  const { value } = useValue();
+
   return (
-    <section className={styles.productos_lista}>
+    <main className={value === "open" ? styles.blurText : ""}>
+        <section className={styles.productos_lista}>
         <h2>Enterizos</h2>
       {productos.enterizo.map((item) => (
         <ProductoCard key={item.id} product={item} />
       ))}
     </section>
+    </main>
   );
 };
 

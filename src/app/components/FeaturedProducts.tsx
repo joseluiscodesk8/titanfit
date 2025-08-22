@@ -1,6 +1,8 @@
 import React from "react";
+import Image from "next/image";
 import { Product } from "../types/featuringproducts";
 import featuredProductsData from "../data/FeaturedProduct.json";
+import styles from "../styles/index.module.scss";
 
 const FeaturedProducts: React.FC = () => {
   const products: Product[] = featuredProductsData.map((product) => ({
@@ -9,29 +11,21 @@ const FeaturedProducts: React.FC = () => {
   }));
 
   return (
-    <div>
-      <h1>Featured Products</h1>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+    <div className={styles.featuredContainer}>
+      <h1 className={styles.featuredTitle}>Featured</h1>
+      <div className={styles.featured}>
         {products.map((product) => (
-          <div
-            key={product.id}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "16px",
-              width: "200px",
-            }}
-          >
-            <img
+          <div key={product.id} className={styles.productCard}>
+            <Image
               src={product.image}
               alt={product.title}
-              style={{ width: "100%", borderRadius: "8px" }}
+              width={200}
+              height={200}
+              className={styles.productImage}
             />
-            <h2>{product.title}</h2>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-            <p>Stock: {product.stock}</p>
-            <p>Quantity: {product.quantity}</p>
+            <h2 className={styles.productTitle}>{product.title}</h2>
+            <p className={styles.productDescription}>{product.description}</p>
+            <p className={styles.productPrice}>Price: ${product.price}</p>
           </div>
         ))}
       </div>
