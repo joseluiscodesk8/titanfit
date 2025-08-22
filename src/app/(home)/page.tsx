@@ -13,7 +13,7 @@ const DynamicMenu = dynamic(() => import("../components/Menu"));
 const DynamicSlider = dynamic(() => import("../components/Slider"));
 const DynamicTitan = dynamic(() => import("../components/Titan"));
 const DynamicButton = dynamic(() => import('../components/FloatingCartButton'));
-// const DynamicFeatured = dynamic(() => import('../components/FeaturedProducts'))
+const DynamicFeatured = dynamic(() => import('../components/FeaturedProducts'))
 const DynamicFooter = dynamic(() => import('../components/Footer'))
 
 
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
             <br/>
             <br/>
             <DynamicTitan />
-            {/* <DynamicFeatured /> */}
+            <DynamicFeatured />
             <DynamicFooter />
           </>
         )}
