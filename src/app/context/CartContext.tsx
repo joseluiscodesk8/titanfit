@@ -1,30 +1,20 @@
+// context/CartContext.tsx
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-
-export type Product = {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  gender?: string;
-  quantity: number;
-  price: number;
-  size?: string;
-  color?: string;
-};
+import { EnterizoCartItem } from '../types/enterizo';
 
 type CartContextType = {
-  cart: Product[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (product: Product) => void;
-  isInCart: (product: Product) => boolean;
+  cart: EnterizoCartItem[];
+  addToCart: (product: EnterizoCartItem) => void;
+  removeFromCart: (id: string) => void;
+  isInCart: (id: string) => boolean;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart, setCart] = useState<EnterizoCartItem[]>([]);
 
   // Recuperar carrito desde localStorage
   useEffect(() => {
@@ -43,13 +33,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Agregar producto (sin stock máximo)
-  const addToCart = (product: Product) => {
+  // Agregar producto
+  const addToCart = (product: EnterizoCartItem) => {
     setCart(prev => {
-      const existing = prev.find(p => p.id === product.id);
+      const existing = prev.find(
+        p =>
+          p.id === product.id &&
+          p.size === product.size &&
+          p.color === product.color
+      );
       if (existing) {
         return prev.map(p =>
-          p.id === product.id
+          p.id === product.id && p.size === product.size && p.color === product.color
             ? { ...p, quantity: p.quantity + product.quantity }
             : p
         );
@@ -59,26 +54,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Eliminar producto (disminuir cantidad o quitarlo si llega a 0)
-  const removeFromCart = (product: Product) => {
-    setCart(prev => {
-      const existing = prev.find(p => p.id === product.id);
-      if (existing) {
-        if (existing.quantity > 1) {
-          return prev.map(p =>
-            p.id === product.id ? { ...p, quantity: p.quantity - 1 } : p
-          );
-        } else {
-          return prev.filter(p => p.id !== product.id);
-        }
-      }
-      return prev;
-    });
+  // Eliminar producto
+  const removeFromCart = (id: string) => {
+    setCart(prev =>
+      prev
+        .map(p =>
+          p.id === id
+            ? { ...p, quantity: p.quantity - 1 } // restamos 1
+            : p
+        )
+        .filter(p => p.quantity > 0) // si llega a 0, lo quitamos del carrito
+    );
   };
 
-  const isInCart = (product: Product) => {
-    return cart.some(p => p.id === product.id);
-  };
+  const isInCart = (id: string) => cart.some(p => p.id === id);
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
