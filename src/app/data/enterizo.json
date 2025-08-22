@@ -1,0 +1,206 @@
+{
+  "enterizo": [
+    {
+      "id": "1",
+      "ref": "AR01",
+      "title": "ENTERIZO BOTA ANCHA MULTICOLOR",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "61.000",
+      "majority_price": "73.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/ea1.jpeg",
+        "/products/enterizo/ea3.jpeg",
+        "/products/enterizo/em1.jpeg",
+        "/products/enterizo/em2.jpeg",
+        "/products/enterizo/er1.jpeg",
+        "/products/enterizo/er2.jpeg",
+        "/products/enterizo/ev1.jpeg",
+        "/products/enterizo/ev2.jpeg",
+        "/products/enterizo/ea4.jpeg",
+        "/products/enterizo/ea5.jpeg",
+        "/products/enterizo/em3.jpeg",
+        "/products/enterizo/em4.jpeg",
+        "/products/enterizo/en1.jpeg",
+        "/products/enterizo/en2.jpeg",
+        "/products/enterizo/ev3.jpeg",
+        "/products/enterizo/ev4.jpeg",
+        "/products/enterizo/ez1.jpeg",
+        "/products/enterizo/ez2.jpeg"
+      ]
+    },
+    {
+      "id": "2",
+      "ref": "AR01",
+      "title": "ENTERIZO LUISA BOTA ANCHA PUSH UP MULTICOLOR",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "85.000",
+      "majority_price": "73.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/el1.jpeg",
+        "/products/enterizo/el2.jpeg",
+        "/products/enterizo/el3.jpeg",
+        "/products/enterizo/el4.jpeg",
+        "/products/enterizo/el5.jpeg",
+        "/products/enterizo/el6.jpeg",
+        "/products/enterizo/el7.jpeg",
+        "/products/enterizo/el8.jpeg",
+        "/products/enterizo/el9.jpeg",
+        "/products/enterizo/el10.jpeg",
+        "/products/enterizo/el11.jpeg",
+        "/products/enterizo/el12.jpeg",
+        "/products/enterizo/el13.jpeg",
+        "/products/enterizo/el14.jpeg",
+        "/products/enterizo/el15.jpeg",
+        "/products/enterizo/el16.jpeg"
+      ]
+    },
+    {
+      "id": "3",
+      "ref": "B7051",
+      "title": "ENTERIZO EN TELA DE COMPRESIÓN",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "68.000",
+      "majority_price": "53.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/ec1.jpeg",
+        "/products/enterizo/ec2.jpeg",
+        "/products/enterizo/ec3.jpeg",
+        "/products/enterizo/ec4.jpeg",
+        "/products/enterizo/ec5.jpeg",
+        "/products/enterizo/ec6.jpeg",
+        "/products/enterizo/ec7.jpeg",
+        "/products/enterizo/ec8.jpeg"
+      ]
+    },
+    {
+      "id": "4",
+      "ref": "A7034",
+      "title": "ENTERIZO NEGRO PUSH UP",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "68.000",
+      "majority_price": "53.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/en3.jpeg",
+        "/products/enterizo/en4.jpeg",
+        "/products/enterizo/en5.jpeg",
+        "/products/enterizo/en6.jpeg",
+        "/products/enterizo/en7.jpeg"
+      ]
+    },
+    {
+      "id": "5",
+      "ref": "A7046",
+      "title": "ENTERIZO SHORT PUSH UP",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "63.000",
+      "majority_price": "50.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/es1.jpeg",
+        "/products/enterizo/es2.jpeg",
+        "/products/enterizo/es3.jpeg"
+      ]
+    },
+    {
+      "id": "6",
+      "ref": "AR01",
+      "title": "ENTERIZO SHORT PUSH UP SEAMLESS",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "125.000",
+      "majority_price": "98.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/el17.jpeg",
+        "/products/enterizo/el18.jpeg",
+        "/products/enterizo/el19.jpeg",
+        "/products/enterizo/el20.jpeg",
+        "/products/enterizo/el21.jpeg",
+        "/products/enterizo/el22.jpeg",
+        "/products/enterizo/el39.jpeg",
+        "/products/enterizo/el40.jpeg",
+        "/products/enterizo/el41.jpeg",
+        "/products/enterizo/el42.jpeg",
+        "/products/enterizo/el43.jpeg",
+        "/products/enterizo/el44.jpeg"
+      ]
+    },
+    {
+      "id": "7",
+      "ref": "",
+      "title": "ENTERIZO PUSH UP MOLDEADOR CON MANGA CORTA Y CIERRE AL FRENTE",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "55.000",
+      "majority_price": "43.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/el23.jpeg",
+        "/products/enterizo/el24.jpeg",
+        "/products/enterizo/el25.jpeg",
+        "/products/enterizo/el26.jpeg",
+        "/products/enterizo/el27.jpeg"
+      ]
+    },
+    {
+      "id": "8",
+      "ref": "",
+      "title": "ENTERIZO CORTO MALLA AL FRENTE Y ESCOTE ATRAS",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "55.000",
+      "majority_price": "43.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/el28.jpeg",
+        "/products/enterizo/el29.jpeg",
+        "/products/enterizo/el30.jpeg",
+        "/products/enterizo/el31.jpeg",
+        "/products/enterizo/el32.jpeg",
+        "/products/enterizo/el33.jpeg",
+        "/products/enterizo/el34.jpeg",
+        "/products/enterizo/el35.jpeg",
+        "/products/enterizo/el36.jpeg",
+        "/products/enterizo/el37.jpeg",
+        "/products/enterizo/el38.jpeg",
+        "/products/enterizo/el45.jpeg"
+      ]
+    },
+    {
+      "id": "9",
+      "ref": "7072",
+      "title": "ENTERIZO LULU CON PUCH UP LISO AL FRENTE",
+      "description": "Enterizo deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+      "detal_price": "63.000",
+      "majority_price": "53.000",
+      "stock": 20,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+      "images": [
+        "/products/enterizo/el46.jpeg",
+        "/products/enterizo/el47.jpeg",
+        "/products/enterizo/el48.jpeg",
+        "/products/enterizo/el49.jpeg",
+        "/products/enterizo/el50.jpeg",
+        "/products/enterizo/el51.jpeg"
+      ]
+    }
+  ]
+}
