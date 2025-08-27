@@ -1,0 +1,26 @@
+{
+    "vestido": [
+      {
+        "id": "1",
+        "ref": "AR01",
+        "title": "VESTIDO NYLON POWER",
+        "description": "vestido deportivo bota ancha en tela elástica que realza la figura y brinda comodidad.",
+        "detal_price": "61.000",
+        "majority_price": "73.000",
+        "stock": 20,
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["Amarillo", "Rojo", "Azul", "Morado", "Verde", "Marrón", "Naranja", "Celeste", "Negro", "Blanco"],
+        "images": [
+          "/products/vestido/v1.jpeg",
+          "/products/vestido/v2.jpeg",
+          "/products/vestido/v3.jpeg",
+          "/products/vestido/v4.jpeg",
+          "/products/vestido/v5.jpeg",
+          "/products/vestido/v6.jpeg",
+          "/products/vestido/v7.jpeg",
+          "/products/vestido/v8.jpeg"
+        ]
+      }
+    ]
+  }
+  
